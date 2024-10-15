@@ -125,8 +125,6 @@ You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG
 | --- |        -        | -     |-      | -     | -      |-|
 | 0   | crt  | x     |x      |  x    | x      |N/A|
 
-Solid **<font color="red">red</font>** of the c1541 led after power-up indicates a missing DOS in Flash<br>
-
 **Multicolor RGB LED**
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>
 * **<font color="red">red</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;something wrong with SDcard / default boot image<br>
