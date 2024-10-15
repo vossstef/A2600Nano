@@ -1,0 +1,3 @@
+#[submodule "T65"]
+#	path = src/T65
+#	url = https://github.com/mist-devel/T65.git
