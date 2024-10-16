@@ -33,7 +33,7 @@ module sysctrl (
   output reg	    system_wide_screen,
   output reg [3:0]  system_port_1,
   output reg [3:0]  system_port_2,
-  output reg        system_video_std,
+  output reg [1:0]  system_video_std,
   output reg        system_paddle,
   output reg        system_diff_p1,
   output reg        system_diff_p2,
@@ -147,10 +147,10 @@ always @(posedge clk) begin
                     if(id == "M") system_vblank <= data_in[0];
                     // video mode black&while
                     if(id == "O") system_vm <= data_in[0];
-                    // superchip
+                    // superchip auto / off / on
                     if(id == "U") system_sc <= data_in[1:0];
-                    // pal / ntsc
-                    if(id == "E") system_video_std <= data_in[0];
+                    // auto/pal / ntsc
+                    if(id == "E") system_video_std <= data_in[1:0];
                     // reset(1) or reset(0)
                     if(id == "R") system_reset <= data_in[1:0];
                     // Value "S": scanlines none(0), 25%(1), 50%(2) or 75%(3)

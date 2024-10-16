@@ -19,6 +19,7 @@ module video (
 
           input vblank_regenerate,
           output osd_status,
+          output paldetect,
 
           // (spi) interface from MCU
           input	   mcu_start,
@@ -42,6 +43,7 @@ module video (
 wire vs_stab,vb_stab,pal;
 wire sd_hs_n, sd_vs_n;
 wire [8:0] total_lines;
+assign paldetect = pal;
 
 video_stabilize video_stabilize
 (
@@ -142,25 +144,6 @@ wire [7:0] vertical_ar_lut[256] = '{
 	8'h8C, 8'h8C, 8'h8D, 8'h8D, 8'h8E, 8'h8E, 8'h8F, 8'h8F
 };
 
-/*
-always @(posedge clk) begin  // always @(posedge CLK_VIDEO) begin
-	reg       old_vbl;
-	reg [2:0] vbl;
-	reg [7:0] vblcnt, vspos;
-	
-	HSync <= hs_in_n;
-	if(~HSync & hs_in_n) begin
-		old_vbl <= VBlank;
-		
-		if(VBlank) vblcnt <= vblcnt+1'd1;
-		if(~old_vbl & VBlank) vblcnt <= 0;
-		if(old_vbl & ~VBlank) vspos <= (vblcnt>>1) - 8'd10;
-
-		{VSync,vbl} <= {vbl,1'b0};
-		if(vblcnt == vspos) {VSync,vbl} <= '1;
-	end
-end
-*/
 always @(posedge clk) begin
 	reg [8:0] line_cnt, vblank_start, visible_cnt;
 

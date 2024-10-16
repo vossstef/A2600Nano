@@ -67,6 +67,8 @@ signal joyDS2       : std_logic_vector(15 downto 0);
 -- joystick interface
 signal joyA        : std_logic_vector(15 downto 0);
 signal joyB        : std_logic_vector(15 downto 0);
+signal joy_p1      : std_logic_vector(15 downto 0);
+signal joy_p2      : std_logic_vector(15 downto 0);
 signal port_1_sel  : std_logic_vector(3 downto 0);
 signal port_2_sel  : std_logic_vector(3 downto 0);
 -- mouse / paddle
@@ -74,14 +76,18 @@ signal pot1        : std_logic_vector(7 downto 0);
 signal pot2        : std_logic_vector(7 downto 0);
 signal pot3        : std_logic_vector(7 downto 0);
 signal pot4        : std_logic_vector(7 downto 0);
+signal pd1,pd2     : std_logic_vector(7 downto 0);
+signal pd3,pd4     : std_logic_vector(7 downto 0);
+signal p1,p2,p3,p4 : std_logic_vector(7 downto 0);
 signal mouse_x_pos : signed(10 downto 0);
 signal mouse_y_pos : signed(10 downto 0);
-signal ntscMode    :  std_logic;
-signal hsync       :  std_logic;
-signal vsync       :  std_logic;
-signal r           :  unsigned(7 downto 0);
-signal g           :  unsigned(7 downto 0);
-signal b           :  unsigned(7 downto 0);
+signal pal         : std_logic;
+signal system_video_std : std_logic_vector(1 downto 0);
+signal hsync       : std_logic;
+signal vsync       : std_logic;
+signal r           : unsigned(7 downto 0);
+signal g           : unsigned(7 downto 0);
+signal b           : unsigned(7 downto 0);
 
 -- BL616 interfaces
 signal mcu_start      : std_logic;
@@ -184,10 +190,10 @@ signal ioctl_file_ext  : std_logic_vector(31 downto 0) := x"00000000";
 signal rom_a           : std_logic_vector(15 downto 0);
 signal rom_do          : std_logic_vector(7 downto 0);
 signal reset2600       : std_logic;
-signal sc              : std_logic_vector(1 downto 0);
+signal system_sc       : std_logic_vector(1 downto 0);
+signal sc              : std_logic;
 signal scdetect        : std_logic;
 signal decomb          : std_logic;
-signal bs_change       : std_logic;
 signal p_1             : std_logic;
 signal p_2             : std_logic;
 signal p_dif1          : std_logic;
@@ -213,6 +219,7 @@ signal extra_button1   : std_logic_vector(7 downto 0);
 signal img_size_crt    : std_logic_vector(31 downto 0);
 signal paddle_inv      : std_logic;
 signal joyswap         : std_logic;
+signal paldetect       : std_logic;
 
 component CLKDIV
     generic (
@@ -390,8 +397,8 @@ port map(
       audio_r => signed("0" & audio1 & "0000000000"),
       osd_status => osd_status,
       vblank_regenerate => vblank_regen,
-
-      mcu_start => mcu_start,
+      paldetect  => paldetect,
+      mcu_start  => mcu_start,
       mcu_osd_strobe => mcu_osd_strobe,
       mcu_data  => mcu_data_out,
 
@@ -550,8 +557,8 @@ leds(0) <= '0';
 -- BTN_B           5
 -- BTN_X           6
 -- BTN_Y           7
--- BTN_L           8
--- BTN_R           9
+-- BTN_SL          8
+-- BTN_SR          9
 -- BTN_SELECT     10
 -- BTN_START      11
 joyDS2     <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
@@ -598,16 +605,16 @@ begin
 end process;
 
 -- paddle pins
-pot1 <= not paddle_1 when port_1_sel = "0100" else
+pd1 <= not paddle_1 when port_1_sel = "0100" else
         joystick1_x_pos(7 downto 0) when port_1_sel = "0001" else
         x"ff";
-pot2 <= not paddle_2 when port_1_sel = "0100" else
+pd2 <= not paddle_2 when port_1_sel = "0100" else
         joystick1_y_pos(7 downto 0) when port_1_sel = "0001" else
         x"ff";
-pot3 <= not paddle_3 when port_2_sel = "0100" else
+pd3 <= not paddle_3 when port_2_sel = "0100" else
         joystick2_x_pos(7 downto 0) when port_2_sel = "0010" else
         x"ff";
-pot4 <= not paddle_4 when port_2_sel = "0100" else
+pd4 <= not paddle_4 when port_2_sel = "0100" else
         joystick2_y_pos(7 downto 0) when port_2_sel = "0010" else
         x"ff";
 
@@ -714,8 +721,8 @@ module_inst: entity work.sysctrl
   system_decomb       => decomb,
   system_vblank       => vblank_regen,
   system_vm           => p_color,
-  system_sc           => open,
-  system_video_std    => ntscMode,
+  system_sc           => system_sc,
+  system_video_std    => system_video_std,
   system_joyswap      => joyswap,
 
   int_out_n           => m0s(4),
@@ -762,6 +769,20 @@ sd_wr(4 downto 0) <= "00000";
 
 reset2600 <= system_reset(0) or not pll_locked or ioctl_download;
 
+-- swap joysticks and paddle
+joy_p1 <= joyB when joyswap = '1' else joyA;
+joy_p2 <= joyA when joyswap = '1' else joyB;
+pot1 <= (not pd3(7) & pd3(6 downto 0)) when joyswap = '1' else (not pd1(7) & pd1(6 downto 0));
+pot2 <= (not pd4(7) & pd4(6 downto 0)) when joyswap = '1' else (not pd2(7) & pd2(6 downto 0));
+pot3 <= (not pd1(7) & pd1(6 downto 0)) when joyswap = '1' else (not pd3(7) & pd3(6 downto 0));
+pot4 <= (not pd2(7) & pd2(6 downto 0)) when joyswap = '1' else (not pd4(7) & pd4(6 downto 0));
+
+-- invert paddle
+p1 <= not pot1 when paddle_inv = '1' else pot1;
+p2 <= not pot2 when paddle_inv = '1' else pot2;
+p3 <= not pot3 when paddle_inv = '1' else pot3;
+p4 <= not pot4 when paddle_inv = '1' else pot4;
+
 a2601_inst: entity work.A2601top
    port map(
 		reset     => reset2600,
@@ -778,39 +799,39 @@ a2601_inst: entity work.A2601top
 		O_VIDEO_R => video_r,
 		O_VIDEO_G => video_g,
 		O_VIDEO_B => video_b,
-		p1_l      => not joyA(1), 
-		p1_r      => not joyA(0), 
-		p1_u      => not joyA(3), 
-		p1_d      => not joyA(2), 
-		p1_f      => not joyA(4),  -- BTN_A
-		p1_f2     => not joyA(10), -- BTN_SELECT
+		p1_l      => not joy_p1(1), 
+		p1_r      => not joy_p1(0), 
+		p1_u      => not joy_p1(3), 
+		p1_d      => not joy_p1(2), 
+		p1_f      => not joy_p1(4),  -- BTN_A
+		p1_f2     => not joy_p1(7),  -- BTN_Y
 
-		p2_l      => not joyB(1),
-		p2_r      => not joyB(0),
-		p2_u      => not joyB(3),
-		p2_d      => not joyB(2), 
-		p2_f      => not joyB(4),  -- BTN_A
-		p2_f2     => not joyB(10), -- BTN_SELECT
+		p2_l      => not joy_p2(1),
+		p2_r      => not joy_p2(0),
+		p2_u      => not joy_p2(3),
+		p2_d      => not joy_p2(2), 
+		p2_f      => not joy_p2(4),  -- BTN_A
+		p2_f2     => not joy_p2(7),  -- BTN_Y
 
-		p_1       => not joyA(5), -- BTN_B
-		paddle_1  => not pot1(7) & pot1(6 downto 0),
+		p_1       => not joy_p1(5), -- BTN_B
+		paddle_1  => p1,
 
-		p_2       => not joyB(5), -- BTN_B
-		paddle_2  => not pot2(7) & pot2(6 downto 0),
+		p_2       => not joy_p2(5), -- BTN_B
+		paddle_2  => p2,
 
-		p_3       => not joyA(6),
-		paddle_3  => not pot3(7) & pot3(6 downto 0),
+		p_3       => not joy_p1(6), -- BTN_X
+		paddle_3  => p3,
 
-		p_4       => not joyB(6),
-		paddle_4  => not pot4(7) & pot4(6 downto 0),
+		p_4       => not joy_p2(6), -- BTN_X
+		paddle_4  => p4,
 
 		p_type    => "00",
 
-		p_start   => p_start,  -- BTN_Y
-		p_select  => p_select, -- BTN_L
+		p_start   => p_start,
+		p_select  => p_select,
 		p_color   => p_color,
 
-		sc        => scdetect, -- SuperChip enable
+		sc        => sc, -- SuperChip enable
 		force_bs  => force_bs, -- forced bank switch type
 		rom_a     => rom_a, 
 		rom_do    => rom_do, 
@@ -818,13 +839,13 @@ a2601_inst: entity work.A2601top
 
 		pause     => '0',
 
-		pal       => ntscMode,
+		pal       => pal,
 		p_dif     => not (p_dif2 & p_dif1),  -- 0 = B, 1 = A
 		decomb    => decomb
 	);
 
-p_start  <= '0' when (joyA(7) = '1' or joyB(7) = '1' or numpad(6) = '1') else '1';-- BTN_Y / F11
-p_select <= '0' when (joyA(8) = '1' or joyB(8) = '1' or numpad(7) = '1') else '1';-- BTN_L / PAGE UP
+p_start  <= '0' when (joyA(11) = '1' or joyB(11) = '1' or numpad(6) = '1') else '1';-- BTN_SELECT / F11
+p_select <= '0' when (joyA(10) = '1' or joyB(10) = '1' or numpad(7) = '1') else '1';-- BTN_START  / PAGE UP
 
 detect_inst: entity work.detect2600
 port map(
@@ -838,6 +859,13 @@ port map(
   force_bs(4) => open,
   sc        => scdetect
 );
+
+pal <= '1' when system_video_std(1 downto 0) = 2 else 
+       '0' when system_video_std(1 downto 0) = 1 else 
+       paldetect;
+sc  <= '1' when system_sc(1 downto 0) = 2 else 
+       '0' when system_sc(1 downto 0) = 1 else 
+       scdetect;
 
 process(clk)
 begin
