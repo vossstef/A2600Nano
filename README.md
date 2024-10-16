@@ -1,8 +1,8 @@
 # A2600Nano
 The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari2600_MiSTer) FPGA core of the [Atari 2600 VCS](https://en.wikipedia.org/wiki/Atari_2600) to the 
-[Tang Nano 20k](https://wiki.sipeed.com/nano20k) ([Gowin GW2AR](https://www.gowinsemi.com/en/product/detail/38/))<br> with enhancements from the A7800 core as a cartridge ROM type autodetect and the video stabilizer.<br>
+[Tang Nano 20k](https://wiki.sipeed.com/nano20k) ([Gowin GW2AR](https://www.gowinsemi.com/en/product/detail/38/)) with enhancements from the A7800 core such as cartridge type autodetect and the video stabilizer.<br>
 
-This is based on the [C64Nano](https://github.com/vossstef/tang_nano_20k_c64) and also relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K. Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
+This is based on the [C64Nano](https://github.com/vossstef/tang_nano_20k_c64) project and also relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K. Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
 
 Original A2600 core by [Retromaster](https://retromaster.wordpress.com/a2601/)  
 All HID, SDcard and µC firmware by [Till Harbaum](http://www.harbaum.org/till/mist)<br>
@@ -11,6 +11,8 @@ Features:
 * PAL 768x576p or NTSC 768x480p HDMI Video and Audio Output
 * Scanline length auto adjust
 * Cartridge type autodetect
+* NTSC / PAL region autodetct
+* Superchip autodetct
 * USB Keyboard via µC
 * [USB Joystick](https://en.wikipedia.org/wiki/Joystick) via µC
 * [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick via µC as paddle emulation<br>
@@ -21,7 +23,6 @@ Features:
 * Cartridge ROM loader [boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
 
 Planned features:
-* Joystick and Paddle swap
 * ROM mapper control override via file extension
 * Mapper updates
 * Mouse as paddle support
@@ -49,21 +50,23 @@ ROM can be loaded via OSD file selection.<br>
 F8 F6 FE E0 3F F4 P2 FA CV 2K UA E7 F0 32<br>
 
 ### four Button Joystick or Gamepad
-* Button ```Trigger A``` Trigger
+* Gamepad Button ```Trigger A (DS2 circle)``` Trigger
 
-* Button ```Trigger B``` paddle Trigger
+* Gamepad Button ```Trigger B (DS2 cross)``` Paddle Trigger and enable 
 
-* Button ```Trigger X``` Paddle 2nd Trigger
+* Gamepad Button ```Trigger X (DS2 triangle)``` Paddle 2nd Trigger and enable
 
-* Button ```Trigger Y```  as core function ```START```
+* Gamepad Button ```Trigger Y (DS2 square)``` revert Paddle mode to Joystick mode
 
-* Button ```Left Shoulder``` as core function ```SELECT```
+* Gamepad Button ```START``` as core function **START**<br>
+
+* Gamepad Button ```SELECT``` as core function **SELECT**<br>
 
 ### Paddle
 * DualShock 2 or USB Gamepad.<br>
 
-Core switches to paddle mode if paddle ```Trigger B``` is pressed.  <br>
-Can be reverted by pressing Gamepad Button ```SELECT``` or Keyboard ```PAGE UP```.
+Core switches to paddle mode if paddle ```Trigger B``` or ```Trigger X``` is pressed.  <br>
+Can be reverted by pressing Gamepad Button ```Trigger Y```.
 
 ### Keyboard
 * Key **F11** as core function ```START``` <br>
@@ -80,14 +83,15 @@ invoke by F12 keypress<br>
 * Cold Reset<br>
 * Audio Volume + / -<br>
 * Scanlines effect %<br>
-* PAL / NTSC Video mode<br>
+* Region switch Auto/NTSC/PAL<br>
 * HID device selection for Joystick Port<br>
 * Loader file selection<br>
 * Difficulty A, B Core switch
 * Black & White Core video switch
-* Joystick swap
+* Joystick port swap
 * Invert Paddle
-* De-comb on/off
+* De-comb
+* SuperChip Auto/off/on
 
 ## Gamecontrol support
 
