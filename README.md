@@ -119,15 +119,15 @@ or Keyboard Numpad. OSD: **Numpad**<br>
 or Mouse. OSD: **Mouse**<br>
 not supported yet
 
-or Dualshock2 Gamepad left stick as Paddle.<br>
-**B / X** Trigger<br>
-You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG button. Mode indicated by red light indicator.<br>Configure DIGITAL mode (press ANALOG button again) when using the **Joystick** mode again.<br>
+or Dualshock2 Gamepad left stick as Paddle. OSD: **DualShock2**<br>
+**cross / triangle** Trigger<br>
+You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG button.<br> Mode indicated by red light indicator.<br>Configure DIGITAL mode (press ANALOG button again) when using the **Joystick** mode again.<br>
 
 ## LED UI
 
 | LED | function        | TN20K | TP20K | TP25K | TM138K |TN9k|
 | --- |        -        | -     |-      | -     | -      |-|
-| 0   | crt  | x     |x      |  x    | x      |N/A|
+| 1   | crt  | x     |x      |  x    | x      |N/A|
 
 **Multicolor RGB LED**
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>
@@ -142,7 +142,7 @@ Alternatively use the command line build script **gw_sh.exe** build_tn20k.tcl<br
 ## HW circuit considerations
 **Pinmap TN20k Interfaces** <br>
  Sipeed M0S Dock, digital Joystick D9 and DualShock Gamepad connection.<br>
- ![wiring](\.assets/wiring_spi_irq.png)
+ ![wiring](\.assets/wiring_spi.png)
 
 **Pinmap D-SUB 9 Joystick Interface** <br>
 - Joystick interface is 3.3V tolerant. Joystick 5V supply pin has to be left floating !<br>
