@@ -204,7 +204,7 @@ signal paddle_2a       : std_logic_vector(7 downto 0);
 signal p_start         : std_logic;
 signal p_select        : std_logic;
 signal vblank_regen    : std_logic;
-signal force_bs        : std_logic_vector(3 downto 0) :="0000";
+signal force_bs        : std_logic_vector(4 downto 0);
 signal joystick0ax     : signed(7 downto 0);
 signal joystick0ay     : signed(7 downto 0);
 signal joystick1ax     : signed(7 downto 0);
@@ -855,8 +855,7 @@ port map(
   enable    => ioctl_download and load_crt,
   cart_size => img_size_crt,
   data      => dl_data,
-  force_bs(3 downto 0)  => force_bs,
-  force_bs(4) => open,
+  force_bs  => force_bs,
   sc        => scdetect
 );
 
