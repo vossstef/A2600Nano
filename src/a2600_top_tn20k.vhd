@@ -194,8 +194,6 @@ signal system_sc       : std_logic_vector(1 downto 0);
 signal sc              : std_logic;
 signal scdetect        : std_logic;
 signal decomb          : std_logic;
-signal p_1             : std_logic;
-signal p_2             : std_logic;
 signal p_dif1          : std_logic;
 signal p_dif2          : std_logic;
 signal p_color         : std_logic;
@@ -204,7 +202,7 @@ signal paddle_2a       : std_logic_vector(7 downto 0);
 signal p_start         : std_logic;
 signal p_select        : std_logic;
 signal vblank_regen    : std_logic;
-signal force_bs        : std_logic_vector(3 downto 0) :="0000";
+signal force_bs        : std_logic_vector(4 downto 0);
 signal joystick0ax     : signed(7 downto 0);
 signal joystick0ay     : signed(7 downto 0);
 signal joystick1ax     : signed(7 downto 0);
@@ -220,6 +218,9 @@ signal img_size_crt    : std_logic_vector(31 downto 0);
 signal paddle_inv      : std_logic;
 signal joyswap         : std_logic;
 signal paldetect       : std_logic;
+signal reset_detect    : std_logic;
+signal cart_download_d : std_logic;
+signal cart_download   : std_logic;
 
 component CLKDIV
     generic (
@@ -563,14 +564,14 @@ leds(0) <= '0';
 -- BTN_START      11
 joyDS2     <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
               key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
-joyDigital <= not(x"FF" & "111" & io(4) & io(0) & io(1) & io(2) & io(3));
+joyDigital   <= not(x"FF" & "111" & io(0) & io(1) & io(2) & io(3) & io(4));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
 joyNumpad  <= x"00" & "000" & numpad(4) & numpad(0) & numpad(1) & numpad(2) & numpad(3);
 joyMouse   <= x"0000";
 
 -- send external DB9 joystick port to µC
-db9_joy <= not(io(5) & io(4), io(0), io(1), io(2), io(3));
+db9_joy <= not('1' & io(0) & io(1) & io(2) & io(3) & io(4));
 
 process(clk)
 begin
@@ -847,16 +848,27 @@ a2601_inst: entity work.A2601top
 p_start  <= '0' when (joyA(11) = '1' or joyB(11) = '1' or numpad(6) = '1') else '1';-- BTN_SELECT / F11
 p_select <= '0' when (joyA(10) = '1' or joyB(10) = '1' or numpad(7) = '1') else '1';-- BTN_START  / PAGE UP
 
+cart_download <= ioctl_download and load_crt;
+process(clk)
+begin
+  if rising_edge(clk) then
+      reset_detect <= '0';
+      cart_download_d <= cart_download;
+      if (not cart_download_d and cart_download) then
+        reset_detect <= '1';
+      end if;
+  end if;
+end process;
+
 detect_inst: entity work.detect2600
 port map(
   clk       => clk,
-  reset     => reset2600,
+  reset     => reset_detect,
   addr      => dl_addr(15 downto 0),
-  enable    => ioctl_download and load_crt,
+  enable    => ioctl_wr and cart_download,
   cart_size => img_size_crt,
   data      => dl_data,
-  force_bs(3 downto 0)  => force_bs,
-  force_bs(4) => open,
+  force_bs  => force_bs,
   sc        => scdetect
 );
 

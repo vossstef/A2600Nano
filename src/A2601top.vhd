@@ -82,7 +82,7 @@ entity A2601top is
 		p_color   : in std_logic;
 
 		sc        : in std_logic; --SuperChip enable
-		force_bs  : in std_logic_vector(3 downto 0); -- forced bank switch type
+		force_bs  : in std_logic_vector(4 downto 0); -- forced bank switch type
 		rom_a     : out std_logic_vector(15 downto 0);
 		rom_do    : in std_logic_vector(7 downto 0);
 		rom_size  : in std_logic_vector(16 downto 0);
@@ -127,7 +127,7 @@ signal sc_d_out: std_logic_vector(7 downto 0);
 signal sc_a: std_logic_vector(10 downto 0);
 signal clr_a: std_logic_vector(10 downto 0);
 
-subtype bss_type is std_logic_vector(3 downto 0);
+subtype bss_type is std_logic_vector(4 downto 0);
 
 signal bank: std_logic_vector(3 downto 0) := "0000";
 signal banks32: std_logic_vector(4 downto 0) := "00000";
@@ -138,7 +138,7 @@ signal e0_bank0: std_logic_vector(2 downto 0) := "000";
 signal e0_bank1: std_logic_vector(2 downto 0) := "000";
 signal e0_bank2: std_logic_vector(2 downto 0) := "000";
 
-signal FE_latch: std_logic;
+signal FE_latch: std_logic := '0';
 
 signal e7_bank0: std_logic_vector(2 downto 0);   -- 1000-17ff
 signal e7_rambank: std_logic_vector(1 downto 0); -- 1800-19ff
@@ -146,21 +146,29 @@ signal e7_rambank: std_logic_vector(1 downto 0); -- 1800-19ff
 signal cpu_a: std_logic_vector(12 downto 0);
 signal cpu_d: std_logic_vector(7 downto 0);
 
-constant BANK00: bss_type := "0000";
-constant BANKF8: bss_type := "0001";
-constant BANKF6: bss_type := "0010";
-constant BANKFE: bss_type := "0011";
-constant BANKE0: bss_type := "0100";
-constant BANK3F: bss_type := "0101";
-constant BANKF4: bss_type := "0110";
-constant BANKP2: bss_type := "0111";
-constant BANKFA: bss_type := "1000";
-constant BANKCV: bss_type := "1001";
-constant BANK2K: bss_type := "1010";
-constant BANKUA: bss_type := "1011";
-constant BANKE7: bss_type := "1100";
-constant BANKF0: bss_type := "1101";
-constant BANK32: bss_type := "1110";
+constant BANK00:  bss_type := "00000";
+constant BANKF8:  bss_type := "00001";
+constant BANKF6:  bss_type := "00010";
+constant BANKFE:  bss_type := "00011";
+constant BANKE0:  bss_type := "00100";
+constant BANK3F:  bss_type := "00101";
+constant BANKF4:  bss_type := "00110";
+constant BANKP2:  bss_type := "00111";
+constant BANKFA:  bss_type := "01000"; -- CBS RAM Plus 12k
+constant BANKCV:  bss_type := "01001";
+constant BANK2K:  bss_type := "01010";
+constant BANKUA:  bss_type := "01011";
+constant BANKE7:  bss_type := "01100"; -- M-network 16k
+constant BANKF0:  bss_type := "01101"; -- Megaboy 64K
+constant BANK32:  bss_type := "01110"; -- Multicart
+constant BANKAR:  bss_type := "01111"; -- Aracdia Super charger
+constant BANK3E:  bss_type := "10000"; -- 512K ROM 256k RAM
+constant BANKSB:  bss_type := "10001"; -- Super Banking
+constant BANKWD:  bss_type := "10010";
+constant BANKEF:  bss_type := "10011"; -- 16k
+constant BANKDPCP:bss_type := "10100"; -- Harmony DPC+
+constant BANKCTY: bss_type := "10101";
+constant BANKCDF: bss_type := "10110";
 
 signal bss:  bss_type := BANK00; 	--bank switching method
  
@@ -516,7 +524,8 @@ begin
 								end if;
 							end if;
 						end if;
-					when BANKFE => -- BANK FE fixed by Victor Trucco - 24/05/2018
+					when BANKFE => -- BANK FE fixed by Victor Trucco - 24/05/2018  
+						-- Decathlon, Robot Tank, Thwocke
 						-- If was latched, check the 5th bit of the data bus for the bank-switch
 						if FE_latch = '1' then
 							bank <= "000"& not cpu_d(5);
@@ -572,30 +581,30 @@ begin
 end process;
 
 -- derive banking scheme from cartridge size
-process(rom_size, force_bs)
-begin
-	if(force_bs /= "0000") then
+--process(rom_size, force_bs)
+--begin
+--	if(force_bs /= "00000") then
 		bss <= force_bs;
-	elsif(rom_size  = '0'&x"0000") then
-		bss <= BANK00;
-	elsif(rom_size <= '0'&x"0800") then -- 2k and less
-		bss <= BANK2K;
-	elsif(rom_size <= '0'&x"1000") then -- 4k and less
-		bss <= BANK00;
-	elsif(rom_size <= '0'&x"2000") then -- 8k and less
-		bss <= BANKF8;
-	elsif(rom_size <= '0'&x"3000") then -- 12k and less
-		bss <= BANKFA;
-	elsif(rom_size <= '0'&x"4000") then -- 16k and less
-		bss <= BANKF6;
-	elsif(rom_size <= '0'&x"8000") then -- 32k and less
-		bss <= BANKF4;
-	elsif(rom_size <= '1'&x"0000") then -- 64k and less
-		bss <= BANK32;
-	else
-		bss <= BANK00;
-	end if;
-end process;
+--	elsif(rom_size  = '0'&x"0000") then
+--		bss <= BANK00;
+--	elsif(rom_size <= '0'&x"0800") then -- 2k and less
+--		bss <= BANK2K;
+--	elsif(rom_size <= '0'&x"1000") then -- 4k and less
+--		bss <= BANK00;
+--	elsif(rom_size <= '0'&x"2000") then -- 8k and less
+--		bss <= BANKF8;
+--	elsif(rom_size <= '0'&x"3000") then -- 12k and less
+--		bss <= BANKFA;
+--	elsif(rom_size <= '0'&x"4000") then -- 16k and less
+--		bss <= BANKF6;
+--	elsif(rom_size <= '0'&x"8000") then -- 32k and less
+--		bss <= BANKF4;
+--	elsif(rom_size <= '1'&x"0000") then -- 64k and less
+--		bss <= BANK32;
+--	else
+--		bss <= BANK00;
+--	end if;
+--end process;
 
 process (clk)
 begin
