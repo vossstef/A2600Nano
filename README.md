@@ -24,7 +24,6 @@ Features:
 
 Planned features:
 * ROM mapper control override via file extension
-* Mapper updates
 * Mouse as paddle support
 
 > [!IMPORTANT]  
@@ -125,9 +124,14 @@ You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG
 
 ## LED UI
 
-| LED | function        | TN20K | TP20K | TP25K | TM138K |TN9k|
-| --- |        -        | -     |-      | -     | -      |-|
-| 1   | crt  | x     |x      |  x    | x      |N/A|
+| LED | function         | TN20K | TP20K | TP25K | TM138K |TN9k|
+| --- |        -         | -     |-      | -     | -      | -  |
+| 0   |Cartridge selected| x     |-      |  -    | -      | -  |
+| 1   | reserved         | x     |-      |  -    | -      | -  |
+| 2   | Game unsupported | x     |-      |  -    | -      | -  |
+| 3   | Game unsupported | x     |-      |  -    | -      | -  |
+| 4   | Game unsupported | x     |-      |  -    | -      | -  |
+| 5   | Game unsupported | x     |-      |  -    | -      | -  |
 
 **Multicolor RGB LED**
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>

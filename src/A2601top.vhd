@@ -91,7 +91,8 @@ entity A2601top is
 
 		pal       : in std_logic;
 		p_dif     : in std_logic_vector(1 downto 0);
-		decomb    : in std_logic
+		decomb    : in std_logic;
+		unsupported : out std_logic
 	);
 end A2601top;
 
@@ -402,6 +403,7 @@ begin
 			old_rst <= rst;
 			clr_a <= clr_a + 1;
 			if (rst = '1') then
+				unsupported <= '0';
 				bank <= "0000";
 				last_1FF0 <= '0';
 				e0_bank0 <= "000";
@@ -572,6 +574,22 @@ begin
 						else
 							last_1FF0 <= '0';
 						end if;
+					when BANKAR =>
+						unsupported <= '1';
+					when BANK3E =>
+						unsupported <= '1';
+					when BANKSB =>
+						unsupported <= '1';
+					when BANKWD =>
+						unsupported <= '1';
+					when BANKEF =>
+						unsupported <= '1';
+					when BANKDPCP =>
+						unsupported <= '1';
+					when BANKCTY =>
+						unsupported <= '1';
+					when BANKCDF =>
+						unsupported <= '1';
 					when others =>
 						null;
 				end case;
@@ -581,30 +599,30 @@ begin
 end process;
 
 -- derive banking scheme from cartridge size
---process(rom_size, force_bs)
---begin
---	if(force_bs /= "00000") then
+process(rom_size, force_bs)
+begin
+	if(force_bs /= "00000") then
 		bss <= force_bs;
---	elsif(rom_size  = '0'&x"0000") then
---		bss <= BANK00;
---	elsif(rom_size <= '0'&x"0800") then -- 2k and less
---		bss <= BANK2K;
---	elsif(rom_size <= '0'&x"1000") then -- 4k and less
---		bss <= BANK00;
---	elsif(rom_size <= '0'&x"2000") then -- 8k and less
---		bss <= BANKF8;
---	elsif(rom_size <= '0'&x"3000") then -- 12k and less
---		bss <= BANKFA;
---	elsif(rom_size <= '0'&x"4000") then -- 16k and less
---		bss <= BANKF6;
---	elsif(rom_size <= '0'&x"8000") then -- 32k and less
---		bss <= BANKF4;
---	elsif(rom_size <= '1'&x"0000") then -- 64k and less
---		bss <= BANK32;
---	else
---		bss <= BANK00;
---	end if;
---end process;
+	elsif(rom_size  = '0'&x"0000") then
+		bss <= BANK00;
+	elsif(rom_size <= '0'&x"0800") then -- 2k and less
+		bss <= BANK2K;
+	elsif(rom_size <= '0'&x"1000") then -- 4k and less
+		bss <= BANK00;
+	elsif(rom_size <= '0'&x"2000") then -- 8k and less
+		bss <= BANKF8;
+	elsif(rom_size <= '0'&x"3000") then -- 12k and less
+		bss <= BANKFA;
+	elsif(rom_size <= '0'&x"4000") then -- 16k and less
+		bss <= BANKF6;
+	elsif(rom_size <= '0'&x"8000") then -- 32k and less
+		bss <= BANKF4;
+	elsif(rom_size <= '1'&x"0000") then -- 64k and less
+		bss <= BANK32;
+	else
+		bss <= BANK00;
+	end if;
+end process;
 
 process (clk)
 begin
