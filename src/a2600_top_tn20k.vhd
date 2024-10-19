@@ -515,7 +515,7 @@ port map(
 
 leds_n <=  not leds;
 leds(1) <= '0';
-leds(5 downto 2) <= "1111" when bs_unsupported = '1' else "0000"; -- indicate unsupported mapper
+leds(5 downto 2) <= "1111" when force_bs > 14 else "0000"; -- indicate unsupported mapper
 
 -- 9 pin d-sub joystick pinout:
 -- pin 1: up
@@ -844,8 +844,7 @@ a2601_inst: entity work.A2601top
 
 		pal       => pal,
 		p_dif     => not (p_dif2 & p_dif1),  -- 0 = B, 1 = A
-		decomb    => decomb,
-		unsupported => bs_unsupported
+		decomb    => decomb
 	);
 
 p_start  <= '0' when (joyA(11) = '1' or joyB(11) = '1' or numpad(6) = '1') else '1';-- BTN_SELECT / F11
@@ -886,7 +885,7 @@ process(clk)
 begin
   if rising_edge(clk) then
     dl_wr <= '0';
-    if ioctl_download and load_crt then
+    if cart_download then
       if ioctl_wr = '1' then
           dl_addr <= ioctl_addr(15 downto 0);
           dl_data <= ioctl_data;

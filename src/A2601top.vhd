@@ -91,8 +91,7 @@ entity A2601top is
 
 		pal       : in std_logic;
 		p_dif     : in std_logic_vector(1 downto 0);
-		decomb    : in std_logic;
-		unsupported : out std_logic
+		decomb    : in std_logic
 	);
 end A2601top;
 
@@ -403,7 +402,6 @@ begin
 			old_rst <= rst;
 			clr_a <= clr_a + 1;
 			if (rst = '1') then
-				unsupported <= '0';
 				bank <= "0000";
 				last_1FF0 <= '0';
 				e0_bank0 <= "000";
@@ -575,21 +573,13 @@ begin
 							last_1FF0 <= '0';
 						end if;
 					when BANKAR =>
-						unsupported <= '1';
 					when BANK3E =>
-						unsupported <= '1';
 					when BANKSB =>
-						unsupported <= '1';
 					when BANKWD =>
-						unsupported <= '1';
 					when BANKEF =>
-						unsupported <= '1';
 					when BANKDPCP =>
-						unsupported <= '1';
 					when BANKCTY =>
-						unsupported <= '1';
 					when BANKCDF =>
-						unsupported <= '1';
 					when others =>
 						null;
 				end case;
