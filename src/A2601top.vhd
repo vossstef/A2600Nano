@@ -572,6 +572,14 @@ begin
 						else
 							last_1FF0 <= '0';
 						end if;
+					when BANKAR =>
+					when BANK3E =>
+					when BANKSB =>
+					when BANKWD =>
+					when BANKEF =>
+					when BANKDPCP =>
+					when BANKCTY =>
+					when BANKCDF =>
 					when others =>
 						null;
 				end case;
@@ -581,30 +589,30 @@ begin
 end process;
 
 -- derive banking scheme from cartridge size
---process(rom_size, force_bs)
---begin
---	if(force_bs /= "00000") then
+process(rom_size, force_bs)
+begin
+	if(force_bs /= "00000") then
 		bss <= force_bs;
---	elsif(rom_size  = '0'&x"0000") then
---		bss <= BANK00;
---	elsif(rom_size <= '0'&x"0800") then -- 2k and less
---		bss <= BANK2K;
---	elsif(rom_size <= '0'&x"1000") then -- 4k and less
---		bss <= BANK00;
---	elsif(rom_size <= '0'&x"2000") then -- 8k and less
---		bss <= BANKF8;
---	elsif(rom_size <= '0'&x"3000") then -- 12k and less
---		bss <= BANKFA;
---	elsif(rom_size <= '0'&x"4000") then -- 16k and less
---		bss <= BANKF6;
---	elsif(rom_size <= '0'&x"8000") then -- 32k and less
---		bss <= BANKF4;
---	elsif(rom_size <= '1'&x"0000") then -- 64k and less
---		bss <= BANK32;
---	else
---		bss <= BANK00;
---	end if;
---end process;
+	elsif(rom_size  = '0'&x"0000") then
+		bss <= BANK00;
+	elsif(rom_size <= '0'&x"0800") then -- 2k and less
+		bss <= BANK2K;
+	elsif(rom_size <= '0'&x"1000") then -- 4k and less
+		bss <= BANK00;
+	elsif(rom_size <= '0'&x"2000") then -- 8k and less
+		bss <= BANKF8;
+	elsif(rom_size <= '0'&x"3000") then -- 12k and less
+		bss <= BANKFA;
+	elsif(rom_size <= '0'&x"4000") then -- 16k and less
+		bss <= BANKF6;
+	elsif(rom_size <= '0'&x"8000") then -- 32k and less
+		bss <= BANKF4;
+	elsif(rom_size <= '1'&x"0000") then -- 64k and less
+		bss <= BANK32;
+	else
+		bss <= BANK00;
+	end if;
+end process;
 
 process (clk)
 begin

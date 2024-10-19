@@ -1,5 +1,5 @@
 -------------------------------------------------------------------------
---  A2600 Top level for Tang Nano
+--  A2600 Top level for Tang Nano 20k
 --  2024 Stefan Voss
 --  based on the work of many others
 --
@@ -221,6 +221,7 @@ signal paldetect       : std_logic;
 signal reset_detect    : std_logic;
 signal cart_download_d : std_logic;
 signal cart_download   : std_logic;
+signal bs_unsupported  : std_logic;
 
 component CLKDIV
     generic (
@@ -513,7 +514,8 @@ port map(
 );
 
 leds_n <=  not leds;
-leds(0) <= '0';
+leds(1) <= '0';
+leds(5 downto 2) <= "1111" when force_bs > 14 else "0000"; -- indicate unsupported mapper
 
 -- 9 pin d-sub joystick pinout:
 -- pin 1: up
@@ -757,7 +759,7 @@ sd_wr(4 downto 0) <= "00000";
     loader_busy       => loader_busy,
     load_crt          => load_crt,
     sd_img_size       => sd_img_size,
-    leds              => leds(5 downto 1),
+    leds(0)           => leds(0),
     img_select        => img_select,
     img_size_crt      => img_size_crt,
     
@@ -768,7 +770,7 @@ sd_wr(4 downto 0) <= "00000";
     ioctl_wait        => ioctl_wait
   );
 
-reset2600 <= system_reset(0) or not pll_locked or ioctl_download;
+reset2600 <= system_reset(0) or not pll_locked or cart_download;
 
 -- swap joysticks and paddle
 joy_p1 <= joyB when joyswap = '1' else joyA;
@@ -863,7 +865,7 @@ end process;
 detect_inst: entity work.detect2600
 port map(
   clk       => clk,
-  reset     => reset_detect,
+  reset     => reset_detect or system_reset(0),
   addr      => dl_addr(15 downto 0),
   enable    => ioctl_wr and cart_download,
   cart_size => img_size_crt,
@@ -883,7 +885,7 @@ process(clk)
 begin
   if rising_edge(clk) then
     dl_wr <= '0';
-    if ioctl_download and load_crt then
+    if cart_download then
       if ioctl_wr = '1' then
           dl_addr <= ioctl_addr(15 downto 0);
           dl_data <= ioctl_data;

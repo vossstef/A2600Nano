@@ -53,7 +53,7 @@ always @(posedge clk) begin
                 if(vcnt == 11'd524) begin
                     pal <= 1'b0; // NTSC
                 end
-                if(vcnt == 11'd312 ) begin
+                if(vcnt == 11'd624 ) begin
                     pal <= 1'b1; // PAL
                 end
                 changed <= 1'b1;

@@ -24,7 +24,6 @@ Features:
 
 Planned features:
 * ROM mapper control override via file extension
-* Mapper updates
 * Mouse as paddle support
 
 > [!IMPORTANT]  
@@ -46,8 +45,12 @@ The installation of A2600Nano on the Tang Nano 20k board can be done using a Lin
 ROM can be loaded via OSD file selection.<br>
 
 ### Supported mappers
-* Auto detected<br>
-F8 F6 FE E0 3F F4 P2 FA CV 2K UA E7 F0 32<br>
+* Auto detected  (00 F8 F6 FE E0 3F F4 P2 FA CV 2K UA E7 F0 32)<br>
+  
+LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<br>
+
+### single Button Joystick
+* Button ```Trigger```
 
 ### four Button Joystick or Gamepad
 * Gamepad Button ```Trigger A (DS2 circle)``` Trigger
@@ -125,9 +128,16 @@ You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG
 
 ## LED UI
 
-| LED | function        | TN20K | TP20K | TP25K | TM138K |TN9k|
-| --- |        -        | -     |-      | -     | -      |-|
-| 1   | crt  | x     |x      |  x    | x      |N/A|
+| LED | function         | TN20K | TP20K | TP25K | TM138K |TN9k|
+| --- |        -         | -     |-      | -     | -      | -  |
+| 0   |Cartridge selected| x     |-      |  -    | -      | -  |
+| 1   | reserved         | x     |-      |  -    | -      | -  |
+| 2   | Game unsupported | x     |-      |  -    | -      | -  |
+| 3   | Game unsupported | x     |-      |  -    | -      | -  |
+| 4   | Game unsupported | x     |-      |  -    | -      | -  |
+| 5   | Game unsupported | x     |-      |  -    | -      | -  |
+
+LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<br>
 
 **Multicolor RGB LED**
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>
