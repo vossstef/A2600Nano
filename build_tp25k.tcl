@@ -1,6 +1,5 @@
-set_device GW2AR-LV18QN88C8/I7 -name GW2AR-18C
+set_device GW5A-LV25MG121NC1/I0 -name GW5A-25A
 
-add_file src/dualshock2.v
 add_file src/gowin_dpb/gowin_dpb_track_buffer_b.v
 add_file src/gowin_dpb/sector_dpram.v
 add_file src/hdmi/audio_clock_regeneration_packet.sv
@@ -23,7 +22,6 @@ add_file src/misc/sdcmd_ctrl.v
 add_file src/misc/sysctrl.v
 add_file src/misc/video.v
 add_file src/misc/video_analyzer.v
-add_file src/misc/ws2812.v
 add_file src/t65/T65.vhd
 add_file src/t65/T65_ALU.vhd
 add_file src/t65/T65_MCode.vhd
@@ -38,20 +36,25 @@ add_file src/TIA/NTSCLookups.vhd
 add_file src/TIA/TIA.vhd
 add_file src/TIA/VGAColorTable.vhd
 add_file src/TIA/audio_argh2600.vhd
-add_file src/gowin_sdpb/gowin_sdpb.vhd
-add_file src/a2600_top_tn20k.vhd
-add_file src/a2600_top_tn20k.cst
-add_file src/a2600_top_tn20k.sdc
+add_file src/gowin_sdpb/gowin_sdpb_gw5a.vhd
+add_file src/a2600_top_tp25k.vhd
+add_file src/a2600_top_tp25k.cst
+add_file src/a2600_top_tp25k.sdc
 add_file src/video_stabilize.sv
+add_file src/gowin_pll/gowin_pll_ntsc.vhd
 add_file src/detect2600.sv
 
 set_option -synthesis_tool gowinsynthesis
-set_option -output_base_name a2600nano_tn20k
+set_option -output_base_name a2600nano_tp25k
 set_option -verilog_std sysv2017
 set_option -vhdl_std vhd2008
-set_option -top_module A2600_top
+set_option -top_module A2600_top_tp25k
 set_option -use_mspi_as_gpio 1
 set_option -use_sspi_as_gpio 1
+set_option -use_done_as_gpio 1
+set_option -use_cpu_as_gpio 1
+set_option -use_i2c_as_gpio 1
+set_option -use_ready_as_gpio 1
 set_option -print_all_synthesis_warning 1
 set_option -rw_check_on_ram 0
 set_option -user_code 00000001

@@ -1,0 +1,98 @@
+// tang onboard bl616 µc uart
+//IO_LOC "uart_rx" B3;
+//IO_LOC "uart_tx" C3;
+//IO_PORT "uart_rx" IO_TYPE=LVCMOS33;
+//IO_PORT "uart_tx" IO_TYPE=LVCMOS33;
+
+// HDMI (USB-A side PMOD)
+IO_LOC "tmds_clk_p" H5,J5;
+IO_PORT "tmds_clk_p" PULL_MODE=NONE DRIVE=8 IO_TYPE=LVCMOS33D;
+IO_LOC "tmds_d_p[0]" H8,H7;
+IO_PORT "tmds_d_p[0]" PULL_MODE=NONE DRIVE=8 IO_TYPE=LVCMOS33D;
+IO_LOC "tmds_d_p[1]" G7,G8;
+IO_PORT "tmds_d_p[1]" PULL_MODE=NONE DRIVE=8 IO_TYPE=LVCMOS33D;
+IO_LOC "tmds_d_p[2]" F5,G5;
+IO_PORT "tmds_d_p[2]" PULL_MODE=NONE DRIVE=8 IO_TYPE=LVCMOS33D;
+
+// 2 LEDs for debug
+IO_LOC "leds_n[1]" E8;    // Ready
+IO_PORT "leds_n[1]" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+IO_LOC "leds_n[0]" D7;    // Done
+IO_PORT "leds_n[0]" IO_TYPE=LVCMOS33 PULL_MODE=UP; 
+
+// NOR Flash W25Q64 (MSPI pins)
+//IO_LOC "mspi_cs" E6;
+//IO_PORT "mspi_cs" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "mspi_wp" D5;
+//IO_PORT "mspi_wp" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "mspi_hold" E4;
+//IO_PORT "mspi_hold" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "mspi_do" E5;
+//IO_PORT "mspi_do" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "mspi_di" D6;
+//IO_PORT "mspi_di" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "mspi_clk" E7;
+//IO_PORT "mspi_clk" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+
+// M0S PMOD
+IO_LOC "m0s[0]"  A10;
+IO_PORT "m0s[0]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "m0s[1]"  A11;
+IO_PORT "m0s[1]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "m0s[2]" E10;
+IO_PORT "m0s[2]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "m0s[3]" E11;
+IO_PORT "m0s[3]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "m0s[4]" L11;
+IO_PORT "m0s[4]" PULL_MODE=UP IO_TYPE=LVCMOS33;
+//IO_LOC "m0s[5]" K11; // spare
+//IO_PORT "m0s[5]" PULL_MODE=UP IO_TYPE=LVCMOS33;
+//IO_LOC "io[6]" K5;  // ext UART hw pin RX input
+//IO_PORT "io[6]" PULL_MODE=UP IO_TYPE=LVCMOS33;
+//IO_LOC "io[7]" L5;  // ext UART hw pin TX output
+//IO_PORT "io[7]" PULL_MODE=UP IO_TYPE=LVCMOS33;
+
+// generic IO pins
+
+IO_LOC "reset" H11;       
+IO_PORT "reset" IO_TYPE=LVCMOS33 PULL_MODE=DOWN DRIVE=OFF BANK_VCCIO=3.3;
+IO_LOC "user" H10;       
+IO_PORT "user" IO_TYPE=LVCMOS33 PULL_MODE=DOWN DRIVE=OFF BANK_VCCIO=3.3;
+
+IO_LOC "clk_50mhz" E2;        // 50Mhz
+IO_PORT "clk_50mhz" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=OFF BANK_VCCIO=3.3;
+
+// SDCard sipeed PMOD TFCARD v2 (newer)
+IO_LOC "sd_clk" C11;
+IO_PORT "sd_clk" PULL_MODE=NONE IO_TYPE=LVCMOS33; 
+IO_LOC "sd_cmd" D11;        // MOSI
+IO_PORT "sd_cmd" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "sd_dat[0]" B11;       // MISO or SD card DO, needs pull-up
+IO_PORT "sd_dat[0]" PULL_MODE=UP IO_TYPE=LVCMOS33;
+IO_LOC "sd_dat[1]" G10;       // 1
+IO_PORT "sd_dat[1]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "sd_dat[2]" D10;       // 1
+IO_PORT "sd_dat[2]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+IO_LOC "sd_dat[3]" G11;       // 1
+IO_PORT "sd_dat[3]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+
+// SDCard Sipeed PMOD TFCARD v1  (old outdated version)
+// not working !
+//
+//IO_LOC "sd_clk" D10;
+//IO_PORT "sd_clk" PULL_MODE=NONE IO_TYPE=LVCMOS33; 
+//IO_LOC "sd_cmd" D11;          // MOSI
+//IO_PORT "sd_cmd" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "sd_dat[0]" B11;       // MISO or SD card DO, needs pull-up
+//IO_PORT "sd_dat[0]" PULL_MODE=UP IO_TYPE=LVCMOS33;
+//IO_LOC "sd_dat[1]" C11;
+//IO_PORT "sd_dat[1]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "sd_dat[2]" G11;
+//IO_PORT "sd_dat[2]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+//IO_LOC "sd_dat[3]" G10;
+//IO_PORT "sd_dat[3]" PULL_MODE=NONE IO_TYPE=LVCMOS33;
+
+// Mister SDRAM v3.0 connected through 40-pin port
+
+IO_LOC "O_sdram_cs_n" K9;
+IO_PORT "O_sdram_cs_n" IO_TYPE=LVCMOS33 PULL_MODE=UP;
