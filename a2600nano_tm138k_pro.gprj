@@ -41,7 +41,7 @@
         <File path="src/TIA/TIA.vhd" type="file.vhdl" enable="1"/>
         <File path="src/TIA/VGAColorTable.vhd" type="file.vhdl" enable="1"/>
         <File path="src/TIA/audio_argh2600.vhd" type="file.vhdl" enable="1"/>
-        <File path="src/a2600_top_tm138k_pro .vhd" type="file.vhdl" enable="1"/>
+        <File path="src/a2600_top_tm138k_pro.vhd" type="file.vhdl" enable="1"/>
         <File path="src/gowin_pll/gowin_pll_ntsc_138k_pro.vhd" type="file.vhdl" enable="1"/>
         <File path="src/gowin_sdpb/gowin_sdpb_gw5a.vhd" type="file.vhdl" enable="1"/>
         <File path="src/t65/T65.vhd" type="file.vhdl" enable="1"/>

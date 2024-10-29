@@ -62,9 +62,9 @@ IO_PORT "joystick_clk" PULL_MODE=UP IO_TYPE=LVCMOS33;
 IO_LOC "joystick_mosi" B20;
 IO_PORT "joystick_mosi" PULL_MODE=UP IO_TYPE=LVCMOS33;
 IO_LOC "joystick_miso" B19;
-IO_PORT "joystick_miso" PULL_MODE=UP IO_TYPE=LVCMOS33; // "midi_out"
+IO_PORT "joystick_miso" PULL_MODE=UP IO_TYPE=LVCMOS33; 
 IO_LOC "joystick_cs"  C21;
-IO_PORT "joystick_cs" PULL_MODE=UP IO_TYPE=LVCMOS33;   // "midi_in"
+IO_PORT "joystick_cs" PULL_MODE=UP IO_TYPE=LVCMOS33; 
 
 IO_LOC "clk_50mhz" P16;        // 50Mhz
 IO_PORT "clk_50mhz" IO_TYPE=LVCMOS33 PULL_MODE=NONE DRIVE=OFF BANK_VCCIO=3.3;

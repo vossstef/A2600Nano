@@ -22,6 +22,10 @@ implementations like the MiSTeryNano.
 The M0S required to control the A2600Nano is to be mounted in the
 middle PMOD with the help of the [M0S PMOD adapter](board/m0s_pmod).
 
+Plug the optional Dualshock DS2x2 Interface into the left PMOD slot.
+[PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
+There is presently only one of the two DS sockets taken into use.
+
 The whole setup will look like this:
 
 ![MiSTeryNano on TM138K](./.assets/m0s_pmod_tm138k.jpg)
