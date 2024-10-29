@@ -44,7 +44,7 @@ end;
 
 architecture Behavioral_top of A2600_top is
 
-signal clk          : std_logic;
+signal clk            : std_logic;
 signal clk_cpu        : std_logic;
 signal clk_14         : std_logic;
 signal pll_locked     : std_logic;
@@ -52,7 +52,9 @@ signal clk_pixel_x5   : std_logic;
 attribute syn_keep : integer;
 attribute syn_keep of clk_cpu      : signal is 1;
 attribute syn_keep of clk          : signal is 1;
+attribute syn_keep of clk_14       : signal is 1;
 attribute syn_keep of clk_pixel_x5 : signal is 1;
+attribute syn_keep of m0s          : signal is 1;
 
   -- keyboard
 signal keyboard_matrix_out : std_logic_vector(7 downto 0);
@@ -566,10 +568,10 @@ leds(5 downto 2) <= "1111" when force_bs > 14 else "0000"; -- indicate unsupport
 -- BTN_START      11
 joyDS2     <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
               key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
-joyDigital   <= not(x"FF" & "111" & io(0) & io(1) & io(2) & io(3) & io(4));
+joyDigital   <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
-joyNumpad  <= x"00" & "000" & numpad(4) & numpad(0) & numpad(1) & numpad(2) & numpad(3);
+joyNumpad  <= x"00" & "000" & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
 joyMouse   <= x"0000";
 
 -- send external DB9 joystick port to µC

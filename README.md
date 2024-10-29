@@ -1,8 +1,14 @@
 # A2600Nano
-The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari2600_MiSTer) FPGA core of the [Atari 2600 VCS](https://en.wikipedia.org/wiki/Atari_2600) to the 
-[Tang Nano 20k](https://wiki.sipeed.com/nano20k) ([Gowin GW2AR](https://www.gowinsemi.com/en/product/detail/38/)) with enhancements from the A7800 core such as cartridge type autodetect and the video stabilizer.<br>
+The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari2600_MiSTer) FPGA core components of the [Atari 2600 VCS](https://en.wikipedia.org/wiki/Atari_2600) with enhancements from the A7800 core such as cartridge type autodetect and the video stabilizer for the:<br>
 
-This is based on the [C64Nano](https://github.com/vossstef/tang_nano_20k_c64) project and also relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K. Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
+| Board      | FPGA       | support |Note|
+| ---        |        -   | -     |-|
+| [Tang Nano 20k](https://wiki.sipeed.com/nano20k)     | [GW2AR](https://www.gowinsemi.com/en/product/detail/38/)  | X |- |
+| [Tang Primer 25K](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html) | [GW5A-25](https://www.gowinsemi.com/en/product/detail/60/)  | X |no Dualshock 2, no Retro DB9 Joystick |
+| [Tang Mega 60k NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/)| planned |- |
+| [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)|[GW5AST-138](https://www.gowinsemi.com/en/product/detail/60/) | X |- |
+
+This project relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K. Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
 
 Original A2600 core by [Retromaster](https://retromaster.wordpress.com/a2601/)  
 All HID, SDcard and µC firmware by [Till Harbaum](http://www.harbaum.org/till/mist)<br>
@@ -35,6 +41,13 @@ Planned features:
 
 HID interfaces aligned in pinmap and control to match [FPGA-Companion](https://github.com/harbaum/FPGA-Companion).<br> Basically a µC M0S/BL616 / Raspberry Pi Pico RP2040 / ESP32-S2/S3 acts as USB host for USB devices and as an OSD controller using a [SPI communication protocol](https://github.com/harbaum/MiSTeryNano/blob/main/SPI.md).
 <br>
+
+
+## A2600Nano on Tang Primer 25K
+See [Tang Primer 25K](TANG_PRIMER_25K.md)
+
+## A2600Nano on Tang Mega 138k Pro
+See [Tang Mega 138K](TANG_MEGA_138K.md)
 
 ## Installation
 
@@ -143,6 +156,7 @@ LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<b
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>
 * **<font color="red">red</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;something wrong with SDcard / default boot image<br>
 * **<font color="blue">blue</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;µC firmware detected valid FPGA core<br>
+* **<font color="yellow">yellow</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;FPGA core can't detect valid firmware<br>
 * **white**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;-<br>
 ## Powering
 Prototype circuit with Keyboard can be powered by Tang USB-C connector from PC or a Power Supply Adapter. 
@@ -191,6 +205,12 @@ In order to use this Design the following things are needed:
 
 [Sipeed M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) or Raspberry Pi Pico RP2040 or ESP32-S2/S3<br>
 [Sipeed Tang Nano 20k](https://wiki.sipeed.com/nano20k) <br>
+or [Sipeed Tang Primer 25k](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html)<br>
+and [PMOD DVI](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DVI)<br>
+and [PMOD TF-CARD V2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_TF-CARD)<br>
+and [PMOD SDRAM](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#TANG_SDRAM)<br>
+and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)
+ or ad hoc wiring + soldering.<br>
 microSD or microSDHC card FAT/exFAT formatted<br>
 TFT Monitor with HDMI Input and Speaker<br>
 <br>
