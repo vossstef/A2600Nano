@@ -44,7 +44,7 @@ end;
 
 architecture Behavioral_top of A2600_top is
 
-signal clk          : std_logic;
+signal clk            : std_logic;
 signal clk_cpu        : std_logic;
 signal clk_14         : std_logic;
 signal pll_locked     : std_logic;
@@ -52,7 +52,9 @@ signal clk_pixel_x5   : std_logic;
 attribute syn_keep : integer;
 attribute syn_keep of clk_cpu      : signal is 1;
 attribute syn_keep of clk          : signal is 1;
+attribute syn_keep of clk_14       : signal is 1;
 attribute syn_keep of clk_pixel_x5 : signal is 1;
+attribute syn_keep of m0s          : signal is 1;
 
   -- keyboard
 signal keyboard_matrix_out : std_logic_vector(7 downto 0);

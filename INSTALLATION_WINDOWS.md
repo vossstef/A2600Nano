@@ -8,10 +8,10 @@ This has been tested on Windows 11. It should work on older versions too.
 
 Software needed:
 
-  - [Gowin V1.9.10](https://www.gowinsemi.com/en/support/home/) **to synthesize the core**
+  - [Gowin V1.9.10.03](https://www.gowinsemi.com/en/support/home/) **to synthesize the core**
   - [BouffaloLabDevCube](https://dev.bouffalolab.com/download) **to flash the BL616**
   - [Latest release](https://github.com/vossstef/A2600nano/releases/latest) of A2600Nano **FPGA** bitstream
-  - [Latest release](https://github.com/harbaum/MiSTeryNano/releases/latest) of MiSTeryNano **BL616 µC firmware** (if not otherwise stated in the release note.)
+  - [Latest release](http://github.com/harbaum/FPGA-Companion/releases/latest) of FPGA companion firmware **µC firmware** (if not otherwise stated in the release note.)
 
 In order to use the SD card:
 
@@ -42,16 +42,16 @@ should see following screen:**
 -   From there you can add a device for programming by pressing on the little
     icon with the green plus
 -   At least one file have to be flashed:
-    - The core itself: ```A2600Nano.fs```
+    - The core itself: ```a2600nano_tn20k.fs```
 -   Than you can choose from the drop downs the parameter you see on the
     pictures.
 
 **Important**:
 
-  - ```A2600Nano.fs``` is written to address 0x000000
+  - ```a2600nano_tn20k.fs``` is written to address 0x000000
 
 
-  - For the FS file please choose the ```A2600Nano.fs``` you just downloaded
+  - For the FS file please choose the ```a2600nano_tn20k.fs``` you just downloaded
   - User Code and IDCODE can be ignored
   - Mark each of your configs and press the little icon with the green play
     button. You should see a progress bar and then:
@@ -66,8 +66,8 @@ should see following screen:**
 **shell / command line Programming alternative**
 
 Windows shell and Gowin Programmer<br>
-```programmer_cli  -r 36 --fsFile A2600Nano.fs --spiaddr 0x000000 --cable-index 1 --d GW2ANR-18C```<br>
-
+```programmer_cli  -r 36 --fsFile a2600nano_tn20k.fs --spiaddr 0x000000 --cable-index 1 --d GW2AR-18C```<br>
+```programmer_cli  -r 36 --fsFile a2600nano_tp25k.fs --spiaddr 0x000000 --cable-index 1 --d GW5A-25A```<br>
 
 **That´s it for the Tang Nano 20k**
 
@@ -95,7 +95,7 @@ the Tang Nano 20K. Using an external M0S is nevertheless recommended.
   device with a COM port. If not take a look in the device manager to check for
   the correct device detection.
 - On the top click on MCU and browse to the firmware image file named
-  ```misterynano_fw_bl616.bin``` (contains a unified firmware both for Atari ST and C64Nano and A2600Nano)
+  ```fpga_companion_bl616.bin``` (contains a unified firmware)
 - Choose “Open Uart” and than press “Create & Download”. The firmware should now be
   flashed
 
@@ -104,8 +104,7 @@ the Tang Nano 20K. Using an external M0S is nevertheless recommended.
 ## Prepare the SD card
 
 Format the SD card in FAT32. Copy your cartrige files files on
-it. You can organize your files in subdirectories. These files can later
-be selected using the on-screen-display (OSD).
-Default Mountpoints:  
+it. You can organize your files in subdirectories.  
+These files can later be selected using the on-screen-display (OSD).  
 Copy a 2600 rom cartrige image to your sdcard and rename it to a2600crt.bin as default boot image.
 

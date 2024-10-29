@@ -44,6 +44,7 @@ signal clk_pixel_x5   : std_logic;
 attribute syn_keep : integer;
 attribute syn_keep of clk_cpu      : signal is 1;
 attribute syn_keep of clk          : signal is 1;
+attribute syn_keep of clk_14       : signal is 1;
 attribute syn_keep of clk_pixel_x5 : signal is 1;
 attribute syn_keep of m0s          : signal is 1;
 
@@ -335,7 +336,6 @@ port map(
 );
 
 leds_n(1 downto 0) <=  not leds(1 downto 0);
---leds(1) <= '0';
 leds(1) <= '1' when force_bs > 14 else '0'; -- indicate unsupported mapper
 
 -- 9 pin d-sub joystick pinout:
@@ -389,7 +389,7 @@ joyDS2       <= x"0000";
 joyDigital   <= x"0000";
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
-joyNumpad  <= x"00" & "000" & numpad(4) & numpad(0) & numpad(1) & numpad(2) & numpad(3);
+joyNumpad  <= x"00" & "000" & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
 joyMouse   <= x"0000";
 
 -- send external DB9 joystick port to µC
