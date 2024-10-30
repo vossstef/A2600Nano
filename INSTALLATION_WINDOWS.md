@@ -67,7 +67,9 @@ should see following screen:**
 
 Windows shell and Gowin Programmer<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tn20k.fs --spiaddr 0x000000 --cable-index 1 --d GW2AR-18C```<br>
+```programmer_cli  -r 36 --fsFile a2600nano_tp20k.fs --spiaddr 0x000000 --cable-index 1 --d GW2A-18C```<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tp25k.fs --spiaddr 0x000000 --cable-index 1 --d GW5A-25A```<br>
+```programmer_cli  -r 36 --fsFile a2600nano_138k_pro.fs --spiaddr 0x000000 --cable-index 1 --d GW5AST-138B```<br>
 
 **That´s it for the Tang Nano 20k**
 
