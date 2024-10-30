@@ -147,12 +147,12 @@ You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG
 
 | LED | function         | TN20K | TP20K | TP25K | TM138K |TN9k|
 | --- |        -         | -     |-      | -     | -      | -  |
-| 0   |Cartridge selected| x     |-      |  -    | -      | -  |
-| 1   | reserved         | x     |-      |  -    | -      | -  |
-| 2   | Game unsupported | x     |-      |  -    | -      | -  |
-| 3   | Game unsupported | x     |-      |  -    | -      | -  |
-| 4   | Game unsupported | x     |-      |  -    | -      | -  |
-| 5   | Game unsupported | x     |-      |  -    | -      | -  |
+| 0   |Cartridge selected| x     |-      |  x    | x      | -  |
+| 1   | reserved         | x     |x      | unsup | x      | -  |
+| 2   | Game unsupported | x     |x      |  -    | x      | -  |
+| 3   | Game unsupported | x     |x      |  -    | x      | -  |
+| 4   | Game unsupported | x     |x      |  -    | x      | -  |
+| 5   | Game unsupported | x     |x      |  -    | x      | -  |
 
 LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<br>
 
@@ -218,6 +218,9 @@ and [PMOD TF-CARD V2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PM
 and [PMOD SDRAM](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#TANG_SDRAM)<br>
 and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)
  or ad hoc wiring + soldering.<br>
+or [Sipeed Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)<br>
+and [PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
+and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)<br>
 
 TM138k add
 microSD or microSDHC card FAT/exFAT formatted<br>
