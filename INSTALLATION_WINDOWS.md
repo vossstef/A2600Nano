@@ -60,8 +60,8 @@ should see following screen:**
 **At a glance the memory layout of the SPI Flash:**
 |                           | |          |          |         | | |
 |-                          |-         |-         |-         |-        |-|-|
-| Type                      | TN20k    | TP20k    |TP25k     | TM138k  |TN9k | |
-| FPGA bitstream            | 0x000000 | 0x000000 | 0x000000 | 0x000000 |-|ROM size |
+| Type                      | TN20k    | TP20k    |TP25k     | TM138k  |TM60k | |
+| FPGA bitstream            | 0x000000 | 0x000000 | 0x000000 | 0x000000 |0x000000|ROM size |
 
 **shell / command line Programming alternative**
 
@@ -69,7 +69,8 @@ Windows shell and Gowin Programmer<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tn20k.fs --spiaddr 0x000000 --cable-index 1 --d GW2AR-18C```<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tp20k.fs --spiaddr 0x000000 --cable-index 1 --d GW2A-18C```<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tp25k.fs --spiaddr 0x000000 --cable-index 1 --d GW5A-25A```<br>
-```programmer_cli  -r 36 --fsFile a2600nano_138k_pro.fs --spiaddr 0x000000 --cable-index 1 --d GW5AST-138B```<br>
+```programmer_cli  -r 36 --fsFile a2600nano_tm60k.fs --spiaddr 0x000000 --cable-index 1 --d GW5AT-60B```<br>
+```programmer_cli  -r 36 --fsFile a2600nano_tm138k_pro.fs --spiaddr 0x000000 --cable-index 1 --d GW5AST-138B```<br>
 
 **That´s it for the Tang Nano 20k**
 

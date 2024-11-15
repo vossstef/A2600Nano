@@ -5,9 +5,9 @@ The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari260
 | ---        |        -   | -     |-|
 | [Tang Nano 20k](https://wiki.sipeed.com/nano20k)     | [GW2AR](https://www.gowinsemi.com/en/product/detail/38/)  | X |- |
 | [Tang Primer 20K Dock ext Board](https://wiki.sipeed.com/hardware/en/tang/tang-primer-20k/primer-20k.html)| [GW2A](https://www.gowinsemi.com/en/product/detail/46/)| X |- |
-| [Tang Primer 25K](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html) | [GW5A-25](https://www.gowinsemi.com/en/product/detail/60/)  | X |no Dualshock 2, no Retro DB9 Joystick |
-| [Tang Mega 60k NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/)| planned |- |
-| [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)|[GW5AST-138](https://www.gowinsemi.com/en/product/detail/60/) | X |- |
+| [Tang Primer 25K](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html) | [GW5A-25](https://www.gowinsemi.com/en/product/detail/60/)  | X |no Dualshock, no retro D9 Joystick |
+| [Tang Mega 60k NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/)| X |dual Dualshock |
+| [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)|[GW5AST-138](https://www.gowinsemi.com/en/product/detail/60/) | X |dual Dualshock |
 
 This project relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K.  
 Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
@@ -50,8 +50,11 @@ See [Tang Primer 20K](TANG_PRIMER_20K.md)<br>
 ## A2600Nano on Tang Primer 25K
 See [Tang Primer 25K](TANG_PRIMER_25K.md)
 
+## A2600Nano on Tang Mega 60k NEO
+See [Tang Mega 60K NEO](TANG_MEGA_60K.md)
+
 ## A2600Nano on Tang Mega 138k Pro
-See [Tang Mega 138K](TANG_MEGA_138K.md)
+See [Tang Mega 138K Pro](TANG_MEGA_138Kpro.md)
 
 ## Installation
 
@@ -121,7 +124,7 @@ legacy single D9 Digital Joystick. OSD: **Retro D9**<br>
 or<br>
 USB Joystick(s) or Gamepad(s). OSD: **USB #1 Joy** or **USB #2 Joy** <br>
 or<br>
-Gamepad Stick as Joystick. OSD: **DualShock2**
+Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**
 <br>**left stick** for Move and ```square triangle cross circle``` Buttons for Trigger:<br>
 | Buttons | - | - |
 | - | - | -  |
@@ -139,22 +142,22 @@ or Keyboard Numpad. OSD: **Numpad**<br>
 or Mouse. OSD: **Mouse**<br>
 not supported yet
 
-or Dualshock2 Gamepad left stick as Paddle. OSD: **DualShock2**<br>
+or Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
 **cross / triangle** Trigger<br>
 You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG button.<br> Mode indicated by red light indicator.<br>Configure DIGITAL mode (press ANALOG button again) when using the **Joystick** mode again.<br>
 
 ## LED UI
 
-| LED | function         | TN20K | TP20K | TP25K | TM138K |TN9k|
-| --- |        -         | -     |-      | -     | -      | -  |
-| 0   |Cartridge selected| x     |-      |  x    | x      | -  |
-| 1   | reserved         | x     |x      | unsup | x      | -  |
-| 2   | Game unsupported | x     |x      |  -    | x      | -  |
-| 3   | Game unsupported | x     |x      |  -    | x      | -  |
-| 4   | Game unsupported | x     |x      |  -    | x      | -  |
-| 5   | Game unsupported | x     |x      |  -    | x      | -  |
+| LED | function         | TN20K | TP20K | TP25K | TM60K |TM138k|
+| --- |        -         | -     |-      | -     | -      | -   |
+| 0   |Cartridge selected| x     |-      |  x    | x      | x   |
+| 1   | reserved         | x     |x      | unsup | x      |unsup|
+| 2   | Game unsupported | x     |x      |  -    | x      | -   |
+| 3   | Game unsupported | x     |x      |  -    | x      | -   |
+| 4   | Game unsupported | x     |x      |  -    | x      | -   |
+| 5   | Game unsupported | x     |x      |  -    | x      | -   |
 
-LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<br>
+LED 1..4 are activated as hint in case an unsupported game (mapper) detected<br>
 
 **Multicolor RGB LED**
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>
@@ -218,6 +221,9 @@ and [PMOD TF-CARD V2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PM
 and [PMOD SDRAM](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#TANG_SDRAM)<br>
 and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)
  or ad hoc wiring + soldering.<br>
+or [Tang Mega 60K NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)<br>
+and [PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
+and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)<br>
 or [Sipeed Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)<br>
 and [PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
 and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)<br>
@@ -227,11 +233,11 @@ microSD or microSDHC card FAT/exFAT formatted<br>
 TFT Monitor with HDMI Input and Speaker<br>
 <br>
 
-| HID and Gamecontrol Hardware option | TN20k | alternative option |Primer 25K|Mega 138K|Primer 20K|
-| ----------- | --- |--- | ---  | ---| -|
-| USB Keyboard | [USB-C to USB-A adapter](https://www.aliexpress.us/item/3256805563910755.html) | [4 port mini USB hub](https://a.aliexpress.com/_EIidgjH)  |x|x|x|
-| [USB Joystick(s)](https://www.speedlink.com/en/COMPETITION-PRO-EXTRA-USB-Joystick-black-red/SL-650212-BKRD)| [4 port mini USB hub](https://a.aliexpress.com/_EIidgjH) | - |x|x|x|
-| USB Mouse | [4 port mini USB hub](https://a.aliexpress.com/_EIidgjH) | -  |x|x|x|
+| HID and Gamecontrol Hardware option | TN20k needs | alternative option |Primer 25K|Mega 60K|Mega 138K|
+| -----------                         | ---         | ---                | ---      | -      | -       |
+| USB Keyboard | [USB-C to USB-A adapter](https://www.aliexpress.us/item/3256805563910755.html) | [4 port mini USB hub HS8836A](https://a.aliexpress.com/_EIidgjH)  |x|x|x|
+| [USB Joystick(s)](https://www.speedlink.com/en/COMPETITION-PRO-EXTRA-USB-Joystick-black-red/SL-650212-BKRD)| [4 port mini USB hub HS8836A](https://a.aliexpress.com/_EIidgjH) | - |x|x|x|
+| USB Mouse   | [4 port mini USB hub HS8836A](https://a.aliexpress.com/_EIidgjH)  | -  |x|x|x|
 | USB Gamepad |[4 port mini USB hub HS8836A](https://a.aliexpress.com/_EIidgjH)  | -  |x|x|x|
-| Commodore/[Atari](https://en.wikipedia.org/wiki/Atari_CX40_joystick) compatible retro D9 Joystick| [MiSTeryNano shield](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md)|D-SUB 9 M connector, breadboard to wire everything up, some jumper wires|-|-|-|
-| [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) | Gamepad Adapter Board (Sipeed Joystick to DIP) | breadboard to wire everything up and some jumper wires |-|x|x|
+| Commodore/[Atari](https://en.wikipedia.org/wiki/Atari_CX40_joystick) compatible retro D9 Joystick| [MiSTeryNano shield](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md)|D-SUB 9 M connector, breadboard to wire everything up, some jumper wires|-|adhoc SDRAM1 Joy D9|adhoc PMOD Joy D9|
+| [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) | Gamepad Adapter Board (Sipeed Joystick to DIP) respectively<br> PMOD DS2x2 | breadboard to wire everything up and some jumper wires |-|PMOD DS2x2|PMOD DS2x2|
