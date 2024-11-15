@@ -530,16 +530,18 @@ process(clk)
 begin
 	if rising_edge(clk) then
     case port_1_sel is
-      when "0000"  => joyA <= joyDigital;
-      when "0001"  => joyA <= joyUsb1;
-      when "0010"  => joyA <= joyUsb2;
-      when "0011"  => joyA <= joyNumpad;
-      when "0100"  => joyA <= joyDS2_p1;
-      when "0101"  => joyA <= joyMouse;
-      when "0110"  => joyA <= (others => '0');
-      when "1010"  => joyA <= joyDS2_p2;
+      when "0000"  => joyA <= joyDigital;-- 0
+      when "0001"  => joyA <= joyUsb1;   -- 1
+      when "0010"  => joyA <= joyUsb2;   -- 2
+      when "0011"  => joyA <= joyNumpad; -- 3 
+      when "0100"  => joyA <= joyDS2_p1; -- 4
+      when "0101"  => joyA <= joyMouse;  -- 5
+      when "0110"  => joyA <= (others => '0'); --6 Off
+      when "0111"  => joyA <= joyDS2_p2; -- 7
+      when "1000"  => joyA <= (others => '0'); -- 8  R #2 D9 PMOD
+      when "1001"  => joyA <= (others => '0'); -- 9  R #2 D9 ALT
       when others  => joyA <= (others => '0');
-    end case;
+      end case;
   end if;
 end process;
 
@@ -554,7 +556,9 @@ begin
       when "0100"  => joyB <= joyDS2_p1;
       when "0101"  => joyB <= joyMouse;
       when "0110"  => joyB <= (others => '0');
-      when "1010"  => joyB <= joyDS2_p2;
+      when "0111"  => joyB <= joyDS2_p2;
+      when "1000"  => joyB <= (others => '0'); -- 8  R #2 D9 PMOD
+      when "1001"  => joyB <= (others => '0'); -- 9  R #2 D9 ALT
       when others  => joyB <= (others => '0');
       end case;
   end if;
@@ -567,10 +571,10 @@ pd1 <= not paddle_1 when port_1_sel = "0100" else
 pd2 <= not paddle_2 when port_1_sel = "0100" else
         joystick1_y_pos(7 downto 0) when port_1_sel = "0001" else
         x"ff";
-pd3 <= not paddle_3 when port_2_sel = "0100" else
+pd3 <= not paddle_3 when port_2_sel = "0111" else
         joystick2_x_pos(7 downto 0) when port_2_sel = "0010" else
         x"ff";
-pd4 <= not paddle_4 when port_2_sel = "0100" else
+pd4 <= not paddle_4 when port_2_sel = "0111" else
         joystick2_y_pos(7 downto 0) when port_2_sel = "0010" else
         x"ff";
 

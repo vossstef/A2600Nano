@@ -409,6 +409,7 @@ begin
 			old_rst <= rst;
 			clr_a <= clr_a + 1;
 			if (rst = '1') then
+				sb_bank <= "0000000";
 				bank <= "0000";
 				last_1FF0 <= '0';
 				e0_bank0 <= "000";
