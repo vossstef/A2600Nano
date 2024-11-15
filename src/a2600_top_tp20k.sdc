@@ -1,6 +1,6 @@
 create_clock -name clk_27mhz -period 37.037 -waveform {0 5} [get_ports {clk_27mhz}]
-create_clock -name ds2_clk -period 8000 -waveform {0 5} [get_nets {gamepad/clk_spi}]
-create_clock -name joymiso -period 8000 -waveform {0 20} [get_ports {joystick_miso}]
+create_clock -name ds_clk -period 8000 -waveform {0 5} [get_nets {gamepad_p1/clk_spi}]
+create_clock -name ds2_clk -period 8000 -waveform {0 5} [get_nets {gamepad_p2/clk_spi}]
 create_clock -name clk -period 34.722 -waveform {0 5} [get_nets {clk}]
 create_clock -name clk_14 -period 70 -waveform {0 5} [get_nets {clk_14}]
 create_clock -name clk_cpu -period 279.408 -waveform {0 5} [get_nets {clk_cpu}]
