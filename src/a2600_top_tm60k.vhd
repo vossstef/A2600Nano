@@ -41,7 +41,7 @@ entity A2600_top_tm60k is
     ds_mosi         : out std_logic;
     ds_miso         : in std_logic;
     ds_cs           : out std_logic;
-    -- Gamepad DualShock P1
+    -- Gamepad DualShock P2
     ds2_clk       : out std_logic;
     ds2_mosi      : out std_logic;
     ds2_miso      : in std_logic;
@@ -310,7 +310,7 @@ gamepad_p1: entity work.dualshock2
     debug2        => open
     );
 
-    gamepad_p2: entity work.dualshock2
+gamepad_p2: entity work.dualshock2
     port map (
     clk           => clk,
     rst           => system_reset(0) and not pll_locked,
@@ -523,10 +523,10 @@ joyDigital <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
 joyNumpad  <= x"00" & "000" & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
-joyMouse   <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
+joyMouse   <= x"0000";
 
 -- send external DB9 joystick port to µC
-db9_joy <= 6x"00";
+db9_joy <= not ('0' & io(0) & io(2) & io(1) & io(4) & io(3));
 
 process(clk)
 begin
