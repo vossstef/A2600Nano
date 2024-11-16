@@ -137,7 +137,6 @@ signal e0_bank: std_logic_vector(2 downto 0);
 signal e0_bank0: std_logic_vector(2 downto 0) := "000";
 signal e0_bank1: std_logic_vector(2 downto 0) := "000";
 signal e0_bank2: std_logic_vector(2 downto 0) := "000";
-signal sb_bank: std_logic_vector(6 downto 0) := "0000000";
 
 signal FE_latch: std_logic := '0';
 
@@ -391,13 +390,7 @@ rom_a <= "000" & e0_bank & cpu_a(9 downto 0)  when bss = BANKE0 else
          "00" & e7_bank0 & cpu_a(10 downto 0) when bss = BANKE7 and cpu_a(12 downto 11) = "10" else
          "00111" & cpu_a(10 downto 0)         when bss = BANKE7 and (cpu_a(12 downto 11) = "11" or cpu_a(12 downto 10) = "101") else
          banks32 & cpu_a(10 downto 0)         when bss = BANK32 else
-         sb_bank(3 downto 0) & cpu_a(11 downto 0) when bss = BANKSB else --restricted !!!!
          bank(3 downto 0) & cpu_a(11 downto 0);
--- sb
--- 128K-256K ROM
--- There are either 32 or 64 4K banks, accessible at hotspots $800 - $81F (32 banks) 
--- and $800 - $83F (64 banks). 
--- All mirrors up to $FFF are also used ($900, $A00, ...). 
 
 bankswch: process(clk)
 	variable w_index_v :integer; 
@@ -409,7 +402,6 @@ begin
 			old_rst <= rst;
 			clr_a <= clr_a + 1;
 			if (rst = '1') then
-				sb_bank <= "0000000";
 				bank <= "0000";
 				last_1FF0 <= '0';
 				e0_bank0 <= "000";
@@ -583,9 +575,6 @@ begin
 					when BANKAR =>
 					when BANK3E =>
 					when BANKSB =>
-						if cpu_a(12 downto 11) = "01" then
-								sb_bank <= cpu_a(6 downto 0);
-							end if;
 					when BANKWD =>
 					when BANKEF =>
 					when BANKDPCP =>

@@ -821,10 +821,10 @@ a2601_inst: entity work.A2601top
 		p_1       => not joy_p1(5), -- BTN_B
 		paddle_1  => p1,
 
-		p_2       => not joy_p2(5), -- BTN_B
+		p_2       => not joy_p1(6), -- BTN_X
 		paddle_2  => p2,
 
-		p_3       => not joy_p1(6), -- BTN_X
+		p_3       => not joy_p2(5), -- BTN_B
 		paddle_3  => p3,
 
 		p_4       => not joy_p2(6), -- BTN_X
