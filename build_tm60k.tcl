@@ -37,11 +37,11 @@ add_file src/TIA/TIA.vhd
 add_file src/TIA/VGAColorTable.vhd
 add_file src/TIA/audio_argh2600.vhd
 add_file src/gowin_sdpb/gowin_sdpb_gw5a.vhd
-add_file src/a2600_top_tm138k_pro.vhd
-add_file src/a2600_top_tm138k_pro.cst
-add_file src/a2600_top_tm138k_pro.sdc
+add_file src/a2600_top_tm60k.vhd
+add_file src/a2600_top_tm60k.cst
+add_file src/a2600_top_tm60k.sdc
 add_file src/video_stabilize.sv
-add_file src/gowin_pll/gowin_pll_ntsc_138k_pro.vhd
+add_file src/gowin_pll/gowin_pll_ntsc_60k.vhd
 add_file src/detect2600.sv
 add_file src/dualshock2.v
 add_file src/misc/ws2812.v
@@ -50,7 +50,7 @@ set_option -synthesis_tool gowinsynthesis
 set_option -output_base_name a2600nano_tm60k
 set_option -verilog_std sysv2017
 set_option -vhdl_std vhd2008
-set_option -top_module top_module A2600_top_tm60k
+set_option -top_module A2600_top_tm60k
 set_option -use_mspi_as_gpio 1
 set_option -use_sspi_as_gpio 1
 set_option -use_done_as_gpio 1
