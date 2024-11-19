@@ -12,6 +12,8 @@ The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari260
 This project relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K.  
 Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
 
+There is a nice [case](https://github.com/vossstef/A2600Nano/tree/main/housing3D) available mounting the [MiSTeryNano shield](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k) (TN20k + M0S).
+
 Original A2600 core by [Retromaster](https://retromaster.wordpress.com/a2601/)  
 All HID, SDcard and µC firmware by [Till Harbaum](http://www.harbaum.org/till/mist)<br>
 
