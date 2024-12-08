@@ -19,7 +19,7 @@ entity A2600_top is
     io          : in std_logic_vector(4 downto 0);
 
     -- SPI interface Sipeed M0S Dock external BL616 uC
-    m0s         : inout std_logic_vector(4 downto 0);
+    m0s         : inout std_logic_vector(6 downto 0);
     --
     tmds_clk_n  : out std_logic;
     tmds_clk_p  : out std_logic;
@@ -31,6 +31,12 @@ entity A2600_top is
     sd_dat      : inout std_logic_vector(3 downto 0);
     ws2812      : out std_logic;
 
+    -- spi flash
+    mspi_cs     : out std_logic;
+    mspi_clk    : out std_logic;
+    mspi_do     : in std_logic;
+    mspi_di     : out std_logic;
+
     -- Gamepad Dualshock P1
     ds_clk          : out std_logic;
     ds_mosi         : out std_logic;
@@ -40,7 +46,10 @@ entity A2600_top is
     ds2_clk       : out std_logic;
     ds2_mosi      : out std_logic;
     ds2_miso      : in std_logic;
-    ds2_cs        : out std_logic
+    ds2_cs        : out std_logic;
+
+    -- Reconfigure
+    reconfig_n  : out std_logic
     );
 end;
 
@@ -307,7 +316,16 @@ begin
   spi_io_din  <= m0s(1);
   spi_io_ss   <= m0s(2);
   spi_io_clk  <= m0s(3);
-  m0s(0)      <= spi_io_dout; -- M0 Dock
+  m0s(0)      <= spi_io_dout when spi_io_ss = '0' else mspi_do; -- M0 Dock
+
+-- SPI Flash on shared spi bus with its own cs line
+  mspi_clk <= m0s(3);
+  mspi_di  <= m0s(1);
+  mspi_cs  <= m0s(5);
+--  m0s(0)   <= mspi_do;
+
+-- Reconfire pin that allows esp32 to restart fpga after loading a core
+  reconfig_n <= m0s(6);
 
 -- https://store.curiousinventor.com/guides/PS2/
 -- https://hackaday.io/project/170365-blueretro/log/186471-playstation-playstation-2-spi-interface
@@ -641,7 +659,7 @@ begin
       when "1000"  => joyA <= (others => '0'); -- 8  R #2 D9 PMOD
       when "1001"  => joyA <= (others => '0'); -- 9  R #2 D9 ALT
       when others  => joyA <= (others => '0');
-      end case;
+    end case;
   end if;
 end process;
 
