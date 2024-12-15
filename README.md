@@ -3,6 +3,7 @@ The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari260
 
 | Board      | FPGA       | support |Note|
 | ---        |        -   | -     |-|
+| [Tang Nano 9k](https://wiki.sipeed.com/hardware/en/tang/Tang-Nano-9K/Nano-9K.html)       | [GW1NR](https://www.gowinsemi.com/en/product/detail/38/)  |X |micro SD card [HW modification](TANG_NANO_9K.md#hw-modification) needed|
 | [Tang Nano 20k](https://wiki.sipeed.com/nano20k)     | [GW2AR](https://www.gowinsemi.com/en/product/detail/38/)  | X |- |
 | [Tang Primer 20K Dock ext Board](https://wiki.sipeed.com/hardware/en/tang/tang-primer-20k/primer-20k.html)| [GW2A](https://www.gowinsemi.com/en/product/detail/46/)| X |double Dualshock |
 | [Tang Primer 25K](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html) | [GW5A-25](https://www.gowinsemi.com/en/product/detail/60/)  | X |no Dualshock, no retro D9 Joystick |
@@ -45,6 +46,9 @@ Planned features:
 
 HID interfaces aligned in pinmap and control to match [FPGA-Companion](https://github.com/harbaum/FPGA-Companion).<br> Basically a µC M0S/BL616 / Raspberry Pi Pico RP2040 / ESP32-S2/S3 acts as USB host for USB devices and as an OSD controller using a [SPI communication protocol](https://github.com/harbaum/MiSTeryNano/blob/main/SPI.md).
 <br>
+
+## A2600Nano on Tang Nano 9K
+See [Tang Nano 9K](TANG_NANO_9K.md)
 
 ## A2600Nano on Tang Primer 20K (Dock ext board)
 See [Tang Primer 20K](TANG_PRIMER_20K.md)<br>
@@ -152,8 +156,8 @@ You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG
 
 | LED | function         | TN20K | TP20K | TP25K | TM60K |TM138k|
 | --- |        -         | -     |-      | -     | -      | -   |
-| 0   |Cartridge selected| x     |-      |  x    | x      | x   |
-| 1   | reserved         | x     |x      | unsup | x      |unsup|
+| 0   |Cartridge selected| x     |x      |  x    | x      | x   |
+| 1   | reserved         | x     |x      | x     | x      | x   |
 | 2   | Game unsupported | x     |x      |  -    | x      | -   |
 | 3   | Game unsupported | x     |x      |  -    | x      | -   |
 | 4   | Game unsupported | x     |x      |  -    | x      | -   |
