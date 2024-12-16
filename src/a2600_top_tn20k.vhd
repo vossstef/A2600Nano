@@ -516,8 +516,7 @@ port map(
 );
 
 leds_n <=  not leds;
-leds(1) <= '0';
-leds(5 downto 2) <= "1111" when force_bs > 14 else "0000"; -- indicate unsupported mapper
+leds(5 downto 1) <= "11111" when force_bs > 14 else "00000"; -- indicate unsupported mapper
 
 -- 9 pin d-sub joystick pinout:
 -- pin 1: up

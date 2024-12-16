@@ -81,8 +81,8 @@ signal pot4        : std_logic_vector(7 downto 0);
 signal pd1,pd2     : std_logic_vector(7 downto 0);
 signal pd3,pd4     : std_logic_vector(7 downto 0);
 signal p1,p2,p3,p4 : std_logic_vector(7 downto 0);
-signal mouse_x_pos : signed(10 downto 0);
-signal mouse_y_pos : signed(10 downto 0);
+signal mx          : signed(8 downto 0);
+signal my          : signed(8 downto 0);
 signal pal         : std_logic;
 signal system_video_std : std_logic_vector(1 downto 0);
 signal hsync       : std_logic;
@@ -571,7 +571,7 @@ joyDigital   <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
 joyNumpad  <= x"00" & "000" & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
-joyMouse   <= x"0000";
+joyMouse   <= extra_button0 & "0" & mouse_btns & "0" & "0000";
 
 -- send external DB9 joystick port to µC
 db9_joy <= not('1' & io(0) & io(1) & io(2) & io(3) & io(4));
@@ -608,37 +608,71 @@ begin
   end if;
 end process;
 
--- paddle pins
 pd1 <= not paddle_1 when port_1_sel = "0100" else
-        joystick1_x_pos(7 downto 0) when port_1_sel = "0001" else
+        joystick1_x_pos when port_1_sel = "0001" else
+        std_logic_vector(not mx(7) & mx(6 downto 0)) when port_1_sel = "0101" else
         x"ff";
 pd2 <= not paddle_2 when port_1_sel = "0100" else
         joystick1_y_pos(7 downto 0) when port_1_sel = "0001" else
+        std_logic_vector(not my(7) & my(6 downto 0)) when port_1_sel = "0101" else
         x"ff";
 pd3 <= not paddle_3 when port_2_sel = "0100" else
         joystick2_x_pos(7 downto 0) when port_2_sel = "0010" else
+        std_logic_vector(not mx(7) & mx(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
 pd4 <= not paddle_4 when port_2_sel = "0100" else
         joystick2_y_pos(7 downto 0) when port_2_sel = "0010" else
+        std_logic_vector(not my(7) & my(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
 
 process(clk, system_reset(0))
- variable mov_x: signed(6 downto 0);
- variable mov_y: signed(6 downto 0);
+ variable mdx: signed(8 downto 0);
+ variable mdx2: signed(8 downto 0);
+ variable nmx: signed(8 downto 0);
+ variable mdy: signed(8 downto 0);
+ variable mdy2: signed(8 downto 0);
+ variable nmy: signed(8 downto 0);
  begin
   if system_reset(0) = '1' then
+    mx <= to_signed(0,mx'length);
+    my <= to_signed(0,my'length);
     joystick1_x_pos <= x"ff";
     joystick1_y_pos <= x"ff";
     joystick2_x_pos <= x"ff";
     joystick2_y_pos <= x"ff";
-    elsif rising_edge(clk) then
-      if joystick_strobe = '1' then
-        joystick1_x_pos <= std_logic_vector(joystick0ax(7 downto 0));
-        joystick1_y_pos <= std_logic_vector(joystick0ay(7 downto 0));
-        joystick2_x_pos <= std_logic_vector(joystick1ax(7 downto 0));
-        joystick2_y_pos <= std_logic_vector(joystick1ay(7 downto 0));
-      end if;
+  elsif rising_edge(clk) then
+    mdx := resize(mouse_x, mdx'length);
+    if mdx > 10 then 
+      mdx2:= to_signed(10,mdx2'length);
+    elsif mdx < -10 then 
+      mdx2:= to_signed(-10,mdx2'length);
+    else 
+      mdx2 := mdx;
     end if;
+    nmx := mx + mdx2;
+    mdy := resize(mouse_y, mdy'length);
+    if mdy > 10 then 
+      mdy2:= to_signed(10,mdy2'length);
+    elsif mouse_x < -10 then 
+      mdy2:= to_signed(-10,mdy2'length);
+    else 
+      mdy2 := mdy;
+    end if;
+    nmy := my + mdy2;
+    if mouse_strobe = '1' then
+      mx <= to_signed(-128, mx'length) when nmx < -128
+      else to_signed(127, mx'length) when nmx > 127
+      else nmx;
+      my <= to_signed(-128, my'length) when nmy < -128
+      else to_signed(127, my'length) when nmy > 127
+      else nmy;
+    elsif joystick_strobe = '1' then
+      joystick1_x_pos <= std_logic_vector(joystick0ax(7 downto 0));
+      joystick1_y_pos <= std_logic_vector(joystick0ay(7 downto 0));
+      joystick2_x_pos <= std_logic_vector(joystick1ax(7 downto 0));
+      joystick2_y_pos <= std_logic_vector(joystick1ay(7 downto 0));
+    end if;
+  end if;
 end process;
 
 mcu_spi_inst: entity work.mcu_spi 
