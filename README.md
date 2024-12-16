@@ -27,15 +27,12 @@ Features:
 * USB Keyboard via µC
 * [USB Joystick](https://en.wikipedia.org/wiki/Joystick) via µC
 * [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick via µC as paddle emulation<br>
+* [USB Mouse](https://en.wikipedia.org/wiki/Computer_mouse) via µC as paddle emulation
 * [legacy D9 Joystick](https://en.wikipedia.org/wiki/Atari_CX40_joystick) (Atari / Commodore digital type) [MiSTeryNano shield](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md)<br>
 * Joystick emulation on Keyboard [Numpad](https://en.wikipedia.org/wiki/Numeric_keypad)<br>
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Keys & Stick as Joystick<br>
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Sticks as paddle emulation (analog mode)<br>
 * Cartridge ROM loader [boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
-
-Planned features:
-* ROM mapper control override via file extension
-* Mouse as paddle support
 
 > [!IMPORTANT]  
 > PROJECT IS STILL WORK IN PROGRESS!
@@ -92,9 +89,9 @@ LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<b
 * Gamepad Button ```SELECT``` as core function **SELECT**<br>
 
 ### Paddle
-* DualShock 2 or USB Gamepad.<br>
+* DualShock 2, USB Gamepad or USB Mouse.<br>
 
-Core switches to paddle mode if paddle ```Trigger B``` or ```Trigger X``` is pressed.  <br>
+Core switches to paddle mode if paddle ```Trigger B``` or ```Trigger X``` is pressed respectively ```left Mouse Button``` or ```right Mouse Button```.<br>
 Can be reverted by pressing Gamepad Button ```Trigger Y```.
 
 ### Keyboard
