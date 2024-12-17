@@ -126,26 +126,28 @@ invoke by F12 keypress<br>
 legacy single D9 Digital Joystick. OSD: **Retro D9**<br>
 or<br>
 USB Joystick(s) or Gamepad(s). OSD: **USB #1 Joy** or **USB #2 Joy** <br>
+Also [RII Mini Keyboard i8](http://www.riitek.com/product/220.html) left Multimedia Keys are active if **USB #1 Joy** selected.  <br>
 or<br>
-Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**
+Dualshock2 Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**
 <br>**left stick** for Move and ```square triangle cross circle``` Buttons for Trigger:<br>
 | Buttons | - | - |
-| - | - | -  |
+| -       | - | -  |
 | square<br>Trigger 1 | Up  | cross<br>Trigger 2 |
 | Left | - | Right |
 | triangle<br>Trigger 4  | Down | circle<br>Trigger 3 |<br>
 
-or Keyboard Numpad. OSD: **Numpad**<br>
-| | | |
-|-|-|-|
-|0<br>Trigger|8<br>Up||
-|4<br>Left|-|6<br>Right|
-|-|2<br>Down|-|
+or<br> Keyboard Numpad. OSD: **Numpad**<br>
 
-or Mouse. OSD: **Mouse**<br>
+| -           |         |          |
+| -          |-        |-         |
+|0<br>Trigger|8<br>Up  |          |
+|4<br>Left   |-        |6<br>Right|
+|-           |2<br>Down|-         |
+
+or<br> Mouse. OSD: **Mouse**<br>
 ```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.<br>
 
-or Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
+or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
 **cross / triangle** Trigger<br>
 You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG button.<br> Mode indicated by red light indicator.<br>Configure DIGITAL mode (press ANALOG button again) when using the **Joystick** mode again.<br>
 
