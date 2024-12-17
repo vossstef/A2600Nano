@@ -63,7 +63,7 @@ should see following screen:**
 | Type                      | TN20k    | TP20k    |TP25k     | TM138k  |TM60k | |
 | FPGA bitstream            | 0x000000 | 0x000000 | 0x000000 | 0x000000 |0x000000|ROM size |
 
-For the TN9k there might be an older version of the programmer SW be needed.
+You might need to use an older version of the Gowin Programmer [SW](https://dl.sipeed.com/shareURL/TANG/programmer) for the GW1NR device.<br>
 
 **shell / command line Programming alternative**
 
