@@ -24,18 +24,15 @@ Features:
 * Cartridge type autodetect
 * NTSC / PAL region autodetct
 * Superchip autodetct
-* USB Keyboard via µC
-* [USB Joystick](https://en.wikipedia.org/wiki/Joystick) via µC
-* [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick via µC as paddle emulation<br>
+* [USB Keyboard](https://en.wikipedia.org/wiki/Computer_keyboard) USB Keyboard
+* [USB Joystick](https://en.wikipedia.org/wiki/Joystick)
+* [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick as paddle emulation<br>
+* [USB Mouse](https://en.wikipedia.org/wiki/Computer_mouse) as paddle emulation
 * [legacy D9 Joystick](https://en.wikipedia.org/wiki/Atari_CX40_joystick) (Atari / Commodore digital type) [MiSTeryNano shield](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md)<br>
 * Joystick emulation on Keyboard [Numpad](https://en.wikipedia.org/wiki/Numeric_keypad)<br>
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Keys & Stick as Joystick<br>
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Sticks as paddle emulation (analog mode)<br>
 * Cartridge ROM loader [boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
-
-Planned features:
-* ROM mapper control override via file extension
-* Mouse as paddle support
 
 > [!IMPORTANT]  
 > PROJECT IS STILL WORK IN PROGRESS!
@@ -71,9 +68,9 @@ The installation of A2600Nano on the Tang Nano 20k board can be done using a Lin
 ROM can be loaded via OSD file selection.<br>
 
 ### Supported mappers
-* Auto detected  (00 F8 F6 FE E0 3F F4 P2 FA CV 2K UA E7 F0 32)<br>
+* Auto detected  (F8 F6 FE E0 3F F4 P2 FA CV 2K UA E7 F0 32)<br>
   
-LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<br>
+LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<br>
 
 ### single Button Joystick
 * Button ```Trigger```
@@ -92,9 +89,9 @@ LED 2 to 4 are activated as hint in case an unsupported game (mapper) detected<b
 * Gamepad Button ```SELECT``` as core function **SELECT**<br>
 
 ### Paddle
-* DualShock 2 or USB Gamepad.<br>
+* DualShock 2, USB Gamepad or USB Mouse.<br>
 
-Core switches to paddle mode if paddle ```Trigger B``` or ```Trigger X``` is pressed.  <br>
+Core switches to paddle mode if paddle ```Trigger B``` or ```Trigger X``` is pressed respectively ```left Mouse Button``` or ```right Mouse Button```.<br>
 Can be reverted by pressing Gamepad Button ```Trigger Y```.
 
 ### Keyboard
@@ -146,7 +143,7 @@ or Keyboard Numpad. OSD: **Numpad**<br>
 |-|2<br>Down|-|
 
 or Mouse. OSD: **Mouse**<br>
-not supported yet
+```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.<br>
 
 or Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
 **cross / triangle** Trigger<br>
@@ -154,16 +151,16 @@ You have first to set the DS2 Sticks into analog mode by pressing the DS2 ANALOG
 
 ## LED UI
 
-| LED | function         | TN20K | TP20K | TP25K | TM60K |TM138k|
-| --- |        -         | -     |-      | -     | -      | -   |
-| 0   |Cartridge selected| x     |x      |  x    | x      | x   |
-| 1   | reserved         | x     |x      | x     | x      | x   |
-| 2   | Game unsupported | x     |x      |  -    | x      | -   |
-| 3   | Game unsupported | x     |x      |  -    | x      | -   |
-| 4   | Game unsupported | x     |x      |  -    | x      | -   |
-| 5   | Game unsupported | x     |x      |  -    | x      | -   |
+| LED | function         |TN9K|TN20K|TP20K|TP25K|TM60K|TM138k|
+| --- |        -         |-   |-     |-      | -     | -      | -   |
+| 0   |Cartridge selected|x   |x     |x      | x     | x      | x   |
+| 1   | Game unsupported |x   |x     |x      | x     | x      | x   |
+| 2   | Game unsupported |x   |x     |x      |  -    | -      | x   |
+| 3   | Game unsupported |x   |x     |x      |  -    | -      | x   |
+| 4   | Game unsupported |x   |x     |x      |  -    | -      | x   |
+| 5   | Game unsupported |x   |x     |x      |  -    | -      | x   |
 
-LED 1..4 are activated as hint in case an unsupported game (mapper) detected<br>
+LED 1..5 are activated as hint in case an unsupported game (mapper) detected<br>
 
 **Multicolor RGB LED**
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>
@@ -217,11 +214,12 @@ Alternatively use the command line build script **gw_sh.exe** build_tn20k.tcl<br
 In order to use this Design the following things are needed:
 
 [Sipeed M0S Dock](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) or Raspberry Pi Pico RP2040 or ESP32-S2/S3<br>
-[Sipeed Tang Nano 20k](https://wiki.sipeed.com/nano20k) <br>
+[Tang Nano 20k](https://wiki.sipeed.com/nano20k) <br>
 or [Tang Primer 20K with Dock ext Board](https://wiki.sipeed.com/hardware/en/tang/tang-primer-20k/primer-20k.html)<br>
 and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md).<br>
 and [PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
-or [Sipeed Tang Primer 25k](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html)<br>
+or [Tang Nano 9k](https://wiki.sipeed.com/hardware/en/tang/Tang-Nano-9K/Nano-9K.html)<br>
+or [Tang Primer 25k](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html)<br>
 and [PMOD DVI](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DVI)<br>
 and [PMOD TF-CARD V2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_TF-CARD)<br>
 and [PMOD SDRAM](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#TANG_SDRAM)<br>
@@ -230,16 +228,14 @@ and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0
 or [Tang Mega 60K NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)<br>
 and [PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
 and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)<br>
-or [Sipeed Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)<br>
+or [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)<br>
 and [PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
 and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)<br>
-
-TM138k add
 microSD or microSDHC card FAT/exFAT formatted<br>
 TFT Monitor with HDMI Input and Speaker<br>
 <br>
 
-| HID and Gamecontrol Hardware option | TN20k needs | alternative option |Primer 25K|Mega 60K|Mega 138K|
+| HID and Gamecontrol Hardware option | TN20k needs | alternative option |Primer 25K|Mega 60K|Mega 138K Pro|
 | -----------                         | ---         | ---                | ---      | -      | -       |
 | USB Keyboard | [USB-C to USB-A adapter](https://www.aliexpress.us/item/3256805563910755.html) | [4 port mini USB hub HS8836A](https://a.aliexpress.com/_EIidgjH)  |x|x|x|
 | [USB Joystick(s)](https://www.speedlink.com/en/COMPETITION-PRO-EXTRA-USB-Joystick-black-red/SL-650212-BKRD)| [4 port mini USB hub HS8836A](https://a.aliexpress.com/_EIidgjH) | - |x|x|x|
