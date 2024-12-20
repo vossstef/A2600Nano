@@ -10,6 +10,10 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.numeric_std.ALL;
 
 entity A2600_top is
+  generic
+  (
+   ESP32PRG  : integer := 0 -- 0:no, 1:yes special ESP32 Programmer
+   );
   port
   (
     clk_27mhz   : in std_logic; -- 27 Mhz XO
@@ -19,7 +23,13 @@ entity A2600_top is
     io          : in std_logic_vector(4 downto 0);
 
     -- SPI interface Sipeed M0S Dock external BL616 uC
-    m0s         : inout std_logic_vector(4 downto 0);
+    m0s         : inout std_logic_vector(6 downto 0); 
+    -- m0s(6),(5), reconfig_n and mspi_ special configuration !
+    reconfig_n  : out std_logic; 
+    mspi_cs     : out std_logic;
+    mspi_clk    : out std_logic;
+    mspi_do     : in std_logic;
+    mspi_di     : out std_logic;
     --
     tmds_clk_n  : out std_logic;
     tmds_clk_p  : out std_logic;
@@ -306,15 +316,22 @@ port (
 end component;
 
 begin
--- ----------------- SPI input parser ----------------------
--- map output data onto both spi outputs
+
   spi_io_din  <= m0s(1);
   spi_io_ss   <= m0s(2);
   spi_io_clk  <= m0s(3);
-  m0s(0)      <= spi_io_dout; -- M0 Dock
 
--- https://store.curiousinventor.com/guides/PS2/
--- https://hackaday.io/project/170365-blueretro/log/186471-playstation-playstation-2-spi-interface
+no_esp32prg: if ESP32PRG = 0 generate
+  m0s(0)      <= spi_io_dout; -- M0 Dock
+end generate;
+
+yes_esp32prg: if ESP32PRG /= 0 generate
+  mspi_clk <= m0s(3);
+  mspi_di  <= m0s(1);
+  mspi_cs  <= m0s(5);
+  m0s(0)   <= spi_io_dout when spi_io_ss = '0' else mspi_do;
+  reconfig_n <= m0s(6);
+end generate;
 
 gamepad_p1: entity work.dualshock2
     port map (
