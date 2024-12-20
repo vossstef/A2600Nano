@@ -306,16 +306,32 @@ port map(
       tmds_d_p   => tmds_d_p
       );
 
--- target
+-- target GW5A 
 -- PAL  3.546894 Hz 28.375152 141.875760
 -- NTSC 3.579545 Hz 28.636360 143.181800
+
+-- TN20 GW2A NTSC
+-- hdmi   144000000
+-- core    28800000
+-- pixel    3600000
+
 mainclock: entity work.Gowin_PLL_ntsc
     port map (
       lock    => pll_locked,
       clkout0 => clk_pixel_x5,
-      clkout1 => clk, -- 28Mhz (/5)
       clkin   => clk_50mhz
     );
+
+div1_inst: CLKDIV
+generic map(
+    DIV_MODE => "5"
+)
+port map(
+    CLKOUT => clk,
+    HCLKIN => clk_pixel_x5,
+    RESETN => pll_locked,
+    CALIB  => '0'
+);
 
 div2_inst: CLKDIV
 generic map(
@@ -599,10 +615,10 @@ module_inst: entity work.sysctrl
   system_joyswap      => joyswap,
 
   int_out_n           => m0s(4),
-  int_in              => std_logic_vector(unsigned'("0000" & sdc_int & '0' & hid_int & '0')),
+  int_in              => unsigned'("0000" & sdc_int & '0' & hid_int & '0'),
   int_ack             => int_ack,
 
-  buttons             => std_logic_vector(unsigned'(reset & user)), -- S0 and S1 buttons on Tang Nano 20k
+  buttons             => unsigned'(not reset & not user), -- S0 and S1 button
   leds                => system_leds, -- two leds can be controlled from the MCU
   color               => ws2812_color -- a 24bit color to e.g. be used to drive the ws2812
 );

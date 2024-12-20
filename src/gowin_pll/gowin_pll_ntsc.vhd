@@ -1,11 +1,11 @@
 --Copyright (C)2014-2024 Gowin Semiconductor Corporation.
 --All rights reserved.
 --File Title: IP file
---Tool Version: V1.9.10.02
+--Tool Version: V1.9.10.03 (64-bit)
 --Part Number: GW5A-LV25MG121NC1/I0
 --Device: GW5A-25
 --Device Version: A
---Created Time: Fri Oct 25 21:20:41 2024
+--Created Time: Fri Dec 20 17:59:12 2024
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -14,13 +14,13 @@ entity Gowin_PLL_ntsc is
     port (
         lock: out std_logic;
         clkout0: out std_logic;
-        clkout1: out std_logic;
         clkin: in std_logic
     );
 end Gowin_PLL_ntsc;
 
 architecture Behavioral of Gowin_PLL_ntsc is
 
+    signal clkout1: std_logic;
     signal clkout2: std_logic;
     signal clkout3: std_logic;
     signal clkout4: std_logic;
@@ -162,7 +162,7 @@ begin
             IDIV_SEL => 2,
             FBDIV_SEL => 1,
             ODIV0_SEL => 11,
-            ODIV1_SEL => 55,
+            ODIV1_SEL => 8,
             ODIV2_SEL => 8,
             ODIV3_SEL => 8,
             ODIV4_SEL => 8,
@@ -172,7 +172,7 @@ begin
             MDIV_FRAC_SEL => 0,
             ODIV0_FRAC_SEL => 0,
             CLKOUT0_EN => "TRUE",
-            CLKOUT1_EN => "TRUE",
+            CLKOUT1_EN => "FALSE",
             CLKOUT2_EN => "FALSE",
             CLKOUT3_EN => "FALSE",
             CLKOUT4_EN => "FALSE",
