@@ -126,6 +126,9 @@ signal system_reset   : std_logic_vector(1 downto 0);
 signal sd_img_size    : std_logic_vector(31 downto 0);
 signal sd_img_size_d  : std_logic_vector(31 downto 0);
 signal sd_img_mounted : std_logic_vector(4 downto 0);
+signal img_present    : std_logic;
+signal sc_lock        : std_logic;
+signal force_bs_lock  : std_logic_vector(4 downto 0);
 signal sd_rd          : std_logic_vector(4 downto 0);
 signal sd_wr          : std_logic_vector(4 downto 0);
 signal sd_lba         : std_logic_vector(31 downto 0);
@@ -229,6 +232,7 @@ signal p_start         : std_logic;
 signal p_select        : std_logic;
 signal vblank_regen    : std_logic;
 signal force_bs        : std_logic_vector(4 downto 0);
+signal force_bs_i      : std_logic_vector(4 downto 0);
 signal joystick0ax     : signed(7 downto 0);
 signal joystick0ay     : signed(7 downto 0);
 signal joystick1ax     : signed(7 downto 0);
@@ -567,20 +571,24 @@ begin
 end process;
 
 -- paddle pins
-pd1 <= not paddle_1 when port_1_sel = "0100" else
+pd1 <=  not paddle_1 when port_1_sel = "0100" else
+        not paddle_3 when port_1_sel = "0111" else
         joystick1_x_pos when port_1_sel = "0001" else
         std_logic_vector(not mx(7) & mx(6 downto 0)) when port_1_sel = "0101" else
         x"ff";
-pd2 <= not paddle_2 when port_1_sel = "0100" else
-        joystick1_y_pos(7 downto 0) when port_1_sel = "0001" else
+pd2 <=  not paddle_2 when port_1_sel = "0100" else
+        not paddle_4 when port_1_sel = "0111" else
+        joystick1_y_pos when port_1_sel = "0001" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_1_sel = "0101" else
         x"ff";
-pd3 <= not paddle_3 when port_2_sel = "0100" else
-        joystick2_x_pos(7 downto 0) when port_2_sel = "0010" else
+pd3 <=  not paddle_3 when port_2_sel = "0111" else
+        not paddle_1 when port_2_sel = "0100" else
+        joystick2_x_pos when port_2_sel = "0010" else
         std_logic_vector(not mx(7) & mx(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
-pd4 <= not paddle_4 when port_2_sel = "0100" else
-        joystick2_y_pos(7 downto 0) when port_2_sel = "0010" else
+pd4 <=  not paddle_4 when port_2_sel = "0111" else
+        not paddle_2 when port_2_sel = "0100" else
+        joystick2_y_pos when port_2_sel = "0010" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
 
@@ -864,16 +872,35 @@ port map(
   enable    => ioctl_wr and cart_download,
   cart_size => img_size_crt,
   data      => dl_data,
-  force_bs  => force_bs,
+  force_bs  => force_bs_i,
   sc        => scdetect
 );
+
+force_bs <= force_bs_i when img_present = '1' else force_bs_lock;
 
 pal <= '1' when system_video_std(1 downto 0) = 2 else 
        '0' when system_video_std(1 downto 0) = 1 else 
        paldetect;
 sc  <= '1' when system_sc(1 downto 0) = 2 else 
        '0' when system_sc(1 downto 0) = 1 else 
-       scdetect;
+       scdetect when img_present = '1' else
+       sc_lock;
+
+process(clk, pll_locked)
+  begin
+  if pll_locked = '0' then
+    sc_lock <= '0';
+    force_bs_lock <= "00000";
+    elsif rising_edge(clk) then
+      if sd_img_mounted(0) = '1' then
+        img_present <= '0' when sd_img_size = 0 else '1';
+        sd_img_size_d <= sd_img_size;
+      elsif cart_download_d = '1' and cart_download = '0' then
+        sc_lock <= scdetect;
+        force_bs_lock <= force_bs_i;
+        end if;
+  end if;
+end process;
 
 process(clk)
 begin

@@ -34,11 +34,11 @@ entity A2600_top is
     sd_dat      : inout std_logic_vector(3 downto 0);
     ws2812      : out std_logic;
 
-    -- Gamepad
-    joystick_clk  : out std_logic;
-    joystick_mosi : out std_logic;
-    joystick_miso : inout std_logic;
-    joystick_cs   : inout std_logic
+    -- Gamepad Dualshock P1
+    ds_clk          : out std_logic;
+    ds_mosi         : out std_logic;
+    ds_miso         : in std_logic;
+    ds_cs           : out std_logic
     );
 end;
 
@@ -65,7 +65,8 @@ signal joyDigital   : std_logic_vector(15 downto 0);
 signal joyNumpad    : std_logic_vector(15 downto 0);
 signal joyMouse     : std_logic_vector(15 downto 0);
 signal numpad       : std_logic_vector(7 downto 0);
-signal joyDS2       : std_logic_vector(15 downto 0);
+signal joyDS2_p1    : std_logic_vector(15 downto 0);
+signal joyDS2_p2    : std_logic_vector(15 downto 0);
 -- joystick interface
 signal joyA        : std_logic_vector(15 downto 0);
 signal joyB        : std_logic_vector(15 downto 0);
@@ -294,9 +295,6 @@ begin
   spi_io_clk  <= m0s(3);
   m0s(0)      <= spi_io_dout; -- M0 Dock
 
-joystick_cs     <= joystick_cs_i;
-joystick_miso_i <= joystick_miso;
-
 -- https://store.curiousinventor.com/guides/PS2/
 -- https://hackaday.io/project/170365-blueretro/log/186471-playstation-playstation-2-spi-interface
 
@@ -305,10 +303,10 @@ gamepad: entity work.dualshock2
     clk           => clk,
     rst           => system_reset(0) and not pll_locked,
     vsync         => vsync,
-    ds2_dat       => joystick_miso_i,
-    ds2_cmd       => joystick_mosi,
-    ds2_att       => joystick_cs_i,
-    ds2_clk       => joystick_clk,
+    ds2_dat       => ds_miso,
+    ds2_cmd       => ds_mosi,
+    ds2_att       => ds_cs,
+    ds2_clk       => ds_clk,
     ds2_ack       => '0',
     stick_lx      => paddle_1,
     stick_ly      => paddle_2,
@@ -569,9 +567,10 @@ leds(5 downto 1) <= "11111" when force_bs > 14 else "00000"; -- indicate unsuppo
 -- BTN_SR          9
 -- BTN_SELECT     10
 -- BTN_START      11
-joyDS2     <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
+joyDS2_p1  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
               key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
-joyDigital   <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
+joyDS2_p2  <= x"0000";
+joyDigital <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
 joyNumpad  <= x"00" & "000" & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
@@ -584,14 +583,17 @@ process(clk)
 begin
 	if rising_edge(clk) then
     case port_1_sel is
-      when "0000"  => joyA <= joyDigital;
-      when "0001"  => joyA <= joyUsb1;
-      when "0010"  => joyA <= joyUsb2;
-      when "0011"  => joyA <= joyNumpad;
-      when "0100"  => joyA <= joyDS2;
-      when "0101"  => joyA <= joyMouse;
-      when "0110"  => joyA <= (others => '0');
-      when others => null;
+      when "0000"  => joyA <= joyDigital;-- 0
+      when "0001"  => joyA <= joyUsb1;   -- 1
+      when "0010"  => joyA <= joyUsb2;   -- 2
+      when "0011"  => joyA <= joyNumpad; -- 3 
+      when "0100"  => joyA <= joyDS2_p1; -- 4
+      when "0101"  => joyA <= joyMouse;  -- 5
+      when "0110"  => joyA <= (others => '0'); --6 Off
+      when "0111"  => joyA <= joyDS2_p2; -- 7
+      when "1000"  => joyA <= (others => '0'); -- 8  R #2 D9 PMOD
+      when "1001"  => joyA <= (others => '0'); -- 9  R #2 D9 ALT
+      when others  => joyA <= (others => '0');
     end case;
   end if;
 end process;
@@ -604,28 +606,36 @@ begin
       when "0001"  => joyB <= joyUsb1;
       when "0010"  => joyB <= joyUsb2;
       when "0011"  => joyB <= joyNumpad;
-      when "0100"  => joyB <= joyDS2;
+      when "0100"  => joyB <= joyDS2_p1;
       when "0101"  => joyB <= joyMouse;
       when "0110"  => joyB <= (others => '0');
-      when others => null;
+      when "0111"  => joyB <= joyDS2_p2;
+      when "1000"  => joyB <= (others => '0'); -- 8  R #2 D9 PMOD
+      when "1001"  => joyB <= (others => '0'); -- 9  R #2 D9 ALT
+      when others  => joyB <= (others => '0');
       end case;
   end if;
 end process;
 
-pd1 <= not paddle_1 when port_1_sel = "0100" else
+-- paddle pins
+pd1 <=  not paddle_1 when port_1_sel = "0100" else
+        not paddle_3 when port_1_sel = "0111" else
         joystick1_x_pos when port_1_sel = "0001" else
         std_logic_vector(not mx(7) & mx(6 downto 0)) when port_1_sel = "0101" else
         x"ff";
-pd2 <= not paddle_2 when port_1_sel = "0100" else
-        joystick1_y_pos(7 downto 0) when port_1_sel = "0001" else
+pd2 <=  not paddle_2 when port_1_sel = "0100" else
+        not paddle_4 when port_1_sel = "0111" else
+        joystick1_y_pos when port_1_sel = "0001" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_1_sel = "0101" else
         x"ff";
-pd3 <= not paddle_3 when port_2_sel = "0100" else
-        joystick2_x_pos(7 downto 0) when port_2_sel = "0010" else
+pd3 <=  not paddle_3 when port_2_sel = "0111" else
+        not paddle_1 when port_2_sel = "0100" else
+        joystick2_x_pos when port_2_sel = "0010" else
         std_logic_vector(not mx(7) & mx(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
-pd4 <= not paddle_4 when port_2_sel = "0100" else
-        joystick2_y_pos(7 downto 0) when port_2_sel = "0010" else
+pd4 <=  not paddle_4 when port_2_sel = "0111" else
+        not paddle_2 when port_2_sel = "0100" else
+        joystick2_y_pos when port_2_sel = "0010" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
 
