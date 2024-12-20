@@ -58,6 +58,9 @@ set_option -print_all_synthesis_warning 1
 set_option -rw_check_on_ram 0
 set_option -user_code 00000001
 set_option -bit_security 0
+set_option -multi_boot 1
+# for special ESP32 Programmer
+#set_option -mspi_jump 100000
 
 #run syn
 run all
