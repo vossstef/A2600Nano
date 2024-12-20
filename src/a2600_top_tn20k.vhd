@@ -567,9 +567,12 @@ leds(5 downto 1) <= "11111" when force_bs > 14 else "00000"; -- indicate unsuppo
 -- BTN_SR          9
 -- BTN_SELECT     10
 -- BTN_START      11
+
+-- single DS only ! 2nd port is identical to 1st one except paddle stick
 joyDS2_p1  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
               key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
-joyDS2_p2  <= x"0000";
+joyDS2_p2  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
+              key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
 joyDigital <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
