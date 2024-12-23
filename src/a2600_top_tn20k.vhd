@@ -34,11 +34,17 @@ entity A2600_top is
     sd_dat      : inout std_logic_vector(3 downto 0);
     ws2812      : out std_logic;
 
-    -- Gamepad Dualshock P1
+    -- Gamepad Dualshock @Joystick to DIP
     ds_clk          : out std_logic;
     ds_mosi         : out std_logic;
     ds_miso         : in std_logic;
-    ds_cs           : out std_logic
+    ds_cs           : out std_logic;
+
+    -- Gamepad Dualshock @Spare Header on MisteryShield20k
+    ds_clk_ms20k    : out std_logic;
+    ds_mosi_ms20k   : out std_logic;
+    ds_miso_ms20k   : in std_logic;
+    ds_cs_ms20k     : out std_logic
     );
 end;
 
@@ -168,6 +174,26 @@ signal key_start       : std_logic;
 signal key_select      : std_logic;
 signal key_lstick      : std_logic;
 signal key_rstick      : std_logic;
+signal paddle_12       : std_logic_vector(7 downto 0);
+signal paddle_22       : std_logic_vector(7 downto 0);
+signal paddle_32       : std_logic_vector(7 downto 0);
+signal paddle_42       : std_logic_vector(7 downto 0);
+signal key_r12         : std_logic;
+signal key_r22         : std_logic;
+signal key_l12         : std_logic;
+signal key_l22         : std_logic;
+signal key_triangle2   : std_logic;
+signal key_square2     : std_logic;
+signal key_circle2     : std_logic;
+signal key_cross2      : std_logic;
+signal key_up2         : std_logic;
+signal key_down2       : std_logic;
+signal key_left2       : std_logic;
+signal key_right2      : std_logic;
+signal key_start2      : std_logic;
+signal key_select2     : std_logic;
+signal key_lstick2      : std_logic;
+signal key_rstick2      : std_logic;
 ---
 signal video_r         : std_logic_vector(7 downto 0);
 signal video_g         : std_logic_vector(7 downto 0);
@@ -298,7 +324,7 @@ begin
 -- https://store.curiousinventor.com/guides/PS2/
 -- https://hackaday.io/project/170365-blueretro/log/186471-playstation-playstation-2-spi-interface
 
-gamepad: entity work.dualshock2
+gamepad_p1: entity work.dualshock2
     port map (
     clk           => clk,
     rst           => system_reset(0) and not pll_locked,
@@ -328,6 +354,40 @@ gamepad: entity work.dualshock2
     key_select    => key_select,
     key_lstick    => key_lstick,
     key_rstick    => key_rstick,
+    debug1        => open,
+    debug2        => open
+    );
+
+gamepad_p2: entity work.dualshock2
+    port map (
+    clk           => clk,
+    rst           => system_reset(0) and not pll_locked,
+    vsync         => vsync,
+    ds2_dat       => ds_miso_ms20k,
+    ds2_cmd       => ds_mosi_ms20k,
+    ds2_att       => ds_cs_ms20k,
+    ds2_clk       => ds_clk_ms20k,
+    ds2_ack       => '0',
+    stick_lx      => paddle_12,
+    stick_ly      => paddle_22,
+    stick_rx      => paddle_32,
+    stick_ry      => paddle_42,
+    key_up        => key_up2,
+    key_down      => key_down2,
+    key_left      => key_left2,
+    key_right     => key_right2,
+    key_l1        => key_l12,
+    key_l2        => key_l22,
+    key_r1        => key_r12,
+    key_r2        => key_r22,
+    key_triangle  => key_triangle2,
+    key_square    => key_square2,
+    key_circle    => key_circle2,
+    key_cross     => key_cross2,
+    key_start     => key_start2,
+    key_select    => key_select2,
+    key_lstick    => open,
+    key_rstick    => open,
     debug1        => open,
     debug2        => open
     );
@@ -568,11 +628,12 @@ leds(5 downto 1) <= "11111" when force_bs > 14 else "00000"; -- indicate unsuppo
 -- BTN_SELECT     10
 -- BTN_START      11
 
--- single DS only ! 2nd port is identical to 1st one except paddle stick
+-- p1 DualShock 2 @Joystick to DIP
+-- p2 DualShock 2 @MisteryShield20k
 joyDS2_p1  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
               key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
-joyDS2_p2  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
-              key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
+joyDS2_p2  <= key_rstick2 & key_lstick2 & key_r22 & key_l22 & key_start2 & key_select2 & key_r12 & key_l12 &
+              key_square2 & key_triangle2 & key_cross2 & key_circle2 & key_up2 & key_down2 & key_left2 & key_right2;
 joyDigital <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
@@ -616,7 +677,7 @@ begin
       when "1000"  => joyB <= (others => '0'); -- 8  R #2 D9 PMOD
       when "1001"  => joyB <= (others => '0'); -- 9  R #2 D9 ALT
       when others  => joyB <= (others => '0');
-      end case;
+    end case;
   end if;
 end process;
 
@@ -631,13 +692,13 @@ pd2 <=  not paddle_2 when port_1_sel = "0100" else
         joystick1_y_pos when port_1_sel = "0001" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_1_sel = "0101" else
         x"ff";
-pd3 <=  not paddle_3 when port_2_sel = "0111" else
-        not paddle_1 when port_2_sel = "0100" else
+pd3 <=  not paddle_32 when port_2_sel = "0111" else
+        not paddle_12 when port_2_sel = "0100" else
         joystick2_x_pos when port_2_sel = "0010" else
         std_logic_vector(not mx(7) & mx(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
-pd4 <=  not paddle_4 when port_2_sel = "0111" else
-        not paddle_2 when port_2_sel = "0100" else
+pd4 <=  not paddle_42 when port_2_sel = "0111" else
+        not paddle_22 when port_2_sel = "0100" else
         joystick2_y_pos when port_2_sel = "0010" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_2_sel = "0101" else
         x"ff";
