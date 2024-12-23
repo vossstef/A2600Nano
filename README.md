@@ -130,10 +130,13 @@ Dualshock2 Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
 > [!IMPORTANT]
 > In a [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k) configuration Dualshock is supported via the internal ``spare J7`` pinheader. <br>
 > See MiSTeryShield20k [DS Adapter Cable](shield_ds_cable.md) for further information.<br>
-> TN20k: You have to select OSD "DS2 **#2** Joy" for a ``MiSTeryShield20k`` configuration.<br>
-> TN20k: You have to select OSD "DS2 **#1** Joy" if you use a ``Sipeed Joy to DIP`` adapter.<br>
 
-<br>**left stick** for Move and ```square triangle cross circle``` Buttons for Trigger:<br>
+> [!NOTE]
+> TN20k: You have to select OSD "DS2 **#2** Joy" for a ``MiSTeryShield20k`` configuration.<br>
+> TN20k: You have to select OSD "DS2 **#1** Joy" if you use the ``Sipeed Joy to DIP`` adapter.<br>
+Both DS interface ports can be active at the same time meaning twin Dualshock support if the MiSTeryShield20k MIDI interface is not populated (Resistor R9 and IC U3 removed).  
+
+<br>**left stick** or **D-Pad** for Move and ```square triangle cross circle``` Buttons for Trigger:<br>
 | Buttons | - | - |
 | -       | - | -  |
 | square<br>Trigger 1 | Up  | cross<br>Trigger 2 |
