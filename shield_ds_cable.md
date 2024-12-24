@@ -24,16 +24,16 @@ Your adapter could end up looking like this:
 ![ds2_adaptercable](\.assets/ds2_adapter_cable.png)
 
 If your Adapter cable is finished, make sure you connect it in the correct orientation.  
-See the Board Layout (see below) for the correct position of J8-Pin 1, which should match Pin 1 of your cable.
+See the Board Layout (see below) for the correct position of J8-Pin 1, which should match Pin 1 of your cable.  
 Activate the DS2 Controller using **DS2 #2 Joy** in the Menu and test it.  
 
 ### DS2 Buttons
 Circle: Trigger Button #1  
 Square: Trigger Button #2  
-Traingle and Cross activate the "Paddle Mode" and **deactivate** actually the Direction buttons!
+Traingle and Cross activate the "Paddle Mode" and **deactivate** actually the Direction buttons!  
 
 ### PCB based Adapter
-An adapter PCB board is currently being planned and will be released once the needed parts have arrived and been tested.
+An adapter PCB board is currently being planned and will be released once the needed parts have arrived and been tested.  
 
 ## Pinouts and Table
 ### Pinout of the Playstation Pad Connector
