@@ -39,7 +39,11 @@ Use a Multimeter for measure or beep the correct cable.
 Drimp or solder some female dupont terminals to the cables.  
 Use the above table for correct orientation of the terminals within the cable housing.  
 
-Your adapter could end up looking like this:
+If your Adapter cable is finished make sure you conneted it in the correct orientation.
+See above Board Layout for the correct position of Pin 1 at J8.
+Activate the DS2 Controller using DS2 #2 in the Menu and test it.
+
+Your adapter could end up looking like this:  
 ![ds2_adaptercable](\.assets/ds2_adapter_cable.png)
 
 Double check your Adapter cable to make sure the voltage pins are at the correct pin position.
