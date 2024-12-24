@@ -33,7 +33,7 @@ Square: Trigger Button #2
 Traingle and Cross activate the "Paddle Mode" and **deactivate** actually the Direction buttons!  
 
 ### PCB based Adapter
-An adapter PCB board is currently being planned and will be released once the needed parts have arrived and been tested.  
+An PCB Adapter board is currently being planned and will be released once the needed parts have arrived and been tested.  
 
 ## Pinouts and Table
 ### Pinout of the Playstation Pad Connector
