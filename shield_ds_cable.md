@@ -6,10 +6,10 @@ of the [MiSTery Nano Midi Shield by Till Harbaum](https://github.com/harbaum/MiS
 
 
 ## Pinout
-The Pinout of the Playstation Pad Connector:  
+### Pinout of the Playstation Pad Connector
 ![ds2_pinmap](\.assets/ps_pad_connector.png)
   
-The Pinout of the Spare Pin Header J8 on the Nano Shield:
+### Pinout of the Spare Pin Header J8
 ![ds2_pinmap](\.assets/pcb_m0s_j8_pinout.png)
 
 ## Connection Table
