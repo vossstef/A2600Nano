@@ -20,7 +20,7 @@ Use the provided pinouts and the connection table (see below) for correct positi
 
 See here https://www.instructables.com/Fitting-Dupont-Connectors/  
 or here https://www.youtube.com/watch?v=fcP0P6OLJqA for instructions  
-how to use Dupont terminals
+how to use Dupont terminals.
 
 Finally double check your Adapter wires to make sure all pins, ***especially the voltage pins***, are at the correct position.
 
