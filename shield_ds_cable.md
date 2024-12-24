@@ -28,8 +28,9 @@ Your adapter could end up looking like this:
 ![ds2_adaptercable](\.assets/ds2_adapter_cable.png)
 
 If your Adapter cable is finished, make sure you connect it in the correct orientation.  
-See the Board Layout (see below) for the correct position of J8-Pin 1, which should match Pin 1 of your cable.  
-Activate the DS2 Controller using **DS2 #2 Joy** in the Menu and test it.  
+See the MiSTery Shield Board Layout (see below) for the correct position of **J8-Pin 1**, which should match **Pin 1** of your cable.  
+
+Activate the DS2 Controller using **DS2 #2 Joy** in the Menu and have fun 😃 
 
 ### DS2 Buttons
 Circle: Trigger Button #1  
