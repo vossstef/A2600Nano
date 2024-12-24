@@ -15,7 +15,8 @@ Here https://store.curiousinventor.com/guides/PS2/ you can see a variant of the 
 
 If you have some spare female DS2 connectors you can solder direcly some small wires to the pins.
 
-Crimp and/or solder some female dupont terminals to the needed wires. See https://www.instructables.com/Fitting-Dupont-Connectors/  
+Crimp and/or solder some female dupont terminals to the needed wires.  
+See here https://www.instructables.com/Fitting-Dupont-Connectors/ or here https://www.youtube.com/watch?v=jET1QTP1B7c for instructions.
 Use the provided pinouts and the connection table (see below) for correct position of the terminals within the terminal housing.  
 
 Double check your Adapter cable to make sure all pins, ***especially the voltage pins***, are at the correct position.
