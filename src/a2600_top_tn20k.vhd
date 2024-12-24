@@ -672,7 +672,7 @@ begin
       when "0101"  => joyA <= joyDS2_p2; -- 5
         paddle_ena12  <= '0';
       when "0110"  => joyA <= joyMouse;  -- 6
-        paddle_ena12  <= '0';
+        paddle_ena12  <= '1';
       when "0111"  => joyA <= joyUsb1A;  -- 7
         paddle_ena12  <= '1';
       when "1000"  => joyA <= joyUsb2A;  -- 8
@@ -701,7 +701,7 @@ begin
       when "0101"  => joyB <= joyDS2_p2; -- 5
         paddle_ena34  <= '0';
       when "0110"  => joyB <= joyMouse;  -- 6
-        paddle_ena34  <= '0';
+        paddle_ena34  <= '1';
       when "0111"  => joyB <= joyUsb1A;  -- 7
         paddle_ena34  <= '1';
       when "1000"  => joyB <= joyUsb2A;  -- 8
