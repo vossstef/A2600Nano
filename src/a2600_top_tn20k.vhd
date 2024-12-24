@@ -720,23 +720,27 @@ end process;
 
 -- paddle pins
 pd1 <=  not paddle_1 when port_1_sel = "1001" else
-        not paddle_3 when port_1_sel = "1011" else
+        not paddle_3 when port_1_sel = "1010" else
         joystick1_x_pos when port_1_sel = "0111" else
+        joystick2_x_pos when port_1_sel = "1000" else
         std_logic_vector(not mx(7) & mx(6 downto 0)) when port_1_sel = "0110" else
         x"ff";
 pd2 <=  not paddle_2 when port_1_sel = "1001" else
-        not paddle_4 when port_1_sel = "1011" else
+        not paddle_4 when port_1_sel = "1010" else
         joystick1_y_pos when port_1_sel = "0111" else
+        joystick2_y_pos when port_1_sel = "1000" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_1_sel = "0110" else
         x"ff";
-pd3 <=  not paddle_32 when port_2_sel = "1011" else
+pd3 <=  not paddle_32 when port_2_sel = "1010" else
         not paddle_12 when port_2_sel = "1001" else
         joystick2_x_pos when port_2_sel = "1000" else
+        joystick1_x_pos when port_2_sel = "0111" else
         std_logic_vector(not mx(7) & mx(6 downto 0)) when port_2_sel = "0110" else
         x"ff";
-pd4 <=  not paddle_42 when port_2_sel = "1011" else
+pd4 <=  not paddle_42 when port_2_sel = "1010" else
         not paddle_22 when port_2_sel = "1001" else
         joystick2_y_pos when port_2_sel = "1000" else
+        joystick1_y_pos when port_2_sel = "0111" else
         std_logic_vector(not my(7) & my(6 downto 0)) when port_2_sel = "0110" else
         x"ff";
 
@@ -990,7 +994,7 @@ a2601_inst: entity work.A2601top
 		rom_do    => rom_do, 
 		rom_size  => img_size_crt(16 downto 0),
 
-		pause     => osd_status,
+		pause     => '0',
 
 		pal       => pal,
 		p_dif     => not (p_dif2 & p_dif1),  -- 0 = B, 1 = A
