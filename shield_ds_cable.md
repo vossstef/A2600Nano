@@ -2,7 +2,7 @@
 
 # DS Adapter Cable
 
-This site shows how to build and connect an Adapter or an Adapter cable with the Spare Pin Header **J8**  
+This site shows how to build and connect an Adapter or an Adapter cable to the Spare Pin Header **J8**  
 of the [MiSTery Nano Midi Shield by Till Harbaum](https://github.com/harbaum/MiSTeryNano/blob/main/board/misteryshield20k/README.md) to use a Playstation Dualshock 2 (DS2) Controller.
 
 ## Building your own Adapter
