@@ -1,9 +1,9 @@
 **Work in Progress!**
 
-This site shows how to build and connect an Adapter or an Adapter cable to use a Playstation Dualshock 2 Controller,  
-from now on named DS2, with the Spare Pin Header **J8** of the MiSTery Nano Midi Shield by Till Harbaum.  
+This site shows how to build and connect an Adapter or an Adapter cable with the Spare Pin Header **J8**  
+of the [MiSTery Nano Midi Shield by Till Harbaum](https://github.com/harbaum/MiSTeryNano/blob/main/board/misteryshield20k/README.md) to use a Playstation Dualshock 2 (DS2) Controller.
 
-![ds2_adaptercable](\.assets/ds2_adapter_cable.png)
+
 
 ## Pinout
 The Pinout of the Playstation Pad Connector:  
@@ -28,4 +28,20 @@ The Pinout of the Spare Pin Header J8 on the Nano Shield:
 
 nc = not connected
 
-Use an used DS2 Controller extension Cable and crimp or solder dupont connector
+### Building your own Adapter
+Use the female end of an used DS2 Controller extension cable and cut it 25-30 centimeters behind the connector.  
+Remove the main isolation and the isolation of the cables. Be careful not to break/cut the thin wires.  
+
+Here https://store.curiousinventor.com/guides/PS2/ you can see a variant of the cable colors from an opened DS2 Controller cable.  
+**Be careful, you colours can be different.**  
+Use a Multimeter for measure or beep the correct cable.
+
+Drimp or solder some female dupont terminals to the cables.  
+Use the above table for correct orientation of the terminals within the cable housing.  
+
+Your adapter could end up looking like this:
+![ds2_adaptercable](\.assets/ds2_adapter_cable.png)
+
+Double check your Adapter cable to make sure the voltage pins are at the correct pin position.
+
+An adapter PCB board is currently being planned and will be released once the parts have arrived and been tested.
