@@ -28,24 +28,30 @@ The Pinout of the Spare Pin Header J8 on the Nano Shield:
 
 nc = not connected
 
-### Building your own Adapter
+## Building your own Adapter
 Use the female end of an used DS2 Controller extension cable and cut it 25-30 centimeters behind the connector.  
-Remove the main isolation and the isolation of the cables. Be careful not to break/cut the thin wires.  
+Remove **careful** the main isolation and **more careful** the isolation of the cables.  
+Be **very careful** not to break/cut the thin wires.  
 
 Here https://store.curiousinventor.com/guides/PS2/ you can see a variant of the cable colors from an opened DS2 Controller cable.  
-**Be careful, you colours can be different.**  
-Use a Multimeter for measure or beep the correct cable.
+**Be careful, you colours can be different.** Use a Multimeter for measure or beep the correct cable.  
 
-Drimp or solder some female dupont terminals to the cables.  
-Use the above table for correct orientation of the terminals within the cable housing.  
+Crimp or solder some female dupont terminals to the cables.  
+Use the above connection table for correct orientation of the terminals within the cable housing.  
 
-If your Adapter cable is finished make sure you conneted it in the correct orientation.
-See above Board Layout for the correct position of Pin 1 at J8.
-Activate the DS2 Controller using DS2 #2 in the Menu and test it.
+Double check your Adapter cable to make sure the voltage pins are at the correct position.
 
 Your adapter could end up looking like this:  
 ![ds2_adaptercable](\.assets/ds2_adapter_cable.png)
 
-Double check your Adapter cable to make sure the voltage pins are at the correct pin position.
+If your Adapter cable is finished make sure you connect it in the correct orientation.  
+See the above Board Layout for the correct position of J8-Pin1 which should match Pin1 of your cable.
+Activate the DS2 Controller using **DS2 #2 Joy** in the Menu and test it.  
 
+## DS2 Buttons
+Circle should be Trigger Button #1
+Square should be Trigger Button #2
+Traingle and Cross activate the "Paddle Mode"
+
+## PCB based Adapter
 An adapter PCB board is currently being planned and will be released once the parts have arrived and been tested.
