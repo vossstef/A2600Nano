@@ -40,11 +40,11 @@ Traingle and Cross activate the "Paddle Mode" and **deactivate** actually the Di
 ### PCB based Adapter
 An PCB Adapter board is currently being planned and will be released once the needed parts have arrived and been tested.  
 
-## Pinouts and Table
+## Pinouts and Connection Table
 ### Pinout of the Playstation Pad Connector
 ![ds2_pinmap](\.assets/ps_pad_connector.png)
   
-### Pinout of the Spare Pin Header J8
+### Pinout of the MiSTery Shield Pin Header J8
 ![ds2_pinmap](\.assets/pcb_m0s_j8_pinout.png)
 
 ### Connection Table
