@@ -17,9 +17,12 @@ If you have some spare female DS2 connectors you can solder direcly some small w
 
 Crimp and/or solder some female dupont terminals to the needed wires.  
 Use the provided pinouts and the connection table (see below) for correct position of the terminals within the terminal housing.  
-See here https://www.instructables.com/Fitting-Dupont-Connectors/ or here https://www.youtube.com/watch?v=fcP0P6OLJqA for instructions how to use Dupont terminals
 
-Double check your Adapter cable to make sure all pins, ***especially the voltage pins***, are at the correct position.
+See here https://www.instructables.com/Fitting-Dupont-Connectors/  
+or here https://www.youtube.com/watch?v=fcP0P6OLJqA for instructions  
+how to use Dupont terminals
+
+Finally double check your Adapter wires to make sure all pins, ***especially the voltage pins***, are at the correct position.
 
 Your adapter could end up looking like this:  
 ![ds2_adaptercable](\.assets/ds2_adapter_cable.png)
