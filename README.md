@@ -4,7 +4,7 @@ The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari260
 | Board      | FPGA       | support |Note|
 | ---        |        -   | -     |-|
 | [Tang Nano 9k](https://wiki.sipeed.com/hardware/en/tang/Tang-Nano-9K/Nano-9K.html)       | [GW1NR](https://www.gowinsemi.com/en/product/detail/38/)  |X |micro SD card [HW modification](TANG_NANO_9K.md#hw-modification) needed|
-| [Tang Nano 20k](https://wiki.sipeed.com/nano20k)     | [GW2AR](https://www.gowinsemi.com/en/product/detail/38/)  |X  |twin Dualshock<br> MiSTeryShield20k J7 + Joy to DIP |
+| [Tang Nano 20k](https://wiki.sipeed.com/nano20k)     | [GW2AR](https://www.gowinsemi.com/en/product/detail/38/)  |X  |twin Dualshock<br> MiSTeryShield20k spare header + Joy to DIP |
 | [Tang Primer 20K Dock ext Board](https://wiki.sipeed.com/hardware/en/tang/tang-primer-20k/primer-20k.html)| [GW2A](https://www.gowinsemi.com/en/product/detail/46/)| X |twin Dualshock |
 | [Tang Primer 25K](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html) | [GW5A-25](https://www.gowinsemi.com/en/product/detail/60/)  | X |no Dualshock, no retro D9 Joystick |
 | [Tang Mega 60k NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/)| X |twin Dualshock |
@@ -70,17 +70,18 @@ ROM can be loaded via OSD file selection.<br>
   
 LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<br>
 
-### single Button Joystick
+### single / dual Button Joystick
 * Button ```Trigger```
+* 2nd Button ```Trigger 2```
 
 ### four Button Joystick or Gamepad
-* Gamepad Button ```Trigger A (DS2 circle)``` Trigger
+* Gamepad Button ```Trigger A (DS2 circle)``` 1st Trigger Button
 
-* Gamepad Button ```Trigger B (DS2 cross)``` Paddle Trigger and enable 
+* Gamepad Button ```Trigger B (DS2 cross)``` 2nd Trigger Button
 
-* Gamepad Button ```Trigger X (DS2 triangle)``` Paddle 2nd Trigger and enable
+* Gamepad Button ```Trigger X (DS2 triangle)``` 1st Paddle Trigger and enable
 
-* Gamepad Button ```Trigger Y (DS2 square)``` revert Paddle mode to Joystick mode
+* Gamepad Button ```Trigger Y (DS2 square)``` 2nd Paddle Trigger and enable
 
 * Gamepad Button ```START``` as core function **START**<br>
 
@@ -89,8 +90,7 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 ### Paddle
 * DualShock 2, USB Gamepad or USB Mouse.<br>
 
-Core switches to paddle mode if paddle ```Trigger B``` or ```Trigger X``` is pressed respectively ```left Mouse Button``` or ```right Mouse Button```.<br>
-Can be reverted by pressing Gamepad Button ```Trigger Y```.
+Core switches to paddle mode if paddle ```Trigger X``` or ```Trigger Y``` is pressed respectively ```left Mouse Button``` or ```right Mouse Button```.<br>
 
 ### Keyboard
 * Key **F11** as core function ```START``` <br>
@@ -120,6 +120,7 @@ invoke by F12 keypress<br>
 ## Gamecontrol support
 
  ![controller](\.assets/controller-layout.png)<br>
+A 2nd Trigger Button is supported for modified Games.
 
 legacy single D9 Digital Joystick. OSD: **Retro D9**<br>
 or<br>
@@ -147,15 +148,15 @@ or<br> Keyboard Numpad. OSD: **Numpad**<br>
 
 | -           |         |          |
 | -          |-        |-         |
-|0<br>Trigger|8<br>Up  |          |
+|0<br>Trigger|8<br>Up  |.<br>Trigger 2|
 |4<br>Left   |-        |6<br>Right|
 |-           |2<br>Down|-         |
 
 or<br> Mouse. OSD: **Mouse**<br>
 ```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.<br>
 
-or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
-**cross / triangle** Trigger<br>
+or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
+**rectangle (Y) / triangle (X)** Trigger<br>
 You have first to set the DS2 Sticks into **analog mode** by pressing the DS2 ANALOG button.<br> Mode indicated by red light indicator.<br>Configure DIGITAL mode (press ANALOG button again) when using the **Joystick** mode again.<br>
 
 ## LED UI

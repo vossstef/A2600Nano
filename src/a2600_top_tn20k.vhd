@@ -634,6 +634,8 @@ leds(5 downto 1) <= "11111" when force_bs > 14 else "00000"; -- indicate unsuppo
 -- BTN_SELECT     10
 -- BTN_START      11
 
+-- 2nd Button button read through INPT1
+
 -- p1 DualShock 2 @Joystick to DIP
 -- p2 DualShock 2 @MisteryShield20k
 joyDS2_p1  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
@@ -644,12 +646,12 @@ joyDS2A_p1 <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select
               key_square & key_triangle & key_cross & '0' & "0000";
 joyDS2A_p2 <= key_rstick2 & key_lstick2 & key_r22 & key_l22 & key_start2 & key_select2 & key_r12 & key_l12 &
               key_square2 & key_triangle2 & key_cross2 & '0' & "0000";
-joyDigital <= not(x"FF" & "111" & io(0) & io(2) & io(1) & io(4) & io(3));
+joyDigital <= not(x"FF" & "11" & io(5) & io(0) & io(2) & io(1) & io(4) & io(3));
 joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
 joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
 joyUsb1A   <= extra_button0 & joystick1(7 downto 5) & '0' & "0000";
 joyUsb2A   <= extra_button1 & joystick2(7 downto 5) & '0' & "0000";
-joyNumpad  <= x"00" & "000" & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
+joyNumpad  <= x"00" & "00" & numpad(5) & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
 joyMouse   <= extra_button0 & "0" & mouse_btns & "0" & "0000";
 
 -- send external DB9 joystick port to µC
@@ -960,26 +962,26 @@ a2601_inst: entity work.A2601top
 		p1_r      => not joy_p1(0), 
 		p1_u      => not joy_p1(3), 
 		p1_d      => not joy_p1(2), 
-		p1_f      => not joy_p1(4),  -- BTN_A
-		p1_f2     => paddle_ena12,
+		p1_f      => not joy_p1(4), -- BTN_A
+		p1_f2     => not (joy_p1(5) and not paddle_ena12), -- BTN_B,
 
 		p2_l      => not joy_p2(1),
 		p2_r      => not joy_p2(0),
 		p2_u      => not joy_p2(3),
 		p2_d      => not joy_p2(2), 
-		p2_f      => not joy_p2(4),  -- BTN_A
-		p2_f2     => paddle_ena34,
+		p2_f      => not joy_p2(4), -- BTN_A
+		p2_f2     => not (joy_p2(5) and not paddle_ena34), -- BTN_B,
 
-		p_1       => not (joy_p1(5) and paddle_ena12), -- BTN_B
+		p_1       => not (joy_p1(6) and paddle_ena12), -- BTN_X
 		paddle_1  => p1,
 
-		p_2       => not (joy_p1(6) and paddle_ena12), -- BTN_X
+		p_2       => not (joy_p1(7) and paddle_ena12), -- BTN_Y
 		paddle_2  => p2,
 
-		p_3       => not (joy_p2(5) and paddle_ena34), -- BTN_B
+		p_3       => not (joy_p2(6) and paddle_ena34), -- BTN_X
 		paddle_3  => p3,
 
-		p_4       => not (joy_p2(6) and paddle_ena34), -- BTN_X
+		p_4       => not (joy_p2(7) and paddle_ena34), -- BTN_Y
 		paddle_4  => p4,
 
 		p_type    => "00",
