@@ -128,7 +128,7 @@ Also [RII Mini Keyboard i8](http://www.riitek.com/product/220.html) left Multime
 or<br>
 Dualshock2 Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
 > [!IMPORTANT]
-> In a [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k) configuration Dualshock is supported via the internal ``spare J7`` pinheader. <br>
+> In a [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k) configuration Dualshock is supported via the internal ``spare J8`` pinheader. <br>
 > See MiSTeryShield20k [DS Adapter Cable](shield_ds_cable.md) for further information.<br>
 
 > [!NOTE]
