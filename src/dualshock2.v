@@ -101,7 +101,7 @@ module dualshock2(
                         FSM_WAIT4CHANGE = 3'd4,
                         FSM_DS2CFG      = 3'd5,
                         FSM_CFG_ENTER   = 3'd6,
-                        FSM_WAIT_CFG    = 3'd7;
+                        FSM_DS2CFG_ALL  = 3'd7;
 
     localparam S_IDLE      = 5'd0;
     localparam S_ATT       = 5'd1;
@@ -254,6 +254,33 @@ module dualshock2(
         analog_d <= analog;
 
         case(io_state)
+            FSM_DS2CFG_ALL:
+                begin
+                    // Dualshock2: Set ReplyProtocol
+                    // Digital buttons + analog sticks
+                    // TX: 01h 4fh 00h 3Fh 00h 00h 00h 00h 00h
+                    // Digital buttons
+                    // TX: 01h 4fh 00h 03h 00h 00h 00h 00h 00h
+                    // Enable all 18 input bytes
+                    // TX: 01h 4fh 00h FFh FFh 03h 00h 00h 00h
+                    if(state == S_IDLE) begin
+                        tx_buffer[0] <= 8'h01;
+                        tx_buffer[1] <= 8'h4f;
+                        tx_buffer[2] <= 8'h00;
+                        tx_buffer[3] <= 8'h03; // cfg value 1
+                        tx_buffer[4] <= 8'h00; // cfg value 2
+                        tx_buffer[5] <= 8'h00; // cfg value 3
+                        tx_buffer[6] <= 8'h00;
+                        tx_buffer[7] <= 8'h00;
+                        tx_buffer[8] <= 8'h00;
+
+                        core_wait_cnt <= core_wait_cnt + 1'd1;
+                        if(&core_wait_cnt) begin
+                                core_wait_cnt <= 12'd0;
+                                io_state <= FSM_CFG_EXIT; // cfg exit
+                        end
+                    end
+                end
             FSM_DS2CFG:
                     if(state == S_IDLE) begin
                         begin
@@ -302,6 +329,7 @@ module dualshock2(
                         else if (&core_wait_cnt && ~mode) begin
                             core_wait_cnt <= 12'd0;
                             io_state <= FSM_DIGITAL; // digital
+                //          io_state <= FSM_DS2CFG_ALL; // digital buttons alternative
                         end
                     end
                 end
