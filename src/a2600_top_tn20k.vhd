@@ -333,13 +333,14 @@ begin
 gamepad_p1: entity work.dualshock2
     port map (
     clk           => clk,
-    rst           => system_reset(0) and not pll_locked,
+    rst           => reset2600,
     vsync         => vsync,
     ds2_dat       => ds_miso,
     ds2_cmd       => ds_mosi,
     ds2_att       => ds_cs,
     ds2_clk       => ds_clk,
     ds2_ack       => '0',
+    analog        => paddle_ena12,
     stick_lx      => paddle_1,
     stick_ly      => paddle_2,
     stick_rx      => paddle_3,
@@ -367,13 +368,14 @@ gamepad_p1: entity work.dualshock2
 gamepad_p2: entity work.dualshock2
     port map (
     clk           => clk,
-    rst           => system_reset(0) and not pll_locked,
+    rst           => reset2600,
     vsync         => vsync,
     ds2_dat       => ds_miso_ms20k,
     ds2_cmd       => ds_mosi_ms20k,
     ds2_att       => ds_cs_ms20k,
     ds2_clk       => ds_clk_ms20k,
     ds2_ack       => '0',
+    analog        => paddle_ena34,
     stick_lx      => paddle_12,
     stick_ly      => paddle_22,
     stick_rx      => paddle_32,
