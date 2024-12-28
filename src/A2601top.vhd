@@ -63,6 +63,9 @@ entity A2601top is
 		p2_f      : in std_logic;
 		p2_f2     : in std_logic;
 
+		f_paddle_ena12 : in std_logic;
+		f_paddle_ena34 : in std_logic;
+
 		p_1       : in std_logic;
 		paddle_1  : in std_logic_vector(7 downto 0);
 
@@ -262,9 +265,9 @@ end process;
 process(clk) begin
 	if rising_edge(clk) then
 		if p1_f = '0' then paddle_ena12 <= '0'; end if;
-		if p_1 = '0' or p_2 = '0' then paddle_ena12 <= '1'; end if;
+		if p_1 = '0' or p_2 = '0' or f_paddle_ena12 = '1' then paddle_ena12 <= '1'; end if;
 		if p2_f = '0' then paddle_ena34 <= '0'; end if;
-		if p_3 = '0' or p_4 = '0' then paddle_ena34 <= '1'; end if;
+		if p_3 = '0' or p_4 = '0' or f_paddle_ena34 = '1' then paddle_ena34 <= '1'; end if;
 	end if;
 end process;
 

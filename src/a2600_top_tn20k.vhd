@@ -974,6 +974,10 @@ a2601_inst: entity work.A2601top
 		p2_f      => not joy_p2(4), -- BTN_A
 		p2_f2     => not (joy_p2(5) and not paddle_ena34), -- BTN_B,
 
+		-- forced paddle mode via OSD selection
+		f_paddle_ena12 => paddle_ena12,
+		f_paddle_ena34 => paddle_ena34,
+
 		p_1       => not (joy_p1(6) and paddle_ena12), -- BTN_X
 		paddle_1  => p1,
 
