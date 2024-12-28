@@ -99,7 +99,7 @@ module dualshock2(
                         FSM_POLLING     = 3'd2,
                         FSM_CFG_EXIT    = 3'd3,
                         FSM_WAIT4CHANGE = 3'd4,
-                        FSM_WAIT        = 3'd5,
+                        FSM_DS2CFG      = 3'd5,
                         FSM_CFG_ENTER   = 3'd6,
                         FSM_WAIT_CFG    = 3'd7;
 
@@ -247,24 +247,35 @@ module dualshock2(
         tx_buffer[7] <= 8'h00;
         tx_buffer[8] <= 8'h00;
 
-        io_state <= FSM_POLLING;
+        io_state <= FSM_DS2CFG;
         core_wait_cnt <= 12'd0;
-        analog_d <= 1'b0;
-	end
-	else begin
+    end
+    else begin
         analog_d <= analog;
 
         case(io_state)
+            FSM_DS2CFG:
+                    if(state == S_IDLE) begin
+                        begin
+                            core_wait_cnt <= core_wait_cnt + 1'd1;
+                            if(&core_wait_cnt) begin
+                                if (analog)
+                                    mode <= 1'b1; 
+                                else 
+                                    mode <= 1'b0;
+                                io_state <= FSM_CFG_ENTER;
+                                core_wait_cnt <= 12'd0;
+                            end
+                        end
+                    end
             FSM_WAIT4CHANGE:
                 begin
-                    if(analog && ~analog_d) begin  // rising = enable analog
+                    if(analog != analog_d) begin
+                        if (analog) 
+                            mode <= 1'b1; 
+                         else 
+                            mode <= 1'b0;
                         io_state <= FSM_CFG_ENTER;
-                        mode <= 1'b1;
-                        core_wait_cnt <= 12'd0;
-                        end
-                    else if (!analog && analog_d) begin // falling = disable analog
-                        io_state <= FSM_CFG_ENTER;
-                        mode <= 1'b0;
                         core_wait_cnt <= 12'd0;
                     end 
                 end
