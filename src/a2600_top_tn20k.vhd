@@ -117,8 +117,8 @@ signal sdc_data_out   : std_logic_vector(7 downto 0);
 signal hid_int        : std_logic;
 signal system_scanlines : std_logic_vector(1 downto 0);
 signal system_volume  : std_logic_vector(1 downto 0);
+signal joystick0      : std_logic_vector(7 downto 0);
 signal joystick1      : std_logic_vector(7 downto 0);
-signal joystick2      : std_logic_vector(7 downto 0);
 signal mouse_btns     : std_logic_vector(1 downto 0);
 signal mouse_x        : signed(7 downto 0);
 signal mouse_y        : signed(7 downto 0);
@@ -655,6 +655,19 @@ joyUsb1    <= "0000" &
               extra_button0(4) & -- BTN_SELECT
               extra_button0(1) & -- BTN_SR
               extra_button0(0) & -- BTN_SL
+              joystick0(4) &     -- BTN_Y
+              joystick0(7) &     -- BTN_X
+              joystick0(5) &     -- BTN_B
+              joystick0(6) &     -- BTN_A
+              joystick0(3) &     -- BTN_UP
+              joystick0(2) &     -- BTN_DOWN
+              joystick0(1) &     -- BTN_LEFT
+              joystick0(0);      -- BTN_RIGHT
+joyUsb2    <= "0000" &
+              extra_button1(5) & -- BTN_START
+              extra_button1(4) & -- BTN_SELECT
+              extra_button1(1) & -- BTN_SR
+              extra_button1(0) & -- BTN_SL
               joystick1(4) &     -- BTN_Y
               joystick1(7) &     -- BTN_X
               joystick1(5) &     -- BTN_B
@@ -663,26 +676,13 @@ joyUsb1    <= "0000" &
               joystick1(2) &     -- BTN_DOWN
               joystick1(1) &     -- BTN_LEFT
               joystick1(0);      -- BTN_RIGHT
-joyUsb2    <= "0000" &
-              extra_button1(5) & -- BTN_START
-              extra_button1(4) & -- BTN_SELECT
-              extra_button1(1) & -- BTN_SR
-              extra_button1(0) & -- BTN_SL
-              joystick2(4) &     -- BTN_Y
-              joystick2(7) &     -- BTN_X
-              joystick2(5) &     -- BTN_B
-              joystick2(6) &     -- BTN_A
-              joystick2(3) &     -- BTN_UP
-              joystick2(2) &     -- BTN_DOWN
-              joystick2(1) &     -- BTN_LEFT
-              joystick2(0);      -- BTN_RIGHT
 joyUsb1A   <= "0000" &
               extra_button0(5) & -- BTN_START
               extra_button0(4) & -- BTN_SELECT
               extra_button0(1) & -- BTN_SR
               extra_button0(0) & -- BTN_SL
-              joystick1(4) &     -- BTN_Y
-              joystick1(7) &     -- BTN_X 
+              joystick0(4) &     -- BTN_Y
+              joystick0(7) &     -- BTN_X 
               "00" &             -- BTN B + A
               "0000";            -- DPad
 joyUsb2A   <= "0000" &
@@ -690,8 +690,8 @@ joyUsb2A   <= "0000" &
               extra_button1(4) & -- BTN_SELECT
               extra_button1(1) & -- BTN_SR
               extra_button1(0) & -- BTN_SL
-              joystick2(4) &     -- BTN_Y
-              joystick2(7) &     -- BTN_X 
+              joystick1(4) &     -- BTN_Y
+              joystick1(7) &     -- BTN_X 
               "00" &             -- BTN B + A
               "0000";            -- DPad
 joyNumpad  <= x"00" & "00" & numpad(5) & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
@@ -878,8 +878,8 @@ hid_inst: entity work.hid
   irq             => hid_int,
   iack            => int_ack(1),
   -- output HID data received from USB
-  joystick0       => joystick1,
-  joystick1       => joystick2,
+  joystick0       => joystick0,
+  joystick1       => joystick1,
   numpad          => numpad,
   keyboard_matrix_out => keyboard_matrix_out,
   keyboard_matrix_in  => keyboard_matrix_in,
