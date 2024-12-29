@@ -28,12 +28,13 @@ Features:
 * [USB Joystick](https://en.wikipedia.org/wiki/Joystick)
 * [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick as paddle emulation<br>
 * [USB Mouse](https://en.wikipedia.org/wiki/Computer_mouse) as paddle emulation
+* supports 2nd Trigger Button for modified Games
 * [legacy D9 Joystick](https://en.wikipedia.org/wiki/Atari_CX40_joystick) (Atari / Commodore digital type) [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md)<br>
 * Joystick emulation on Keyboard [Numpad](https://en.wikipedia.org/wiki/Numeric_keypad)<br>
-* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) for [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md) via spare pinheader
+* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) for [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md) via spare [pinheader](shield_ds_cable.md)
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Keys & Stick as Joystick<br>
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Sticks as paddle emulation (analog mode)<br>
-* Cartridge ROM loader [boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
+* Cartridge ROM loader. [Boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
 
 <br>
 <img src="./.assets/a2600nano.png" alt="image" width="80%" height="auto">
@@ -87,10 +88,19 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 
 * Gamepad Button ```SELECT``` as core function **SELECT**<br>
 
+> [!NOTE]
+> Button Keymap optimized for legacy USB Logitech RumblePad 2 or Dual Action. Keymap might differ for other Gamepads.
+
 ### Paddle
 * DualShock 2, USB Gamepad or USB Mouse.<br>
 
-Core switches to paddle mode if paddle ```Trigger X``` or ```Trigger Y``` is pressed respectively ```left Mouse Button``` or ```right Mouse Button```.<br>
+1st Paddle 1st Gamepad X use ```Trigger X (DS2 #1 triangle)``` or ```left Mouse Button```
+
+2nd Paddle 1st Gamepad Y use ```Trigger Y (DS2 #1 square)``` or ```right Mouse Button```
+
+3rd Paddle 2nd Gamepad X use ```Trigger X (DS2 #2 triangle)```
+
+4th Paddle 2nd Gamepad Y use ```Trigger Y (DS2 #2 square)```
 
 ### Keyboard
 * Key **F11** as core function ```START``` <br>
@@ -119,8 +129,9 @@ invoke by F12 keypress<br>
 
 ## Gamecontrol support
 
+A 2nd Trigger Button (B) is supported for modified Games.
+
  ![controller](\.assets/controller-layout.png)<br>
-A 2nd Trigger Button is supported for modified Games.
 
 legacy single D9 Digital Joystick. OSD: **Retro D9**<br>
 or<br>
@@ -128,6 +139,7 @@ USB Joystick(s) or Gamepad(s). OSD: **USB #1 Joy** or **USB #2 Joy** <br>
 Also [RII Mini Keyboard i8](http://www.riitek.com/product/220.html) left Multimedia Keys are active if **USB #1 Joy** selected.  <br>
 or<br>
 Dualshock2 Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
+At the moment DPad only for original Pad. Some clone devices support at the same Time DPad and left Stick simultaniously.
 > [!IMPORTANT]
 > In a [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k) configuration Dualshock is supported via the internal ``spare J8`` pinheader. <br>
 > See MiSTeryShield20k [DS Adapter Cable](shield_ds_cable.md) for further information.<br>
@@ -156,8 +168,8 @@ or<br> Mouse. OSD: **Mouse**<br>
 ```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.<br>
 
 or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
-**rectangle (Y) / triangle (X)** Trigger<br>
-You have first to set the DS2 Sticks into **analog mode** by pressing the DS2 ANALOG button.<br> Mode indicated by red light indicator.<br>Configure DIGITAL mode (press ANALOG button again) when using the **Joystick** mode again.<br>
+
+ ```Trigger X (DS2 triangle)``` or ```Trigger Y (DS2 square)``` 
 
 ## LED UI
 
