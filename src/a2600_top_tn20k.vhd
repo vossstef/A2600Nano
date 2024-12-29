@@ -645,16 +645,57 @@ joyDS2_p1  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select
 joyDS2_p2  <= key_rstick2 & key_lstick2 & key_r22 & key_l22 & key_start2 & key_select2 & key_r12 & key_l12 &
               key_square2 & key_triangle2 & key_cross2 & key_circle2 & key_up2 & key_down2 & key_left2 & key_right2;
 joyDS2A_p1 <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
-              key_square & key_triangle & key_cross & '0' & "0000";
+              key_square & key_triangle & "00" & "0000";
 joyDS2A_p2 <= key_rstick2 & key_lstick2 & key_r22 & key_l22 & key_start2 & key_select2 & key_r12 & key_l12 &
-              key_square2 & key_triangle2 & key_cross2 & '0' & "0000";
+              key_square2 & key_triangle2 & "00" & "0000";
 joyDigital <= not(x"FF" & "11" & io(5) & io(0) & io(2) & io(1) & io(4) & io(3));
-joyUsb1    <= extra_button0 & joystick1(7 downto 4) & joystick1(3) & joystick1(2) & joystick1(1) & joystick1(0);
-joyUsb2    <= extra_button1 & joystick2(7 downto 4) & joystick2(3) & joystick2(2) & joystick2(1) & joystick2(0);
-joyUsb1A   <= extra_button0 & joystick1(7 downto 5) & '0' & "0000";
-joyUsb2A   <= extra_button1 & joystick2(7 downto 5) & '0' & "0000";
+-- Logitech Rumble Pad 2
+joyUsb1    <= "0000" &
+              extra_button0(5) & -- BTN_START
+              extra_button0(4) & -- BTN_SELECT
+              extra_button0(1) & -- BTN_SR
+              extra_button0(0) & -- BTN_SL
+              joystick1(4) &     -- BTN_Y
+              joystick1(7) &     -- BTN_X
+              joystick1(5) &     -- BTN_B
+              joystick1(6) &     -- BTN_A
+              joystick1(3) &     -- BTN_UP
+              joystick1(2) &     -- BTN_DOWN
+              joystick1(1) &     -- BTN_LEFT
+              joystick1(0);      -- BTN_RIGHT
+joyUsb2    <= "0000" &
+              extra_button1(5) & -- BTN_START
+              extra_button1(4) & -- BTN_SELECT
+              extra_button1(1) & -- BTN_SR
+              extra_button1(0) & -- BTN_SL
+              joystick2(4) &     -- BTN_Y
+              joystick2(7) &     -- BTN_X
+              joystick2(5) &     -- BTN_B
+              joystick2(6) &     -- BTN_A
+              joystick2(3) &     -- BTN_UP
+              joystick2(2) &     -- BTN_DOWN
+              joystick2(1) &     -- BTN_LEFT
+              joystick2(0);      -- BTN_RIGHT
+joyUsb1A   <= "0000" &
+              extra_button0(5) & -- BTN_START
+              extra_button0(4) & -- BTN_SELECT
+              extra_button0(1) & -- BTN_SR
+              extra_button0(0) & -- BTN_SL
+              joystick1(4) &     -- BTN_Y
+              joystick1(7) &     -- BTN_X 
+              "00" &             -- BTN B + A
+              "0000";            -- DPad
+joyUsb2A   <= "0000" &
+              extra_button1(5) & -- BTN_START
+              extra_button1(4) & -- BTN_SELECT
+              extra_button1(1) & -- BTN_SR
+              extra_button1(0) & -- BTN_SL
+              joystick2(4) &     -- BTN_Y
+              joystick2(7) &     -- BTN_X 
+              "00" &             -- BTN B + A
+              "0000";            -- DPad
 joyNumpad  <= x"00" & "00" & numpad(5) & numpad(4) & numpad(3) & numpad(2) & numpad(1) & numpad(0);
-joyMouse   <= extra_button0 & "0" & mouse_btns & "0" & "0000";
+joyMouse   <= extra_button0 & mouse_btns & "00" & "0000";
 
 -- send external DB9 joystick port to µC
 db9_joy <= not('1' & io(0) & io(1) & io(2) & io(3) & io(4));
