@@ -4,14 +4,14 @@ The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari260
 | Board      | FPGA       | support |Note|
 | ---        |        -   | -     |-|
 | [Tang Nano 9k](https://wiki.sipeed.com/hardware/en/tang/Tang-Nano-9K/Nano-9K.html)       | [GW1NR](https://www.gowinsemi.com/en/product/detail/38/)  |X |micro SD card [HW modification](TANG_NANO_9K.md#hw-modification) needed|
-| [Tang Nano 20k](https://wiki.sipeed.com/nano20k)     | [GW2AR](https://www.gowinsemi.com/en/product/detail/38/)  | X |- |
+| [Tang Nano 20k](https://wiki.sipeed.com/nano20k)     | [GW2AR](https://www.gowinsemi.com/en/product/detail/38/)  |X  |twin Dualshock<br> MiSTeryShield20k spare header + Joy to DIP |
 | [Tang Primer 20K Dock ext Board](https://wiki.sipeed.com/hardware/en/tang/tang-primer-20k/primer-20k.html)| [GW2A](https://www.gowinsemi.com/en/product/detail/46/)| X |twin Dualshock |
 | [Tang Primer 25K](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html) | [GW5A-25](https://www.gowinsemi.com/en/product/detail/60/)  | X |no Dualshock, no retro D9 Joystick |
 | [Tang Mega 60k NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/)| X |twin Dualshock |
 | [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)|[GW5AST-138](https://www.gowinsemi.com/en/product/detail/60/) | X |twin Dualshock |
 
-This project relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K.  
-Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
+This project relies on a [M0S Dock BL616 µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K.  
+Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion). Basically a µC acts as USB host for USB devices and as an OSD controller using a [SPI communication protocol](https://github.com/harbaum/MiSTeryNano/blob/main/SPI.md).<br>
 
 There is a nice [case](https://github.com/vossstef/A2600Nano/tree/main/housing3D) available mounting the [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md) (TN20k + M0S).
 
@@ -28,18 +28,16 @@ Features:
 * [USB Joystick](https://en.wikipedia.org/wiki/Joystick)
 * [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick as paddle emulation<br>
 * [USB Mouse](https://en.wikipedia.org/wiki/Computer_mouse) as paddle emulation
+* supports 2nd Trigger Button for modified Games
 * [legacy D9 Joystick](https://en.wikipedia.org/wiki/Atari_CX40_joystick) (Atari / Commodore digital type) [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md)<br>
 * Joystick emulation on Keyboard [Numpad](https://en.wikipedia.org/wiki/Numeric_keypad)<br>
-* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) for [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md) via spare pinheader
+* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) for [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md) via spare [pinheader](shield_ds_cable.md)
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Keys & Stick as Joystick<br>
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Sticks as paddle emulation (analog mode)<br>
-* Cartridge ROM loader [boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
+* Cartridge ROM loader. [Boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
 
 <br>
 <img src="./.assets/a2600nano.png" alt="image" width="80%" height="auto">
-<br>
-
-HID interfaces aligned in pinmap and control to match [FPGA-Companion](https://github.com/harbaum/FPGA-Companion).<br> Basically a µC M0S/BL616 / Raspberry Pi Pico RP2040 / ESP32-S2/S3 acts as USB host for USB devices and as an OSD controller using a [SPI communication protocol](https://github.com/harbaum/MiSTeryNano/blob/main/SPI.md).
 <br>
 
 ## A2600Nano on Tang Nano 9K
@@ -70,31 +68,46 @@ ROM can be loaded via OSD file selection.<br>
   
 LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<br>
 
-### single Button Joystick
+### single / dual Button Joystick
 * Button ```Trigger```
+* 2nd Button ```Trigger 2```
 
-### four Button Joystick or Gamepad
-* Gamepad Button ```Trigger A (DS2 circle)``` Trigger
+### Gamepad
+* Gamepad Button ```Trigger A (DS2 circle)``` 1st Trigger Button
 
-* Gamepad Button ```Trigger B (DS2 cross)``` Paddle Trigger and enable 
+* Gamepad Button ```Trigger B (DS2 cross)``` 2nd Trigger Button
 
-* Gamepad Button ```Trigger X (DS2 triangle)``` Paddle 2nd Trigger and enable
+* Gamepad Button ```Trigger X (DS2 triangle)``` 1st Paddle Trigger and enable
 
-* Gamepad Button ```Trigger Y (DS2 square)``` revert Paddle mode to Joystick mode
+* Gamepad Button ```Trigger Y (DS2 square)``` 2nd Paddle Trigger and enable
 
 * Gamepad Button ```START``` as core function **START**<br>
 
 * Gamepad Button ```SELECT``` as core function **SELECT**<br>
 
-### Paddle
-* DualShock 2, USB Gamepad or USB Mouse.<br>
+> [!NOTE]
+> Gamepad button keymap optimized for legacy USB Logitech RumblePad 2 or Dual Action. Keymap might differ for other Gamepads.
 
-Core switches to paddle mode if paddle ```Trigger B``` or ```Trigger X``` is pressed respectively ```left Mouse Button``` or ```right Mouse Button```.<br>
-Can be reverted by pressing Gamepad Button ```Trigger Y```.
+### Paddle
+* DualShock 2 (left Stick), USB Gamepad or USB Mouse.<br>
+
+1st Paddle 1st Gamepad use ```Trigger X (DS2 #1 triangle)``` or ```left Mouse Button```
+
+2nd Paddle 1st Gamepad use ```Trigger Y (DS2 #1 square)``` or ```right Mouse Button```
+
+3rd Paddle 2nd Gamepad use ```Trigger X (DS2 #2 triangle)```
+
+4th Paddle 2nd Gamepad use ```Trigger Y (DS2 #2 square)```
 
 ### Keyboard
 * Key **F11** as core function ```START``` <br>
 * Key **PAGE UP** as core function ```SELECT``` <br>
+
+| Numpad          |         |Numpad|
+| -          |-        |-         |
+|0<br>Trigger|8<br>Up  |.<br>Trigger 2|
+|4<br>Left   |-        |6<br>Right|
+|-           |2<br>Down|-         |
 
 ## Push Button utilization
 * **S2** keep pressed during power-up to prevent FPGA bitstream load from FLASH.<br>
@@ -119,14 +132,21 @@ invoke by F12 keypress<br>
 
 ## Gamecontrol support
 
+A 2nd Trigger Button (B) is supported for modified Games.
+
  ![controller](\.assets/controller-layout.png)<br>
 
 legacy single D9 Digital Joystick. OSD: **Retro D9**<br>
 or<br>
 USB Joystick(s) or Gamepad(s). OSD: **USB #1 Joy** or **USB #2 Joy** <br>
 Also [RII Mini Keyboard i8](http://www.riitek.com/product/220.html) left Multimedia Keys are active if **USB #1 Joy** selected.  <br>
+```Button A and B``` Buttons as Trigger:<br>
+
 or<br>
-Dualshock2 Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
+Dualshock 2 Gamepad Stick or Dpad as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
+At the moment Dpad only for original Pad. Some clone devices support at the same time Dpad and left stick simultaniously.
+<br>```circle and cross``` Buttons as Trigger:<br>
+
 > [!IMPORTANT]
 > In a [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k) configuration Dualshock is supported via the internal ``spare J8`` pinheader. <br>
 > See MiSTeryShield20k [DS Adapter Cable](shield_ds_cable.md) for further information.<br>
@@ -136,27 +156,17 @@ Dualshock2 Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
 > TN20k: You have to select OSD "DS2 **#1** Joy" if you use the ``Sipeed Joy to DIP`` adapter.<br>
 Both DS interface ports can be active at the same time meaning twin Dualshock support if the MiSTeryShield20k MIDI interface is not populated (Resistor R9 and IC U3 removed).  
 
-<br>**left stick** or **D-Pad** for Move and ```square triangle cross circle``` Buttons for Trigger:<br>
-| Buttons | - | - |
-| -       | - | -  |
-| square<br>Trigger 1 | Up  | cross<br>Trigger 2 |
-| Left | - | Right |
-| triangle<br>Trigger 4  | Down | circle<br>Trigger 3 |<br>
-
 or<br> Keyboard Numpad. OSD: **Numpad**<br>
-
-| -           |         |          |
-| -          |-        |-         |
-|0<br>Trigger|8<br>Up  |          |
-|4<br>Left   |-        |6<br>Right|
-|-           |2<br>Down|-         |
 
 or<br> Mouse. OSD: **Mouse**<br>
 ```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.<br>
 
-or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
-**cross / triangle** Trigger<br>
-You have first to set the DS2 Sticks into **analog mode** by pressing the DS2 ANALOG button.<br> Mode indicated by red light indicator.<br>Configure DIGITAL mode (press ANALOG button again) when using the **Joystick** mode again.<br>
+or<br> USB Gamepad as Paddle. OSD: **USB #1 Padd** or **USB #2 Padd** <br>
+ ```Trigger X``` and ```Trigger Y``` 
+
+or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
+
+ ```Trigger triangle``` and ```Trigger square``` 
 
 ## LED UI
 
