@@ -55,7 +55,7 @@
 //      |  05  | 00                          | 00         |  
 //      |  06  | 00                          | 00         |           
 //
-//  2024 Stefan Voss operation mode switch analog / digital added
+//  12 / 2024 Stefan Voss mode configuration analog / digital added
 //
 //////////////////////////////////////////////////////////////////////////////////
 module dualshock2(
@@ -67,7 +67,7 @@ module dualshock2(
     output reg ds2_att,
     output reg ds2_clk,
     input ds2_ack,
-    input analog,
+    input analog,  // select analog left stick or digital DPad mode
     output [7:0] stick_lx,
     output [7:0] stick_ly,
     output [7:0] stick_rx,
@@ -135,9 +135,10 @@ module dualshock2(
     reg [7:0] rx_buffer [0:8]; // RX buffer
     reg [7:0] rx_byte;
     reg [1:0] status;
+    reg ready = 1'b0;
 
-    reg last_vsync = 0;
-    reg mode = 0;
+    reg last_vsync = 1'b0;
+    reg mode = 1'b0;
     reg [11:0] core_wait_cnt = 12'd0;
     reg [2:0] io_state;
     reg analog_d;
@@ -154,10 +155,10 @@ module dualshock2(
     wire [7:0] rx_b4 = rx_buffer[7];
     wire [7:0] rx_b5 = rx_buffer[8];
     
-    assign key_select  = ~rx_b0[0];
+    assign key_select  = ~rx_b0[0] && ready;
     assign key_rstick  = ~rx_b0[1];
     assign key_lstick  = ~rx_b0[2];
-    assign key_start   = ~rx_b0[3];
+    assign key_start   = ~rx_b0[3] && ready;
     assign key_up      = ~rx_b0[4];
     assign key_right   = ~rx_b0[5];
     assign key_down    = ~rx_b0[6];
@@ -166,10 +167,10 @@ module dualshock2(
     assign key_r2      = ~rx_b1[1];
     assign key_l1      = ~rx_b1[2];
     assign key_r1      = ~rx_b1[3];
-    assign key_triangle= ~rx_b1[4];
-    assign key_circle  = ~rx_b1[5];
-    assign key_cross   = ~rx_b1[6];
-    assign key_square  = ~rx_b1[7];
+    assign key_triangle= ~rx_b1[4] && ready;
+    assign key_circle  = ~rx_b1[5] && ready;
+    assign key_cross   = ~rx_b1[6] && ready;
+    assign key_square  = ~rx_b1[7] && ready;
     assign stick_rx    = ~rx_b2;
     assign stick_ry    = ~rx_b3;
     assign stick_lx    = ~rx_b4;
@@ -249,6 +250,7 @@ module dualshock2(
 
         io_state <= FSM_DS2CFG;
         core_wait_cnt <= 12'd0;
+        ready <= 1'b0;
     end
     else begin
         analog_d <= analog;
@@ -297,6 +299,7 @@ module dualshock2(
                     end
             FSM_WAIT4CHANGE:
                 begin
+                    ready <= 1'b1;
                     if(analog != analog_d) begin
                         if (analog) 
                             mode <= 1'b1; 
@@ -308,6 +311,7 @@ module dualshock2(
                 end
             FSM_CFG_ENTER:
                 begin
+                    ready <= 1'b0;
                     // 0x43 Config mode cmd ENTER
                     // TX: 01 43 00 01 00 00 00 00 00  enter cfg
                     if(state == S_IDLE) begin
@@ -428,7 +432,6 @@ module dualshock2(
     
     always @(posedge clk_spi or posedge rst)
         if (rst) begin
-            // When reset, we want the first command to be 0x42
             bytes_count <= 4'd0;
             bits_count <= 4'd0;
             rx_byte <= 8'hff;

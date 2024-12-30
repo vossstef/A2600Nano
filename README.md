@@ -10,8 +10,8 @@ The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari260
 | [Tang Mega 60k NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/)| X |twin Dualshock |
 | [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)|[GW5AST-138](https://www.gowinsemi.com/en/product/detail/60/) | X |twin Dualshock |
 
-This project relies on a [M0S Dock µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K.  
-Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion).
+This project relies on a [M0S Dock BL616 µC](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html) being connected to the Tang Nano 20K.  
+Alternately you can use a [Raspberry Pi Pico](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion). Basically a µC acts as USB host for USB devices and as an OSD controller using a [SPI communication protocol](https://github.com/harbaum/MiSTeryNano/blob/main/SPI.md).<br>
 
 There is a nice [case](https://github.com/vossstef/A2600Nano/tree/main/housing3D) available mounting the [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md) (TN20k + M0S).
 
@@ -38,9 +38,6 @@ Features:
 
 <br>
 <img src="./.assets/a2600nano.png" alt="image" width="80%" height="auto">
-<br>
-
-HID interfaces aligned in pinmap and control to match [FPGA-Companion](https://github.com/harbaum/FPGA-Companion).<br> Basically a µC M0S/BL616 / Raspberry Pi Pico RP2040 / ESP32-S2/S3 acts as USB host for USB devices and as an OSD controller using a [SPI communication protocol](https://github.com/harbaum/MiSTeryNano/blob/main/SPI.md).
 <br>
 
 ## A2600Nano on Tang Nano 9K
@@ -75,7 +72,7 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 * Button ```Trigger```
 * 2nd Button ```Trigger 2```
 
-### four Button Joystick or Gamepad
+### Gamepad
 * Gamepad Button ```Trigger A (DS2 circle)``` 1st Trigger Button
 
 * Gamepad Button ```Trigger B (DS2 cross)``` 2nd Trigger Button
@@ -89,22 +86,28 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 * Gamepad Button ```SELECT``` as core function **SELECT**<br>
 
 > [!NOTE]
-> Button Keymap optimized for legacy USB Logitech RumblePad 2 or Dual Action. Keymap might differ for other Gamepads.
+> Gamepad button keymap optimized for legacy USB Logitech RumblePad 2 or Dual Action. Keymap might differ for other Gamepads.
 
 ### Paddle
-* DualShock 2, USB Gamepad or USB Mouse.<br>
+* DualShock 2 (left Stick), USB Gamepad or USB Mouse.<br>
 
-1st Paddle 1st Gamepad X use ```Trigger X (DS2 #1 triangle)``` or ```left Mouse Button```
+1st Paddle 1st Gamepad use ```Trigger X (DS2 #1 triangle)``` or ```left Mouse Button```
 
-2nd Paddle 1st Gamepad Y use ```Trigger Y (DS2 #1 square)``` or ```right Mouse Button```
+2nd Paddle 1st Gamepad use ```Trigger Y (DS2 #1 square)``` or ```right Mouse Button```
 
-3rd Paddle 2nd Gamepad X use ```Trigger X (DS2 #2 triangle)```
+3rd Paddle 2nd Gamepad use ```Trigger X (DS2 #2 triangle)```
 
-4th Paddle 2nd Gamepad Y use ```Trigger Y (DS2 #2 square)```
+4th Paddle 2nd Gamepad use ```Trigger Y (DS2 #2 square)```
 
 ### Keyboard
 * Key **F11** as core function ```START``` <br>
 * Key **PAGE UP** as core function ```SELECT``` <br>
+
+| Numpad          |         |Numpad|
+| -          |-        |-         |
+|0<br>Trigger|8<br>Up  |.<br>Trigger 2|
+|4<br>Left   |-        |6<br>Right|
+|-           |2<br>Down|-         |
 
 ## Push Button utilization
 * **S2** keep pressed during power-up to prevent FPGA bitstream load from FLASH.<br>
@@ -137,9 +140,13 @@ legacy single D9 Digital Joystick. OSD: **Retro D9**<br>
 or<br>
 USB Joystick(s) or Gamepad(s). OSD: **USB #1 Joy** or **USB #2 Joy** <br>
 Also [RII Mini Keyboard i8](http://www.riitek.com/product/220.html) left Multimedia Keys are active if **USB #1 Joy** selected.  <br>
+```Button A and B``` Buttons as Trigger:<br>
+
 or<br>
-Dualshock2 Gamepad Stick as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
-At the moment DPad only for original Pad. Some clone devices support at the same Time DPad and left Stick simultaniously.
+Dualshock 2 Gamepad Stick or Dpad as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
+At the moment Dpad only for original Pad. Some clone devices support at the same time Dpad and left stick simultaniously.
+<br>```circle and cross``` Buttons as Trigger:<br>
+
 > [!IMPORTANT]
 > In a [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k) configuration Dualshock is supported via the internal ``spare J8`` pinheader. <br>
 > See MiSTeryShield20k [DS Adapter Cable](shield_ds_cable.md) for further information.<br>
@@ -149,27 +156,17 @@ At the moment DPad only for original Pad. Some clone devices support at the same
 > TN20k: You have to select OSD "DS2 **#1** Joy" if you use the ``Sipeed Joy to DIP`` adapter.<br>
 Both DS interface ports can be active at the same time meaning twin Dualshock support if the MiSTeryShield20k MIDI interface is not populated (Resistor R9 and IC U3 removed).  
 
-<br>**left stick** or **D-Pad** for Move and ```square triangle cross circle``` Buttons for Trigger:<br>
-| Buttons | - | - |
-| -       | - | -  |
-| square<br>Trigger 1 | Up  | cross<br>Trigger 2 |
-| Left | - | Right |
-| triangle<br>Trigger 4  | Down | circle<br>Trigger 3 |<br>
-
 or<br> Keyboard Numpad. OSD: **Numpad**<br>
-
-| -           |         |          |
-| -          |-        |-         |
-|0<br>Trigger|8<br>Up  |.<br>Trigger 2|
-|4<br>Left   |-        |6<br>Right|
-|-           |2<br>Down|-         |
 
 or<br> Mouse. OSD: **Mouse**<br>
 ```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.<br>
 
+or<br> USB Gamepad as Paddle. OSD: **USB #1 Padd** or **USB #2 Padd** <br>
+ ```Trigger X``` and ```Trigger Y``` 
+
 or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
 
- ```Trigger X (DS2 triangle)``` or ```Trigger Y (DS2 square)``` 
+ ```Trigger triangle``` and ```Trigger square``` 
 
 ## LED UI
 
