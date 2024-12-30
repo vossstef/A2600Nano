@@ -570,7 +570,7 @@ joyUsb1    <= "0000" &
               joystick0(4) &     -- BTN_Y
               joystick0(7) &     -- BTN_X
               joystick0(5) &     -- BTN_B
-              joystick0(6) &     -- BTN_A
+              (joystick0(6) or joystick0(4)) &     -- BTN_A or BTN_Y USB Joystick or RII Mini Keyboard i8
               joystick0(3) &     -- BTN_UP
               joystick0(2) &     -- BTN_DOWN
               joystick0(1) &     -- BTN_LEFT
@@ -583,7 +583,7 @@ joyUsb2    <= "0000" &
               joystick1(4) &     -- BTN_Y
               joystick1(7) &     -- BTN_X
               joystick1(5) &     -- BTN_B
-              joystick1(6) &     -- BTN_A
+              (joystick1(6) or joystick1(4)) &     -- BTN_A or BTN_Y USB Joystick
               joystick1(3) &     -- BTN_UP
               joystick1(2) &     -- BTN_DOWN
               joystick1(1) &     -- BTN_LEFT
