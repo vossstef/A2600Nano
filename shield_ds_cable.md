@@ -6,6 +6,16 @@ This site shows how to build and connect an Adapter or an Adapter cable to the *
 of the [MiSTery Nano Midi Shield by Till Harbaum](https://github.com/harbaum/MiSTeryNano/blob/main/board/misteryshield20k/README.md) to use a Playstation Dualshock 2 (DS2) Controller.
 
 ## Building your own Adapter
+Use the [Gerber](.assets/mistery_ds2_breakout_gerber.zip) Files from the [KiCad](.assets/mistery_ds2_breakout_kicad.zip) MiSTery Shield DS2 Adapter Project 
+and get some PCBs.  
+![MiStery Shield DS2 PCB](.assets/mistery_shield_ds2_adapter_pcb.png)  
+
+You need a PS2 Connector and a 4x2 Pin Connector for the PCB.  
+The final result could end up looking like this:  
+![MiStery Shield DS2 build](.assets/mistery_shield_ds2_adapter_build.png)  
+  
+**OR**
+  
 Use the **female** end of an DS2 Controller extension cable and cut it 25-30 centimeters behind the connector.  
 Remove **carefully** the main isolation and **more carefully** the isolation of the cables.  
 Be **very carefully** not to break/cut the thin wires.  
