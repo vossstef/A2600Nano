@@ -10,7 +10,7 @@ Use the [Gerber](.assets/mistery_ds2_breakout_gerber.zip) Files from the [KiCad]
 and get some PCBs.  
 ![MiStery Shield DS2 PCB](.assets/mistery_shield_ds2_adapter_pcb.png)  
 The final result could end up looking like this:  
-![MiStery Shield DS2 build](.assets/mistery_shield_ds2_adapter_build.png)  
+![MiStery Shield DS2 build]()  
   
 **OR**
   
