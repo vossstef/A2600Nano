@@ -9,8 +9,10 @@ of the [MiSTery Nano Midi Shield by Till Harbaum](https://github.com/harbaum/MiS
 Use the [Gerber](.assets/mistery_ds2_breakout_gerber.zip) Files from the [KiCad](.assets/mistery_ds2_breakout_kicad.zip) MiSTery Shield DS2 Adapter Project 
 and get some PCBs.  
 ![MiStery Shield DS2 PCB](.assets/mistery_shield_ds2_adapter_pcb.png)  
+
+You need a PS2 Connector and a 4x2 Pin Connector for the PCB.  
 The final result could end up looking like this:  
-![MiStery Shield DS2 build]()  
+![MiStery Shield DS2 build](.assets/mistery_shield_ds2_adapter_build.png)  
   
 **OR**
   
