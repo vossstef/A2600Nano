@@ -475,7 +475,7 @@ generic map (
       port map(
             pll_lock     => pll_locked,
             clk          => clk,
-            ntscmode  => '0',
+            ntscmode  => '1',
 
             vb_in     => vblank,
             hb_in     => hblank,
