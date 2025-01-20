@@ -114,3 +114,4 @@ it. You can organize your files in subdirectories.
 These files can later be selected using the on-screen-display (OSD).  
 Copy a 2600 rom cartrige image to your sdcard and rename it to **a2600crt.bin** as default boot image.
 
+
