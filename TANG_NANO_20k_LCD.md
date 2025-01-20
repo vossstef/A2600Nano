@@ -19,11 +19,6 @@ Video output is adapted for a 5" TFT-LCD module 800x480 Type [SH500Q01Z](https:/
 
 
 
-# Adhoc setup of a TM60k, LCD, Speaker and M0S
 
-> [!IMPORTANT]
-> To enable the LCD Interface the tiny jumper J17 (near Button Key1 ) need to be plugged to position 1 + 2.
-
-  ![setup](\.assets/tm60k_lcd.png)
 
  
