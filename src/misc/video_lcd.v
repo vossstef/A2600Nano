@@ -50,7 +50,9 @@ module video
    output hp_bck,
    output hp_ws,
    output hp_din,
-   output pa_en
+   output pa_en,
+   output [15:0] dac
+
 );
 
 assign lcd_bl = pll_lock;
@@ -251,6 +253,7 @@ end
 
 // sign expand and add both channels
 wire [15:0] audio_mix = { audio_vol_l[14], audio_vol_l} + { audio_vol_r[14], audio_vol_r };
+assign dac = audio_mix;
 
 // shift audio down to reduce amp output volume to a sane range
 localparam AUDIO_SHIFT = (STEREO)?2:3;   // 2 TM138k / TM60k and 3 // TN20k
