@@ -1,5 +1,6 @@
 -------------------------------------------------------------------------
---  A2600 Top level for Tang Nano 9k LCD
+-------------------------------------------------------------------------
+--  A2600 Top level for Tang Mega 60k LCD
 --  2024 Stefan Voss
 --  based on the work of many others
 --
@@ -9,13 +10,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 use IEEE.numeric_std.ALL;
 
-entity A2600_top is
+entity A2600_top_tm60k is
   port
   (
-    clk_27mhz   : in std_logic; -- 27 Mhz XO
+    clk_50mhz   : in std_logic; -- XO
     reset       : in std_logic; -- S2 button
     user        : in std_logic; -- S1 button
-    leds_n      : out std_logic_vector(5 downto 0);
+    leds_n      : out std_logic_vector(1 downto 0);
+    io          : in std_logic_vector(5 downto 0);
 
     -- SPI interface Sipeed M0S Dock external BL616 uC
     m0s         : inout std_logic_vector(4 downto 0);
@@ -25,20 +27,39 @@ entity A2600_top is
     lcd_vs      : out std_logic; -- lcd vertical synchronization        
     lcd_de      : out std_logic; -- lcd data enable     
     lcd_bl      : out std_logic; -- lcd backlight control
-    lcd_r       : out std_logic_vector(4 downto 0);  -- lcd red
+    lcd_r       : out std_logic_vector(5 downto 0);  -- lcd red
     lcd_g       : out std_logic_vector(5 downto 0);  -- lcd green
-    lcd_b       : out std_logic_vector(4 downto 0);  -- lcd blue
+    lcd_b       : out std_logic_vector(5 downto 0);  -- lcd blue
     -- audio
-    audio       : out  std_logic;
+    hp_bck      : out std_logic;
+    hp_ws       : out std_logic;
+    hp_din      : out std_logic;
+    pa_en       : out std_logic;
+    -- hdmi
+    hpd_en      : out std_logic;
     -- sd interface
     sd_clk      : out std_logic;
     sd_cmd      : inout std_logic;
     sd_dat      : inout std_logic_vector(3 downto 0);
-    ws2812      : out std_logic
+
+    O_sdram_cs_n : out std_logic;
+
+    ws2812       : out std_logic;
+
+    -- Gamepad Dualshock P1
+    ds_clk          : out std_logic;
+    ds_mosi         : out std_logic;
+    ds_miso         : in std_logic;
+    ds_cs           : out std_logic;
+    -- Gamepad DualShock P2
+    ds2_clk       : out std_logic;
+    ds2_mosi      : out std_logic;
+    ds2_miso      : in std_logic;
+    ds2_cs        : out std_logic
     );
 end;
 
-architecture Behavioral_top of A2600_top is
+architecture Behavioral_top of A2600_top_tm60k is
 
 signal clk            : std_logic;
 signal clk_cpu        : std_logic;
@@ -255,19 +276,11 @@ signal paddle_1_analogA : std_logic := '0';
 signal paddle_1_analogB : std_logic := '0';
 signal paddle_2_analogA : std_logic := '0';
 signal paddle_2_analogB : std_logic := '0';
-signal lcd_r_i : std_logic_vector(5 downto 0);
-signal lcd_b_i : std_logic_vector(5 downto 0);
-signal ds_clk          : std_logic;
-signal ds_mosi         : std_logic;
-signal ds_miso         : std_logic := '0';
-signal ds_cs           : std_logic;
-signal dac_i           : std_logic_vector(15 downto 0);
-signal io              : std_logic_vector(5 downto 0) := "111111";
+
 
 component CLKDIV
     generic (
-        DIV_MODE : STRING := "2";
-        GSREN: in string := "false"
+        DIV_MODE : STRING := "2"
     );
     port (
         CLKOUT: out std_logic;
@@ -277,52 +290,13 @@ component CLKDIV
     );
 end component;
 
-component rPLL
-    generic (
-        FCLKIN: in string := "100.0";
-        DEVICE: in string := "GW2A-18";
-        DYN_IDIV_SEL: in string := "false";
-        IDIV_SEL: in integer := 0;
-        DYN_FBDIV_SEL: in string := "false";
-        FBDIV_SEL: in integer := 0;
-        DYN_ODIV_SEL: in string := "false";
-        ODIV_SEL: in integer := 8;
-        PSDA_SEL: in string := "0000";
-        DYN_DA_EN: in string := "false";
-        DUTYDA_SEL: in string := "1000";
-        CLKOUT_FT_DIR: in bit := '1';
-        CLKOUTP_FT_DIR: in bit := '1';
-        CLKOUT_DLY_STEP: in integer := 0;
-        CLKOUTP_DLY_STEP: in integer := 0;
-        CLKOUTD3_SRC: in string := "CLKOUT";
-        CLKFB_SEL: in string := "internal";
-        CLKOUT_BYPASS: in string := "false";
-        CLKOUTP_BYPASS: in string := "false";
-        CLKOUTD_BYPASS: in string := "false";
-        CLKOUTD_SRC: in string := "CLKOUT";
-        DYN_SDIV_SEL: in integer := 2
-    );
-    port (
-        CLKOUT: out std_logic;
-        LOCK: out std_logic;
-        CLKOUTP: out std_logic;
-        CLKOUTD: out std_logic;
-        CLKOUTD3: out std_logic;
-        RESET: in std_logic;
-        RESET_P: in std_logic;
-        CLKIN: in std_logic;
-        CLKFB: in std_logic;
-        FBDSEL: in std_logic_vector(5 downto 0);
-        IDSEL: in std_logic_vector(5 downto 0);
-        ODSEL: in std_logic_vector(5 downto 0);
-        PSDA: in std_logic_vector(3 downto 0);
-        DUTYDA: in std_logic_vector(3 downto 0);
-        FDLY: in std_logic_vector(3 downto 0)
-    );
-end component;
-
 begin
 
+  hpd_en <= '0';
+  O_sdram_cs_n <= '1';
+  
+-- ----------------- SPI input parser ----------------------
+-- map output data onto both spi outputs
   spi_io_din  <= m0s(1);
   spi_io_ss   <= m0s(2);
   spi_io_clk  <= m0s(3);
@@ -331,7 +305,7 @@ begin
 -- https://store.curiousinventor.com/guides/PS2/
 -- https://hackaday.io/project/170365-blueretro/log/186471-playstation-playstation-2-spi-interface
 
-gamepad: entity work.dualshock2
+gamepad_p1: entity work.dualshock2
     port map (
     clk           => clk,
     rst           => reset2600,
@@ -362,6 +336,41 @@ gamepad: entity work.dualshock2
     key_select    => key_select,
     key_lstick    => key_lstick,
     key_rstick    => key_rstick,
+    debug1        => open,
+    debug2        => open
+    );
+
+gamepad_p2: entity work.dualshock2
+    port map (
+    clk           => clk,
+    rst           => reset2600,
+    vsync         => vsync,
+    ds2_dat       => ds2_miso,
+    ds2_cmd       => ds2_mosi,
+    ds2_att       => ds2_cs,
+    ds2_clk       => ds2_clk,
+    ds2_ack       => '0',
+    analog        => paddle_2_analogA or paddle_2_analogB,
+    stick_lx      => paddle_3,
+    stick_ly      => paddle_4,
+    stick_rx      => open,
+    stick_ry      => open,
+    key_up        => key_up2,
+    key_down      => key_down2,
+    key_left      => key_left2,
+    key_right     => key_right2,
+    key_l1        => key_l12,
+    key_l2        => key_l22,
+    key_r1        => key_r12,
+    key_r2        => key_r22,
+    key_triangle  => key_triangle2,
+    key_square    => key_square2,
+    key_circle    => key_circle2,
+    key_cross     => key_cross2,
+    key_start     => key_start2,
+    key_select    => key_select2,
+    key_lstick    => open,
+    key_rstick    => open,
     debug1        => open,
     debug2        => open
     );
@@ -419,138 +428,76 @@ generic map (
     outbyte         => sd_rd_data         -- a byte of sector content
 );
 
-dac_inst: entity work.dac
-generic map(
-  msbi_g => 15
-)
-port  map(
-  clk_i   => clk,
-  res_n_i => pll_locked,
-  dac_i   => dac_i,
-  dac_o   => audio
-);
-
-lcd_r <= lcd_r_i(5 downto 1);
-lcd_b <= lcd_b_i(5 downto 1);
-
 video_inst: entity work.video
 generic map
 (
-STEREO  => false
+  STEREO  => true
 )
 port map(
-pll_lock     => pll_locked,
-clk          => clk,
-ntscmode  => '1',
+  pll_lock  => pll_locked,
+  clk       => clk,
+  ntscmode  => '1',
 
-vb_in     => vblank,
-hb_in     => hblank,
-hs_in_n   => not hsync,
-vs_in_n   => not vsync,
+  vb_in     => vblank,
+  hb_in     => hblank,
+  hs_in_n   => not hsync,
+  vs_in_n   => not vsync,
 
-r_in      => video_r(7 downto 4),
-g_in      => video_g(7 downto 4),
-b_in      => video_b(7 downto 4),
+  r_in      => video_r(7 downto 4),
+  g_in      => video_g(7 downto 4),
+  b_in      => video_b(7 downto 4),
 
-audio_l => signed("0" & audio0 & "0000000000"),
-audio_r => signed("0" & audio1 & "0000000000"),
-osd_status => open,
-vblank_regenerate => vblank_regen,
-paldetect  => paldetect,
-mcu_start  => mcu_start,
-mcu_osd_strobe => mcu_osd_strobe,
-mcu_data  => mcu_data_out,
+  audio_l   => signed("0" & audio0 & "0000000000"),
+  audio_r   => signed("0" & audio1 & "0000000000"),
+  osd_status => open,
+  vblank_regenerate => vblank_regen,
+  paldetect => paldetect,
+  mcu_start => mcu_start,
+  mcu_osd_strobe => mcu_osd_strobe,
+  mcu_data  => mcu_data_out,
 
--- values that can be configure by the user via osd
-system_wide_screen => system_wide_screen,
-system_scanlines => system_scanlines,
-system_volume => system_volume,
+  -- values that can be configure by the user via osd
+  system_wide_screen => system_wide_screen,
+  system_scanlines => system_scanlines,
+  system_volume => system_volume,
 
-lcd_clk  => lcd_dclk,
-lcd_hs_n => lcd_hs,
-lcd_vs_n => lcd_vs,
-lcd_de   => lcd_de,
-lcd_r    => lcd_r_i,
-lcd_g    => lcd_g,
-lcd_b    => lcd_b_i,
-lcd_bl   => lcd_bl,
+  lcd_clk  => lcd_dclk,
+  lcd_hs_n => lcd_hs,
+  lcd_vs_n => lcd_vs,
+  lcd_de   => lcd_de,
+  lcd_r    => lcd_r,
+  lcd_g    => lcd_g,
+  lcd_b    => lcd_b,
+  lcd_bl   => lcd_bl,
 
-hp_bck   => open,
-hp_ws    => open,
-hp_din   => open,
-pa_en    => open,
-dac      => dac_i
+  hp_bck   => hp_bck,
+  hp_ws    => hp_ws,
+  hp_din   => hp_din,
+  pa_en    => pa_en
 );
 
--- target
+-- target GW5A 
 -- PAL  3.546894 Hz 28.375152 141.875760
 -- NTSC 3.579545 Hz 28.636360 143.181800
 
--- Clock tree and all frequencies in Hz
--- TN20 NTSC
+-- TN20 GW2A NTSC
 -- hdmi   144000000
 -- core    28800000
 -- pixel    3600000
--- IDIV 2, FBDIV 15
 
--- TN20 PAL
--- hdmi 141.750.000
--- core  28.350.000
--- pixel  3.543.750
--- IDIV 3, FBDIV 20
-
--- MS5351M PLL IC @ 25Mhz XO
-
-mainclock: rPLL
-generic map (
-          FCLKIN => "27",
-          DEVICE => "GW1NR-9C",
-          DYN_IDIV_SEL => "false",
-          IDIV_SEL => 2,
-          DYN_FBDIV_SEL => "false",
-          FBDIV_SEL => 15,
-          DYN_ODIV_SEL => "false",
-          ODIV_SEL => 4,
-          PSDA_SEL => "0100",
-          DYN_DA_EN => "false",
-          DUTYDA_SEL => "1000",
-          CLKOUT_FT_DIR => '1',
-          CLKOUTP_FT_DIR => '1',
-          CLKOUT_DLY_STEP => 0,
-          CLKOUTP_DLY_STEP => 0,
-          CLKFB_SEL => "internal",
-          CLKOUT_BYPASS => "false",
-          CLKOUTP_BYPASS => "false",
-          CLKOUTD_BYPASS => "false",
-          DYN_SDIV_SEL => 2,
-          CLKOUTD_SRC => "CLKOUT",
-          CLKOUTD3_SRC => "CLKOUT"
-        )
-        port map (
-            CLKOUT   => clk_pixel_x5,
-            LOCK     => pll_locked,
-            CLKOUTP  => open, -- 90deg shifted
-            CLKOUTD  => open,
-            CLKOUTD3 => open,
-            RESET    => '0',
-            RESET_P  => '0',
-            CLKIN    => clk_27mhz,
-            CLKFB    => '0',
-            FBDSEL   => (others => '0'),
-            IDSEL    => (others => '0'),
-            ODSEL    => (others => '0'),
-            PSDA     => (others => '0'),
-            DUTYDA   => (others => '0'),
-            FDLY     => (others => '1')
-        );
+mainclock: entity work.Gowin_PLL_ntsc_60k
+    port map (
+      lock    => pll_locked,
+      clkout0 => clk_pixel_x5,
+      clkin   => clk_50mhz
+    );
 
 div1_inst: CLKDIV
 generic map(
-    DIV_MODE => "5",
-    GSREN    => "false"
+    DIV_MODE => "5"
 )
 port map(
-    CLKOUT => clk,  -- 28Mhz
+    CLKOUT => clk,
     HCLKIN => clk_pixel_x5,
     RESETN => pll_locked,
     CALIB  => '0'
@@ -558,8 +505,7 @@ port map(
 
 div2_inst: CLKDIV
 generic map(
-  DIV_MODE => "2",
-  GSREN    => "false"
+  DIV_MODE => "2"
 )
 port map(
     CLKOUT => clk_14,
@@ -570,8 +516,7 @@ port map(
 
 div3_inst: CLKDIV
 generic map(
-    DIV_MODE => "4",
-    GSREN    => "false"
+    DIV_MODE => "4"
 )
 port map(
     CLKOUT => clk_cpu,
@@ -580,8 +525,8 @@ port map(
     CALIB  => '0'
 );
 
-leds_n <=  not leds;
-leds(5 downto 1) <= "11111" when force_bs > 14 else "00000"; -- indicate unsupported mapper
+leds_n(1 downto 0) <=  not leds(1 downto 0);
+leds(1) <= '1' when force_bs > 14 else '0'; -- indicate unsupported mapper
 
 -- 9 pin d-sub joystick pinout:
 -- pin 1: up
@@ -632,12 +577,15 @@ leds(5 downto 1) <= "11111" when force_bs > 14 else "00000"; -- indicate unsuppo
 -- BTN_START      11
 
 -- 2nd Button button read through INPT1
+
 joyDS2_p1  <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
               key_square & key_triangle & key_cross & key_circle & key_up & key_down & key_left & key_right;
-joyDS2_p2  <= x"0000";
+joyDS2_p2  <= key_rstick2 & key_lstick2 & key_r22 & key_l22 & key_start2 & key_select2 & key_r12 & key_l12 &
+              key_square2 & key_triangle2 & key_cross2 & key_circle2 & key_up2 & key_down2 & key_left2 & key_right2;
 joyDS2A_p1 <= key_rstick & key_lstick & key_r2 & key_l2 & key_start & key_select & key_r1 & key_l1 &
               key_square & key_triangle & "00" & "0000";
-joyDS2A_p2 <= x"0000";
+joyDS2A_p2 <= key_rstick2 & key_lstick2 & key_r22 & key_l22 & key_start2 & key_select2 & key_r12 & key_l12 &
+              key_square2 & key_triangle2 & "00" & "0000";
 joyDigital <= not(x"FF" & "11" & io(5) & io(0) & io(2) & io(1) & io(4) & io(3));
 -- Logitech Rumble Pad 2
 joyUsb1    <= "0000" &
@@ -962,10 +910,10 @@ module_inst: entity work.sysctrl
   system_joyswap      => joyswap,
 
   int_out_n           => m0s(4),
-  int_in              => std_logic_vector(unsigned'("0000" & sdc_int & '0' & hid_int & '0')),
+  int_in              => unsigned'("0000" & sdc_int & '0' & hid_int & '0'),
   int_ack             => int_ack,
 
-  buttons             => unsigned'(not reset & not user), -- S0 and S1 buttons
+  buttons             => unsigned'(not reset & not user), -- S0 and S1 button
   leds                => system_leds, -- two leds can be controlled from the MCU
   color               => ws2812_color -- a 24bit color to e.g. be used to drive the ws2812
 );
@@ -1154,16 +1102,15 @@ end process;
 ram_inst: entity work.Gowin_SDPB
   port map (
       dout   => rom_do,
-      adb    => rom_a(14 downto 0),
+      adb    => rom_a,
       ceb    => '1',
       clkb   => clk_cpu,
-      resetb => '0',
       oce    => '1',
+      reset  => '0',
 
       clka   => clk,
       cea    => dl_wr,
-      reseta => '0',
-      ada    => dl_addr(14 downto 0),
+      ada    => dl_addr,
       din    => dl_data
   );
 

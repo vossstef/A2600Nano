@@ -12,15 +12,13 @@ Video output is adapted for a 5" TFT-LCD module 800x480 Type [SH500Q01Z](https:/
  ![wiring](\.assets/wiring_tn20k_lcd.png)
 
 
-
-
-  ![setup](\.assets/tn20k_lcd.png)
-
 # Adhoc setup of a TP20k, LCD, Speaker, M0S PMOD adapter and M0S
 
   ![setup](\.assets/tp20k_lcd.png)
 
+# Adhoc setup of a TM60k, LCD, Speaker, M0S PMOD adapter and M0S
 
+  ![setup](\.assets/tm60k_lcd.png)
 
 
 
