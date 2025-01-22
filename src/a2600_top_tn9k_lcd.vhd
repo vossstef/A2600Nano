@@ -16,7 +16,6 @@ entity A2600_top is
     reset       : in std_logic; -- S2 button
     user        : in std_logic; -- S1 button
     leds_n      : out std_logic_vector(5 downto 0);
-    io          : in std_logic_vector(5 downto 0);
 
     -- SPI interface Sipeed M0S Dock external BL616 uC
     m0s         : inout std_logic_vector(4 downto 0);
@@ -260,9 +259,10 @@ signal lcd_r_i : std_logic_vector(5 downto 0);
 signal lcd_b_i : std_logic_vector(5 downto 0);
 signal ds_clk          : std_logic;
 signal ds_mosi         : std_logic;
-signal ds_miso         : std_logic;
+signal ds_miso         : std_logic := '0';
 signal ds_cs           : std_logic;
 signal dac_i           : std_logic_vector(15 downto 0);
+signal io              : std_logic_vector(5 downto 0) := "111111";
 
 component CLKDIV
     generic (
