@@ -33,8 +33,7 @@ entity A2600_top is
     -- sd interface
     sd_clk      : out std_logic;
     sd_cmd      : inout std_logic;
-    sd_dat      : inout std_logic_vector(3 downto 0);
-    ws2812      : out std_logic
+    sd_dat      : inout std_logic_vector(3 downto 0)
     );
 end;
 
@@ -114,7 +113,6 @@ signal mouse_x        : signed(7 downto 0);
 signal mouse_y        : signed(7 downto 0);
 signal mouse_strobe   : std_logic;
 signal osd_status     : std_logic;
-signal ws2812_color   : std_logic_vector(23 downto 0);
 signal system_reset   : std_logic_vector(1 downto 0);
 signal sd_img_size    : std_logic_vector(31 downto 0);
 signal sd_img_size_d  : std_logic_vector(31 downto 0);
@@ -344,8 +342,8 @@ gamepad: entity work.dualshock2
     analog        => paddle_1_analogA or paddle_1_analogB,
     stick_lx      => paddle_1,
     stick_ly      => paddle_2,
-    stick_rx      => open,
-    stick_ry      => open,
+    stick_rx      => paddle_3,
+    stick_ry      => paddle_4,
     key_up        => key_up,
     key_down      => key_down,
     key_left      => key_left,
@@ -364,14 +362,6 @@ gamepad: entity work.dualshock2
     key_rstick    => key_rstick,
     debug1        => open,
     debug2        => open
-    );
-
-led_ws2812: entity work.ws2812
-  port map
-  (
-   clk    => clk,
-   color  => ws2812_color,
-   data   => ws2812
   );
 
 sdc_iack <= int_ack(3);
@@ -439,9 +429,9 @@ generic map
 STEREO  => false
 )
 port map(
-pll_lock     => pll_locked,
-clk          => clk,
-ntscmode  => '1',
+pll_lock => pll_locked,
+clk      => clk,
+ntscmode => '1',
 
 vb_in     => vblank,
 hb_in     => hblank,
@@ -529,7 +519,7 @@ generic map (
         port map (
             CLKOUT   => clk_pixel_x5,
             LOCK     => pll_locked,
-            CLKOUTP  => open, -- 90deg shifted
+            CLKOUTP  => open,
             CLKOUTD  => open,
             CLKOUTD3 => open,
             RESET    => '0',
@@ -967,7 +957,7 @@ module_inst: entity work.sysctrl
 
   buttons             => unsigned'(not reset & not user), -- S0 and S1 buttons
   leds                => system_leds, -- two leds can be controlled from the MCU
-  color               => ws2812_color -- a 24bit color to e.g. be used to drive the ws2812
+  color               => open
 );
 
 sd_rd(4) <= '0';
@@ -1154,7 +1144,7 @@ end process;
 ram_inst: entity work.Gowin_SDPB
   port map (
       dout   => rom_do,
-      adb    => rom_a(14 downto 0),
+      adb    => rom_a,
       ceb    => '1',
       clkb   => clk_cpu,
       resetb => '0',
@@ -1163,7 +1153,7 @@ ram_inst: entity work.Gowin_SDPB
       clka   => clk,
       cea    => dl_wr,
       reseta => '0',
-      ada    => dl_addr(14 downto 0),
+      ada    => dl_addr,
       din    => dl_data
   );
 
