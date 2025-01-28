@@ -99,14 +99,6 @@ wire [15:0] audio_vol_r =
 wire vreset;
 reg  HSync, VSync, vbl_gen;
 
-video_analyzer video_analyzer (
-   .clk(clk),
-   .vs(sd_vs_n),
-   .hs(sd_hs_n),
-   .pal(),
-   .vreset(vreset)
-);
-
 wire VBlank = vblank_regenerate ? vbl_gen:vb_stab;
 reg [7:0] adaptive_ary = 8'd108;
 wire [7:0] vertical_ar_lut[256] = '{

@@ -29,7 +29,6 @@ entity A2600_top is
     sd_clk      : out std_logic;
     sd_cmd      : inout std_logic;
     sd_dat      : inout std_logic_vector(3 downto 0);
-    ws2812      : out std_logic;
 
     -- Gamepad
     joystick_clk  : out std_logic;
@@ -115,7 +114,6 @@ signal mouse_x        : signed(7 downto 0);
 signal mouse_y        : signed(7 downto 0);
 signal mouse_strobe   : std_logic;
 signal osd_status     : std_logic;
-signal ws2812_color   : std_logic_vector(23 downto 0);
 signal system_reset   : std_logic_vector(1 downto 0);
 signal sd_img_size    : std_logic_vector(31 downto 0);
 signal sd_img_size_d  : std_logic_vector(31 downto 0);
@@ -322,9 +320,6 @@ begin
   spi_io_clk  <= m0s(3);
   m0s(0)      <= spi_io_dout; -- M0 Dock
 
-joystick_cs     <= joystick_cs_i;
-joystick_miso_i <= joystick_miso;
-
 -- https://store.curiousinventor.com/guides/PS2/
 -- https://hackaday.io/project/170365-blueretro/log/186471-playstation-playstation-2-spi-interface
 
@@ -333,16 +328,16 @@ gamepad: entity work.dualshock2
     clk           => clk,
     rst           => reset2600,
     vsync         => vsync,
-    ds2_dat       => joystick_miso_i,
+    ds2_dat       => joystick_miso,
     ds2_cmd       => joystick_mosi,
-    ds2_att       => joystick_cs_i,
+    ds2_att       => joystick_cs,
     ds2_clk       => joystick_clk,
     ds2_ack       => '0',
     analog        => paddle_1_analogA or paddle_1_analogB,
     stick_lx      => paddle_1,
     stick_ly      => paddle_2,
-    stick_rx      => open,
-    stick_ry      => open,
+    stick_rx      => paddle_3,
+    stick_ry      => paddle_4,
     key_up        => key_up,
     key_down      => key_down,
     key_left      => key_left,
@@ -362,14 +357,6 @@ gamepad: entity work.dualshock2
     debug1        => open,
     debug2        => open
     );
-
-led_ws2812: entity work.ws2812
-  port map
-  (
-   clk    => clk,
-   color  => ws2812_color,
-   data   => ws2812
-  );
 
 sdc_iack <= int_ack(3);
 
@@ -432,7 +419,7 @@ port map(
       b_in      => video_b(7 downto 4),
       audio_l => signed("0" & audio0 & "0000000000"),
       audio_r => signed("0" & audio1 & "0000000000"),
-      osd_status => osd_status,
+      osd_status => open,
       vblank_regenerate => vblank_regen,
       paldetect  => paldetect,
       mcu_start  => mcu_start,
@@ -497,7 +484,7 @@ generic map (
         port map (
             CLKOUT   => clk_pixel_x5,
             LOCK     => pll_locked,
-            CLKOUTP  => open, -- 90deg shifted
+            CLKOUTP  => open,
             CLKOUTD  => open,
             CLKOUTD3 => open,
             RESET    => '0',
@@ -935,7 +922,7 @@ module_inst: entity work.sysctrl
 
   buttons             => unsigned'(not reset & not user), -- S0 and S1 buttons
   leds                => system_leds, -- two leds can be controlled from the MCU
-  color               => ws2812_color -- a 24bit color to e.g. be used to drive the ws2812
+  color               => open
 );
 
 sd_rd(4) <= '0';
@@ -1122,7 +1109,7 @@ end process;
 ram_inst: entity work.Gowin_SDPB
   port map (
       dout   => rom_do,
-      adb    => rom_a(14 downto 0),
+      adb    => rom_a,
       ceb    => '1',
       clkb   => clk_cpu,
       resetb => '0',
@@ -1131,7 +1118,7 @@ ram_inst: entity work.Gowin_SDPB
       clka   => clk,
       cea    => dl_wr,
       reseta => '0',
-      ada    => dl_addr(14 downto 0),
+      ada    => dl_addr,
       din    => dl_data
   );
 

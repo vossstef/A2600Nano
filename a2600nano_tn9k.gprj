@@ -7,8 +7,8 @@
     <FileList>
         <File path="src/detect2600.sv" type="file.verilog" enable="1"/>
         <File path="src/dualshock2.v" type="file.verilog" enable="1"/>
-        <File path="src/gowin_dpb/gowin_dpb_track_buffer_b.v" type="file.verilog" enable="1"/>
-        <File path="src/gowin_dpb/sector_dpram.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_dpb/gowin_dpb_track_buffer_b_tn9k.v" type="file.verilog" enable="1"/>
+        <File path="src/gowin_dpb/sector_dpram_tn9k.v" type="file.verilog" enable="1"/>
         <File path="src/hdmi/audio_clock_regeneration_packet.sv" type="file.verilog" enable="1"/>
         <File path="src/hdmi/audio_info_frame.sv" type="file.verilog" enable="1"/>
         <File path="src/hdmi/audio_sample_packet.sv" type="file.verilog" enable="1"/>
@@ -30,7 +30,6 @@
         <File path="src/misc/sysctrl.v" type="file.verilog" enable="1"/>
         <File path="src/misc/video.v" type="file.verilog" enable="1"/>
         <File path="src/misc/video_analyzer.v" type="file.verilog" enable="1"/>
-        <File path="src/misc/ws2812.v" type="file.verilog" enable="1"/>
         <File path="src/video_stabilize.sv" type="file.verilog" enable="1"/>
         <File path="src/A2601Core.vhd" type="file.vhdl" enable="1"/>
         <File path="src/A2601top.vhd" type="file.vhdl" enable="1"/>

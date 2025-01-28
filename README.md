@@ -57,7 +57,7 @@ See [Tang Mega 60K NEO](TANG_MEGA_60K.md)
 See [Tang Mega 138K Pro](TANG_MEGA_138Kpro.md)
 
 ## A2600Nano with LCD and Speaker
-See [Tang Nano LCD](TANG_NANO_20k_LCD.md)
+See [Tang Nano LCD](TANG_LCD.md)
 
 ## Installation
 

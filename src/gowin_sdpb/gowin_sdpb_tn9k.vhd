@@ -5,7 +5,7 @@
 --Part Number: GW1NR-LV9QN88PC6/I5
 --Device: GW1NR-9
 --Device Version: C
---Created Time: Sun Dec 15 14:37:36 2024
+--Created Time: Tue Jan 28 12:14:34 2025
 
 library IEEE;
 use IEEE.std_logic_1164.all;
@@ -20,14 +20,16 @@ entity Gowin_SDPB is
         ceb: in std_logic;
         resetb: in std_logic;
         oce: in std_logic;
-        ada: in std_logic_vector(14 downto 0);
+        ada: in std_logic_vector(15 downto 0);
         din: in std_logic_vector(7 downto 0);
-        adb: in std_logic_vector(14 downto 0)
+        adb: in std_logic_vector(15 downto 0)
     );
 end Gowin_SDPB;
 
 architecture Behavioral of Gowin_SDPB is
 
+    signal lut_f_0: std_logic;
+    signal lut_f_1: std_logic;
     signal sdpb_inst_0_dout_w: std_logic_vector(30 downto 0);
     signal sdpb_inst_0_dout: std_logic_vector(0 downto 0);
     signal sdpb_inst_1_dout_w: std_logic_vector(30 downto 0);
@@ -60,7 +62,18 @@ architecture Behavioral of Gowin_SDPB is
     signal sdpb_inst_14_dout: std_logic_vector(7 downto 7);
     signal sdpb_inst_15_dout_w: std_logic_vector(30 downto 0);
     signal sdpb_inst_15_dout: std_logic_vector(7 downto 7);
+    signal sdpb_inst_16_dout_w: std_logic_vector(23 downto 0);
+    signal sdpb_inst_16_dout: std_logic_vector(7 downto 0);
     signal dff_q_0: std_logic;
+    signal dff_q_1: std_logic;
+    signal mux_o_9: std_logic;
+    signal mux_o_21: std_logic;
+    signal mux_o_33: std_logic;
+    signal mux_o_45: std_logic;
+    signal mux_o_57: std_logic;
+    signal mux_o_69: std_logic;
+    signal mux_o_81: std_logic;
+    signal mux_o_93: std_logic;
     signal gw_gnd: std_logic;
     signal sdpb_inst_0_BLKSELA_i: std_logic_vector(2 downto 0);
     signal sdpb_inst_0_BLKSELB_i: std_logic_vector(2 downto 0);
@@ -126,6 +139,27 @@ architecture Behavioral of Gowin_SDPB is
     signal sdpb_inst_15_BLKSELB_i: std_logic_vector(2 downto 0);
     signal sdpb_inst_15_DI_i: std_logic_vector(31 downto 0);
     signal sdpb_inst_15_DO_o: std_logic_vector(31 downto 0);
+    signal sdpb_inst_16_BLKSELA_i: std_logic_vector(2 downto 0);
+    signal sdpb_inst_16_BLKSELB_i: std_logic_vector(2 downto 0);
+    signal sdpb_inst_16_ADA_i: std_logic_vector(13 downto 0);
+    signal sdpb_inst_16_DI_i: std_logic_vector(31 downto 0);
+    signal sdpb_inst_16_ADB_i: std_logic_vector(13 downto 0);
+    signal sdpb_inst_16_DO_o: std_logic_vector(31 downto 0);
+
+    -- component declaration
+    component LUT5
+        generic (
+            INIT: in bit_vector := X"00000000"
+        );
+        port (
+            F: out std_logic;
+            I0: in std_logic;
+            I1: in std_logic;
+            I2: in std_logic;
+            I3: in std_logic;
+            I4: in std_logic
+        );
+    end component;
 
     --component declaration
     component SDPB
@@ -241,86 +275,119 @@ architecture Behavioral of Gowin_SDPB is
 begin
     gw_gnd <= '0';
 
-    sdpb_inst_0_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_0_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_0_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_0_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_0_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(0);
     sdpb_inst_0_dout(0) <= sdpb_inst_0_DO_o(0);
     sdpb_inst_0_dout_w(30 downto 0) <= sdpb_inst_0_DO_o(31 downto 1) ;
-    sdpb_inst_1_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_1_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_1_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_1_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_1_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(0);
     sdpb_inst_1_dout(0) <= sdpb_inst_1_DO_o(0);
     sdpb_inst_1_dout_w(30 downto 0) <= sdpb_inst_1_DO_o(31 downto 1) ;
-    sdpb_inst_2_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_2_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_2_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_2_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_2_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(1);
     sdpb_inst_2_dout(1) <= sdpb_inst_2_DO_o(0);
     sdpb_inst_2_dout_w(30 downto 0) <= sdpb_inst_2_DO_o(31 downto 1) ;
-    sdpb_inst_3_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_3_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_3_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_3_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_3_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(1);
     sdpb_inst_3_dout(1) <= sdpb_inst_3_DO_o(0);
     sdpb_inst_3_dout_w(30 downto 0) <= sdpb_inst_3_DO_o(31 downto 1) ;
-    sdpb_inst_4_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_4_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_4_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_4_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_4_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(2);
     sdpb_inst_4_dout(2) <= sdpb_inst_4_DO_o(0);
     sdpb_inst_4_dout_w(30 downto 0) <= sdpb_inst_4_DO_o(31 downto 1) ;
-    sdpb_inst_5_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_5_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_5_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_5_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_5_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(2);
     sdpb_inst_5_dout(2) <= sdpb_inst_5_DO_o(0);
     sdpb_inst_5_dout_w(30 downto 0) <= sdpb_inst_5_DO_o(31 downto 1) ;
-    sdpb_inst_6_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_6_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_6_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_6_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_6_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(3);
     sdpb_inst_6_dout(3) <= sdpb_inst_6_DO_o(0);
     sdpb_inst_6_dout_w(30 downto 0) <= sdpb_inst_6_DO_o(31 downto 1) ;
-    sdpb_inst_7_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_7_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_7_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_7_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_7_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(3);
     sdpb_inst_7_dout(3) <= sdpb_inst_7_DO_o(0);
     sdpb_inst_7_dout_w(30 downto 0) <= sdpb_inst_7_DO_o(31 downto 1) ;
-    sdpb_inst_8_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_8_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_8_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_8_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_8_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(4);
     sdpb_inst_8_dout(4) <= sdpb_inst_8_DO_o(0);
     sdpb_inst_8_dout_w(30 downto 0) <= sdpb_inst_8_DO_o(31 downto 1) ;
-    sdpb_inst_9_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_9_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_9_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_9_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_9_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(4);
     sdpb_inst_9_dout(4) <= sdpb_inst_9_DO_o(0);
     sdpb_inst_9_dout_w(30 downto 0) <= sdpb_inst_9_DO_o(31 downto 1) ;
-    sdpb_inst_10_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_10_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_10_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_10_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_10_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(5);
     sdpb_inst_10_dout(5) <= sdpb_inst_10_DO_o(0);
     sdpb_inst_10_dout_w(30 downto 0) <= sdpb_inst_10_DO_o(31 downto 1) ;
-    sdpb_inst_11_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_11_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_11_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_11_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_11_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(5);
     sdpb_inst_11_dout(5) <= sdpb_inst_11_DO_o(0);
     sdpb_inst_11_dout_w(30 downto 0) <= sdpb_inst_11_DO_o(31 downto 1) ;
-    sdpb_inst_12_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_12_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_12_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_12_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_12_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(6);
     sdpb_inst_12_dout(6) <= sdpb_inst_12_DO_o(0);
     sdpb_inst_12_dout_w(30 downto 0) <= sdpb_inst_12_DO_o(31 downto 1) ;
-    sdpb_inst_13_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_13_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_13_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_13_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_13_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(6);
     sdpb_inst_13_dout(6) <= sdpb_inst_13_DO_o(0);
     sdpb_inst_13_dout_w(30 downto 0) <= sdpb_inst_13_DO_o(31 downto 1) ;
-    sdpb_inst_14_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_14_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_14_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_14_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_14_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(7);
     sdpb_inst_14_dout(7) <= sdpb_inst_14_DO_o(0);
     sdpb_inst_14_dout_w(30 downto 0) <= sdpb_inst_14_DO_o(31 downto 1) ;
-    sdpb_inst_15_BLKSELA_i <= gw_gnd & gw_gnd & ada(14);
-    sdpb_inst_15_BLKSELB_i <= gw_gnd & gw_gnd & adb(14);
+    sdpb_inst_15_BLKSELA_i <= gw_gnd & ada(15) & ada(14);
+    sdpb_inst_15_BLKSELB_i <= gw_gnd & adb(15) & adb(14);
     sdpb_inst_15_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(7);
     sdpb_inst_15_dout(7) <= sdpb_inst_15_DO_o(0);
     sdpb_inst_15_dout_w(30 downto 0) <= sdpb_inst_15_DO_o(31 downto 1) ;
+    sdpb_inst_16_BLKSELA_i <= gw_gnd & gw_gnd & lut_f_0;
+    sdpb_inst_16_BLKSELB_i <= gw_gnd & gw_gnd & lut_f_1;
+    sdpb_inst_16_ADA_i <= ada(10 downto 0) & gw_gnd & gw_gnd & gw_gnd;
+    sdpb_inst_16_DI_i <= gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & gw_gnd & din(7 downto 0);
+    sdpb_inst_16_ADB_i <= adb(10 downto 0) & gw_gnd & gw_gnd & gw_gnd;
+    sdpb_inst_16_dout(7 downto 0) <= sdpb_inst_16_DO_o(7 downto 0) ;
+    sdpb_inst_16_dout_w(23 downto 0) <= sdpb_inst_16_DO_o(31 downto 8) ;
+
+    lut_inst_0 : LUT5
+        generic map (
+            INIT => X"00010000"
+        )
+        port map (
+            F => lut_f_0,
+            I0 => ada(11),
+            I1 => ada(12),
+            I2 => ada(13),
+            I3 => ada(14),
+            I4 => ada(15)
+        );
+
+    lut_inst_1 : LUT5
+        generic map (
+            INIT => X"00010000"
+        )
+        port map (
+            F => lut_f_1,
+            I0 => adb(11),
+            I1 => adb(12),
+            I2 => adb(13),
+            I3 => adb(14),
+            I4 => adb(15)
+        );
 
     sdpb_inst_0: SDPB
         generic map (
@@ -850,75 +917,172 @@ begin
             ADB => adb(13 downto 0)
         );
 
+    sdpb_inst_16: SDPB
+        generic map (
+            READ_MODE => '0',
+            BIT_WIDTH_0 => 8,
+            BIT_WIDTH_1 => 8,
+            RESET_MODE => "SYNC",
+            BLK_SEL_0 => "001",
+            BLK_SEL_1 => "001"
+        )
+        port map (
+            DO => sdpb_inst_16_DO_o,
+            CLKA => clka,
+            CEA => cea,
+            RESETA => reseta,
+            CLKB => clkb,
+            CEB => ceb,
+            RESETB => resetb,
+            OCE => oce,
+            BLKSELA => sdpb_inst_16_BLKSELA_i,
+            BLKSELB => sdpb_inst_16_BLKSELB_i,
+            ADA => sdpb_inst_16_ADA_i,
+            DI => sdpb_inst_16_DI_i,
+            ADB => sdpb_inst_16_ADB_i
+        );
+
     dff_inst_0: DFFE
         port map (
             Q => dff_q_0,
+            D => adb(15),
+            CLK => clkb,
+            CE => ceb
+        );
+
+    dff_inst_1: DFFE
+        port map (
+            Q => dff_q_1,
             D => adb(14),
             CLK => clkb,
             CE => ceb
         );
 
-    mux_inst_0: MUX2
+    mux_inst_9: MUX2
         port map (
-            O => dout(0),
+            O => mux_o_9,
             I0 => sdpb_inst_0_dout(0),
             I1 => sdpb_inst_1_dout(0),
+            S0 => dff_q_1
+        );
+
+    mux_inst_11: MUX2
+        port map (
+            O => dout(0),
+            I0 => mux_o_9,
+            I1 => sdpb_inst_16_dout(0),
             S0 => dff_q_0
         );
 
-    mux_inst_1: MUX2
+    mux_inst_21: MUX2
         port map (
-            O => dout(1),
+            O => mux_o_21,
             I0 => sdpb_inst_2_dout(1),
             I1 => sdpb_inst_3_dout(1),
+            S0 => dff_q_1
+        );
+
+    mux_inst_23: MUX2
+        port map (
+            O => dout(1),
+            I0 => mux_o_21,
+            I1 => sdpb_inst_16_dout(1),
             S0 => dff_q_0
         );
 
-    mux_inst_2: MUX2
+    mux_inst_33: MUX2
         port map (
-            O => dout(2),
+            O => mux_o_33,
             I0 => sdpb_inst_4_dout(2),
             I1 => sdpb_inst_5_dout(2),
+            S0 => dff_q_1
+        );
+
+    mux_inst_35: MUX2
+        port map (
+            O => dout(2),
+            I0 => mux_o_33,
+            I1 => sdpb_inst_16_dout(2),
             S0 => dff_q_0
         );
 
-    mux_inst_3: MUX2
+    mux_inst_45: MUX2
         port map (
-            O => dout(3),
+            O => mux_o_45,
             I0 => sdpb_inst_6_dout(3),
             I1 => sdpb_inst_7_dout(3),
+            S0 => dff_q_1
+        );
+
+    mux_inst_47: MUX2
+        port map (
+            O => dout(3),
+            I0 => mux_o_45,
+            I1 => sdpb_inst_16_dout(3),
             S0 => dff_q_0
         );
 
-    mux_inst_4: MUX2
+    mux_inst_57: MUX2
         port map (
-            O => dout(4),
+            O => mux_o_57,
             I0 => sdpb_inst_8_dout(4),
             I1 => sdpb_inst_9_dout(4),
+            S0 => dff_q_1
+        );
+
+    mux_inst_59: MUX2
+        port map (
+            O => dout(4),
+            I0 => mux_o_57,
+            I1 => sdpb_inst_16_dout(4),
             S0 => dff_q_0
         );
 
-    mux_inst_5: MUX2
+    mux_inst_69: MUX2
         port map (
-            O => dout(5),
+            O => mux_o_69,
             I0 => sdpb_inst_10_dout(5),
             I1 => sdpb_inst_11_dout(5),
+            S0 => dff_q_1
+        );
+
+    mux_inst_71: MUX2
+        port map (
+            O => dout(5),
+            I0 => mux_o_69,
+            I1 => sdpb_inst_16_dout(5),
             S0 => dff_q_0
         );
 
-    mux_inst_6: MUX2
+    mux_inst_81: MUX2
         port map (
-            O => dout(6),
+            O => mux_o_81,
             I0 => sdpb_inst_12_dout(6),
             I1 => sdpb_inst_13_dout(6),
+            S0 => dff_q_1
+        );
+
+    mux_inst_83: MUX2
+        port map (
+            O => dout(6),
+            I0 => mux_o_81,
+            I1 => sdpb_inst_16_dout(6),
             S0 => dff_q_0
         );
 
-    mux_inst_7: MUX2
+    mux_inst_93: MUX2
         port map (
-            O => dout(7),
+            O => mux_o_93,
             I0 => sdpb_inst_14_dout(7),
             I1 => sdpb_inst_15_dout(7),
+            S0 => dff_q_1
+        );
+
+    mux_inst_95: MUX2
+        port map (
+            O => dout(7),
+            I0 => mux_o_93,
+            I1 => sdpb_inst_16_dout(7),
             S0 => dff_q_0
         );
 

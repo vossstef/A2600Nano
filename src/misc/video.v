@@ -251,7 +251,7 @@ hdmi #(
   .tmds_clock(tmds_clock),
 
   // video input
-  .pal_mode(pal),
+  .pal_mode(1'b0),  // stay NTSC always
   .total_lines(total_lines),
   .reset(vreset),    // signal to synchronize HDMI
   // Atari STE outputs 4 bits per color. Scandoubler outputs 6 bits (to be
