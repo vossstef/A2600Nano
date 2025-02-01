@@ -21,12 +21,14 @@ in handy in this setup to add sound output.
 
 ![setup](\.assets/tp20k_lcd.png)
 
-# TM60k, LCD, Speaker, M0S PMOD adapter and M0S
+# TM60k NEO, LCD, Speaker, M0S PMOD adapter and M0S
 
 > [!IMPORTANT]
 > To enable the LCD Interface the tiny jumper J17 (near Button Key1 ) need to be plugged to position 1 + 2.
 
 ![setup](\.assets/tm60k_lcd.png)
+
+# TM138 Pro, LCD, Speaker, M0S PMOD adapter and M0S
 
 # TN9k, LCD, Speaker and M0S
 
@@ -37,7 +39,7 @@ TN9k lack Audio support therefore external Filter and Amplifier needed.
 **low pass filter for Audio Amplifier** <br>
 ![pinmap](\.assets/audiofilter.png)<br>
 Tang Nano 5V connected to Audio Amplifier supply.
-Filter Vout connected to input of Amplifier module.
+Filter Vout connected to input of Amplifier module e.g. Mini PAM8403
 
 
 
