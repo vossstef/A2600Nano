@@ -77,13 +77,13 @@ reg [11:0] menu_rom_addr;
 reg [7:0]  menu_rom_data;
 
 // generate hex e.g.:
-// gzip -n vic20.xml
-// xxd -c1 -p vic20.xml.gz > vic20_xml.hex
-reg [7:0] vic20_xml[2048];
-initial $readmemh("vic20_xml.hex", vic20_xml);
+// gzip -n atari2600.xml
+// xxd -c1 -p atari2600.xml.gz > atari2600_xml.hex
+reg [7:0] atari2600_xml[2048];
+initial $readmemh("atari2600_xml.hex", atari2600_xml);
 
 always @(posedge clk)
-  menu_rom_data <= vic20_xml[menu_rom_addr];
+  menu_rom_data <= atari2600_xml[menu_rom_addr];
 
 // by default system is in reset
 reg [1:0] main_reset = 2'd3;
