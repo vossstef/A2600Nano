@@ -44,6 +44,7 @@ add_file src/gowin_pll/gowin_pll_ntsc_138k_pro.vhd
 add_file src/detect2600.sv
 add_file src/dualshock2.v
 add_file src/misc/ws2812.v
+add_file src/misc/vic20_keymap.v
 
 set_option -synthesis_tool gowinsynthesis
 set_option -output_base_name a2600nano_tm138k_pro_lcd
