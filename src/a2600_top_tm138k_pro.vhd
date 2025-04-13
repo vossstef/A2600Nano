@@ -883,6 +883,15 @@ module_inst: entity work.sysctrl
   system_video_std    => system_video_std,
   system_joyswap      => joyswap,
 
+  -- port io (used to expose rs232)
+  port_status         => (others => '0'),
+  port_out_available  => (others => '0'),
+  port_out_strobe     => open,
+  port_out_data       => (others => '0'),
+  port_in_available   => (others => '0'),
+  port_in_strobe      => open,
+  port_in_data        => open,
+
   int_out_n           => m0s(4),
   int_in              => unsigned'("0000" & sdc_int & '0' & hid_int & '0'),
   int_ack             => int_ack,
