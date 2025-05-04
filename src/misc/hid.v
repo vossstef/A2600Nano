@@ -23,11 +23,13 @@ module hid (
   output reg [7:0]  joystick0,
   output reg [7:0]  joystick1,
   output reg [7:0]  numpad,
-  input  [7:0]      keyboard_matrix_out,
-  output [7:0]      keyboard_matrix_in,
-  output reg        key_restore,
-  output reg        tape_play,
-  output reg        mod_key,
+  output reg btn_select,// F1 Select
+  output reg btn_start, // F2 Start/Reset
+  output reg btn_b_w,   // F3 B/W toggle switch 
+  output reg btn_diff_l,// F4 Difficulty Left toggle switch A/B
+  output reg btn_diff_r,// F5 Difficulty Right toggle switch A/B
+  output reg btn_pause, // F6 Pause
+  output reg pause,
   output reg [1:0]  mouse_btns,
   output reg [7:0]  mouse_x,
   output reg [7:0]  mouse_y,
@@ -41,18 +43,8 @@ module hid (
   output reg [7:0]  extra_button1
 );
 
-reg [7:0] keyboard[7:0]; // array of 8 elements of width 8bit
-
-//keyboard 
-assign keyboard_matrix_in =
-	      (!keyboard_matrix_out[0]?keyboard[0]:8'hff)&
-	      (!keyboard_matrix_out[1]?keyboard[1]:8'hff)&
-	      (!keyboard_matrix_out[2]?keyboard[2]:8'hff)&
-	      (!keyboard_matrix_out[3]?keyboard[3]:8'hff)&
-	      (!keyboard_matrix_out[4]?keyboard[4]:8'hff)&
-	      (!keyboard_matrix_out[5]?keyboard[5]:8'hff)&
-	      (!keyboard_matrix_out[6]?keyboard[6]:8'hff)&
-	      (!keyboard_matrix_out[7]?keyboard[7]:8'hff);
+reg [7:0] usb_kbd;
+reg [7:0] keys;
 
 assign mouse_x = mouse_x_cnt;
 assign mouse_y = mouse_y_cnt;
@@ -66,16 +58,54 @@ reg irq_enable;
 reg [5:0] db9_portD;
 reg [5:0] db9_portD2;
 
-// translate incoming HID key codes into
-// VIC key matrix positions
-wire [2:0] kbd_row;
-wire [2:0] kbd_column;   
-keymap keymap (
-       .code   ( data_in[6:0] ),
-       .row    ( kbd_row      ),
-       .column ( kbd_column   )
-);  
-   
+assign btn_select = keys[0]; // F1 Select
+assign btn_start  = keys[1]; // F2 Start/Reset
+assign btn_b_w    = keys[2]; // F3 B/W toggle switch 
+assign btn_diff_l = keys[3]; // F4 Difficulty Left toggle switch A/B
+assign btn_diff_r = keys[4]; // F5 Difficulty Right toggle switch A/B
+assign btn_pause  = keys[5]; // F6 Pause
+
+always @(posedge clk) begin
+   if(reset) begin
+        numpad <= 8'h00;
+        keys <= 8'h00;
+   end else begin
+        if (usb_kbd[7]) begin
+            numpad <= 8'h00;
+            keys <= 8'h00;
+        end else begin
+            numpad <=
+            (usb_kbd[6:0] == 7'h5e)?numpad | 8'h01:
+            (usb_kbd[6:0] == 7'h5c)?numpad | 8'h02:
+            (usb_kbd[6:0] == 7'h5a)?numpad | 8'h04:
+            (usb_kbd[6:0] == 7'h60)?numpad | 8'h08:
+            (usb_kbd[6:0] == 7'h62)?numpad | 8'h10:
+            (usb_kbd[6:0] == 7'h63)?numpad | 8'h20:
+            (usb_kbd[6:0] == 7'h44)?numpad | 8'h40:
+            (usb_kbd[6:0] == 7'h4b)?numpad | 8'h80:numpad;
+
+            keys <=
+            (usb_kbd[6:0] == 7'h3a)?keys | 8'h01: // F1 Select
+            (usb_kbd[6:0] == 7'h3b)?keys | 8'h02: // F2 Start/Reset
+            (usb_kbd[6:0] == 7'h3c)?keys | 8'h04: // F3 B/W toggle switch 
+            (usb_kbd[6:0] == 7'h3d)?keys | 8'h08: // F4 Difficulty Left toggle switch A/B
+            (usb_kbd[6:0] == 7'h3e)?keys | 8'h10: // F5 Difficulty Right toggle switch A/B
+            (usb_kbd[6:0] == 7'h3f)?keys | 8'h20:keys; // F6 Pause
+        end
+    end
+end
+
+always @(posedge clk) begin
+	reg old_p2,old_p1;
+	
+	old_p1 <= btn_pause;
+	old_p2 <= old_p1;
+	
+	if(~old_p2 & old_p1) pause <= ~pause;
+
+	if(reset) pause <= 0;
+end
+
 // process mouse events
 always @(posedge clk) begin
    if(reset) begin
@@ -83,20 +113,12 @@ always @(posedge clk) begin
       mouse_strobe <=1'b0;
       irq <= 1'b0;
       irq_enable <= 1'b0;
-      key_restore <= 1'b0;
-      tape_play  <= 1'b0;
-      mod_key  <= 1'b0;
       joystick_strobe <= 1'b0; 
-
-      // reset entire keyboard to 1's
-      keyboard[ 0] <= 8'hff; keyboard[ 1] <= 8'hff; keyboard[ 2] <= 8'hff;
-      keyboard[ 3] <= 8'hff; keyboard[ 4] <= 8'hff; keyboard[ 5] <= 8'hff;
-      keyboard[ 6] <= 8'hff; keyboard[ 7] <= 8'hff; 
-
+      usb_kbd <= 8'h00;
    end else begin
       db9_portD <= db9_port;
       db9_portD2 <= db9_portD;
-      
+
       // monitor db9 port for changes and raise interrupt
       if(irq_enable) begin
         if(db9_portD2 != db9_portD) begin
@@ -117,19 +139,18 @@ always @(posedge clk) begin
             command <= data_in;
         end else begin
             if(state != 4'd15) state <= state + 4'd1;
-	    
+
             // CMD 0: status data
             if(command == 8'd0) begin
                 if(state == 4'd0) data_out <= 8'h01;
                 if(state == 4'd1) data_out <= 8'h00;
             end
-	   
+
             // CMD 1: keyboard data
             if(command == 8'd1) begin
-	       // kbd_column and kbd_row are derived from data_in
-               if(state == 4'd0) keyboard[kbd_row][kbd_column] <= data_in[7]; // row / colum !
+              if(state == 4'd0) 
+                usb_kbd <= data_in;
             end
-	       
             // CMD 2: mouse data
             if(command == 8'd2) begin
                 if(state == 4'd0) mouse_btns <= data_in[1:0];
@@ -146,12 +167,6 @@ always @(posedge clk) begin
                 if(state == 4'd1) begin
                     if(device == 8'd0) joystick0 <= data_in;
                     if(device == 8'd1) joystick1 <= data_in;
-                    if(device == 8'h80) begin // 0, 0, KP * button2, KP0 trigger, KP 8 up, KP 2 down, KP 4 left, KP 6 right
-                        numpad <= data_in;
-                        mod_key <= data_in[5];
-                        key_restore <= data_in[6]; 
-                        tape_play <= data_in[7];
-                     end
                 end
                 if(state == 4'd2) begin
                         if(device == 8'd0) joystick0ax <= data_in;
@@ -171,7 +186,7 @@ always @(posedge clk) begin
             // CMD 4: send digital joystick data to MCU
             if(command == 8'd4) begin
                 if(state == 4'd0) irq_enable <= 1'b1;    // (re-)enable interrupt
-                data_out <= {2'b00, db9_portD };               
+                data_out <= {2'b00, db9_portD };
             end
 
         end
@@ -197,5 +212,5 @@ always @(posedge clk) begin
       end
    end
 end
-    
+
 endmodule

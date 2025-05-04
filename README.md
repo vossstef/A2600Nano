@@ -10,6 +10,7 @@ The A2600Nano is a port of the [MiSTer](https://github.com/MiSTer-devel/Atari260
 | [Tang Primer 25K](https://wiki.sipeed.com/hardware/en/tang/tang-primer-25k/primer-25k.html) | [GW5A-25](https://www.gowinsemi.com/en/product/detail/60/)  | HDMI |no Dualshock, no retro D9 Joystick |
 | [Tang Mega 60k NEO](https://wiki.sipeed.com/hardware/en/tang/tang-mega-60k/mega-60k.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/)| HDMI / LCD|twin Dualshock |
 | [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)|[GW5AST-138](https://www.gowinsemi.com/en/product/detail/60/) | HDMI / LCD |twin Dualshock |
+| [Tang Console 60K NEO](https://wiki.sipeed.com/hardware/en/tang/tang-console/mega-console.html)|[GW5AT-60](https://www.gowinsemi.com/en/product/detail/60/) | HDMI / LCD |twin Dualshock, no Retro D9 Joystick|
 
 This project relies on an external µC being connected to the Tang Nano 20K. You can use a [M0S Dock BL616](https://wiki.sipeed.com/hardware/en/maixzero/m0s/m0s.html), [Raspberry Pi Pico (W)](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) or [esp32-s2](https://www.espressif.com/en/products/socs/esp32-s2)/[s3](https://www.espressif.com/en/products/socs/esp32-s3) and use the [FPGA companion firmware](http://github.com/harbaum/FPGA-Companion). Basically a µC acts as USB host for USB devices and as an OSD controller using a [SPI communication protocol](https://github.com/harbaum/MiSTeryNano/blob/main/SPI.md).
 
@@ -23,7 +24,7 @@ and for the Raspberry PiPico (RP2040 µC) there is a:
 
 * [Optional custom carrier board MiSTeryShield20k Raspberry PiPico](https://github.com/vossstef/tang_nano_20k_c64/tree/main/board/misteryshield20k_rpipico/README.md)
 * [Dualshock Adapter / Cable](https://github.com/vossstef/tang_nano_20k_c64/tree/main/board/misteryshield20k_ds2_adapter/misteryshield20k_ds2_adapter_cable.md)
-* [Optional custom PMOD RP2040-Zero](https://github.com/vossstef/tang_nano_20k_c64/tree/main/board/pizero_pmod/README.md) for Primer / Mega Boards
+* [Optional custom PMOD RP2040-Zero](https://github.com/vossstef/tang_nano_20k_c64/tree/main/board/pizero_pmod/README.md) for Primer / Mega / Console Boards
 * Optional case (upcoming)  
 
 Original A2600 core by [Retromaster](https://retromaster.wordpress.com/a2601/)  
@@ -67,6 +68,9 @@ See [Tang Mega 60K NEO](TANG_MEGA_60K.md)
 
 ## A2600Nano on Tang Mega 138k Pro
 See [Tang Mega 138K Pro](TANG_MEGA_138Kpro.md)
+
+## A2600Nano on Tang Console 60k NEO
+See [Tang Console 60K NEO](TANG_CONSOLE_60K.md)
 
 ## A2600Nano with LCD and Speaker
 See [Tang Nano LCD](TANG_LCD.md)
@@ -116,9 +120,11 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 4th Paddle 2nd Gamepad use ```Trigger Y (DS2 #2 square)```
 
 ### Keyboard
-* Key **F11** as core function ```START``` <br>
-* Key **PAGE UP** as core function ```SELECT``` <br>
-
+* Key **F1** as core function ```SELECT```  
+* Key **F2** as core function ```START / RESET```  
+* Key **F6** as core function ```PAUSE```  (Note: Video is off or disturbed)  
+* Key **F12** OSD  
+  
 | Numpad          |         |Numpad|
 | -          |-        |-         |
 |0<br>Trigger|8<br>Up  |.<br>Trigger 2|
@@ -126,9 +132,10 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 |-           |2<br>Down|-         |
 
 ## Push Button utilization
-* **S2** keep pressed during power-up to prevent FPGA bitstream load from FLASH.<br>
 
-* **S1** reserved <br>
+* S1 reserved  
+* S2 open OSD  
+
 
 ## OSD
 invoke by F12 keypress<br>
@@ -186,14 +193,14 @@ or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2
 
 ## LED UI
 
-| LED | function         |TN9K|TN20K|TP20K|TP25K|TM60K|TM138k|
-| --- |        -         |-   |-     |-      | -     | -      | -   |
-| 0   |Cartridge selected|x   |x     |x      | x     | x      | x   |
-| 1   | Game unsupported |x   |x     |x      | x     | x      | x   |
-| 2   | Game unsupported |x   |x     |x      |  -    | -      | x   |
-| 3   | Game unsupported |x   |x     |x      |  -    | -      | x   |
-| 4   | Game unsupported |x   |x     |x      |  -    | -      | x   |
-| 5   | Game unsupported |x   |x     |x      |  -    | -      | x   |
+| LED | function         |TN9K|TN20K|TP20K   |TP25K  |TM60K   |TM138k|Console60k|
+| --- |        -         |-   |-     |-      | -     | -      | -   |-|
+| 0   |Cartridge selected|x   |x     |x      | x     | x      | x   |-|
+| 1   | Game unsupported |x   |x     |x      | x     | x      | x   |x|
+| 2   | Game unsupported |x   |x     |x      |  -    | -      | x   |-|
+| 3   | Game unsupported |x   |x     |x      |  -    | -      | x   |-|
+| 4   | Game unsupported |x   |x     |x      |  -    | -      | x   |-|
+| 5   | Game unsupported |x   |x     |x      |  -    | -      | x   |-|
 
 LED 1..5 are activated as hint in case an unsupported game (mapper) detected<br>
 
