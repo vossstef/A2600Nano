@@ -214,7 +214,12 @@ signal paddle_1_analogA : std_logic := '0';
 signal paddle_1_analogB : std_logic := '0';
 signal paddle_2_analogA : std_logic := '0';
 signal paddle_2_analogB : std_logic := '0';
-
+signal btn_select       : std_logic; 
+signal btn_start        : std_logic;
+signal btn_b_w          : std_logic;
+signal btn_diff_l       : std_logic;
+signal btn_diff_r       : std_logic;
+signal btn_pause        : std_logic;
 
 component CLKDIV
     generic (
@@ -699,11 +704,12 @@ hid_inst: entity work.hid
   joystick0       => joystick0,
   joystick1       => joystick1,
   numpad          => numpad,
-  keyboard_matrix_out => keyboard_matrix_out,
-  keyboard_matrix_in  => keyboard_matrix_in,
-  key_restore     => open,
-  tape_play       => open,
-  mod_key         => open,
+  btn_select      => btn_select,
+  btn_start       => btn_start,
+  btn_b_w         => btn_b_w,
+  btn_diff_l      => btn_diff_l,
+  btn_diff_r      => btn_diff_r,
+  btn_pause       => btn_pause,
   mouse_btns      => mouse_btns,
   mouse_x         => mouse_x,
   mouse_y         => mouse_y,
@@ -714,7 +720,11 @@ hid_inst: entity work.hid
   joystick1ay     => joystick1ay,
   joystick_strobe => joystick_strobe,
   extra_button0   => extra_button0,
-  extra_button1   => extra_button1
+  extra_button1   => extra_button1,
+  -- sysctrl inputs
+  p_dif1          => p_dif1,
+  p_dif2          => p_dif2,
+  p_color         => p_color
  );
 
 module_inst: entity work.sysctrl 
@@ -862,7 +872,7 @@ a2601_inst: entity work.A2601top
 
 		p_start   => p_start,
 		p_select  => p_select,
-		p_color   => p_color,
+		p_color   => btn_b_w,
 
 		sc        => sc, -- SuperChip enable
 		force_bs  => force_bs, -- forced bank switch type
@@ -870,15 +880,15 @@ a2601_inst: entity work.A2601top
 		rom_do    => rom_do, 
 		rom_size  => img_size_crt(16 downto 0),
 
-		pause     => '0',
+		pause     => btn_pause,
 
 		pal       => pal,
-		p_dif     => not (p_dif2 & p_dif1),  -- 0 = B, 1 = A
+		p_dif     => not (btn_diff_r & btn_diff_l),  -- 0 = B, 1 = A   0 left 1 right
 		decomb    => decomb
 	);
 
-p_start  <= '0' when (joyA(11) = '1' or joyB(11) = '1' or numpad(6) = '1') else '1';-- BTN_SELECT / F11
-p_select <= '0' when (joyA(10) = '1' or joyB(10) = '1' or numpad(7) = '1') else '1';-- BTN_START  / PAGE UP
+p_start  <= '0' when (joyA(11) = '1' or joyB(11) = '1' or btn_start = '1') else '1';
+p_select <= '0' when (joyA(10) = '1' or joyB(10) = '1' or btn_select = '1') else '1';
 
 cart_download <= ioctl_download and load_crt;
 process(clk)

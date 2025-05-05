@@ -8,10 +8,12 @@ This has been tested on Windows 11. It should work on older versions too.
 
 Software needed:
 
-  - [Gowin V1.9.10.03](https://www.gowinsemi.com/en/support/home/) **to synthesize the core**
+  - [Gowin V1.9.11.02](https://www.gowinsemi.com/en/support/home/) **to synthesize the core**
+  - [Gowin V1.9.11.02](https://www.gowinsemi.com/en/support/home/) **to program the flash of the TANG FPGA**
   - [BouffaloLabDevCube](https://dev.bouffalolab.com/download) **to flash the BL616**
   - [Latest release](https://github.com/vossstef/A2600nano/releases/latest) of A2600Nano **FPGA** bitstream
   - [Latest release](http://github.com/harbaum/FPGA-Companion/releases/latest) of FPGA companion firmware **µC firmware** (if not otherwise stated in the release note.)
+  - [Latest release](https://dl.sipeed.com/shareURL/TANG/Debugger/onboard/BL616) of the TANG onboard µC bl616 programmer firmware
 
 In order to use the SD card:
 

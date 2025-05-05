@@ -47,6 +47,10 @@ echo ============ build mega138k pro LCD ===============
 echo.
 %GWSH% build_tm138k_pro_lcd.tcl
 echo.
+echo ============ build console 60k LCD ===============
+echo.
+%GWSH% build_tc60k.tcl
+echo.
 
 echo "done."
 dir impl\pnr\*.fs
