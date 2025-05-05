@@ -26,10 +26,9 @@ module hid (
   output reg btn_select,// F1 Select
   output reg btn_start, // F2 Start/Reset
   output reg btn_b_w,   // F3 B/W toggle switch 
-  output reg btn_diff_l,// F4 Difficulty Left toggle switch A/B
-  output reg btn_diff_r,// F5 Difficulty Right toggle switch A/B
+  output reg btn_diff_l,// F4 Difficulty Left toggle switch A/B  0
+  output reg btn_diff_r,// F5 Difficulty Right toggle switch A/B 1
   output reg btn_pause, // F6 Pause
-  output reg pause,
   output reg [1:0]  mouse_btns,
   output reg [7:0]  mouse_x,
   output reg [7:0]  mouse_y,
@@ -40,7 +39,11 @@ module hid (
   output reg [7:0]  joystick1ay,
   output reg        joystick_strobe,
   output reg [7:0]  extra_button0,
-  output reg [7:0]  extra_button1
+  output reg [7:0]  extra_button1,
+ // sysctrl inputs
+  input p_dif1,
+  input p_dif2,
+  input p_color
 );
 
 reg [7:0] usb_kbd;
@@ -60,10 +63,10 @@ reg [5:0] db9_portD2;
 
 assign btn_select = keys[0]; // F1 Select
 assign btn_start  = keys[1]; // F2 Start/Reset
-assign btn_b_w    = keys[2]; // F3 B/W toggle switch 
-assign btn_diff_l = keys[3]; // F4 Difficulty Left toggle switch A/B
-assign btn_diff_r = keys[4]; // F5 Difficulty Right toggle switch A/B
-assign btn_pause  = keys[5]; // F6 Pause
+//assign btn_b_w    = keys[2]; // F3 B/W toggle switch 
+//assign btn_diff_l = keys[3]; // F4 Difficulty Left toggle switch A/B
+//assign btn_diff_r = keys[4]; // F5 Difficulty Right toggle switch A/B
+//assign btn_pause  = keys[5]; // F6 Pause
 
 always @(posedge clk) begin
    if(reset) begin
@@ -95,16 +98,28 @@ always @(posedge clk) begin
     end
 end
 
-always @(posedge clk) begin
-	reg old_p2,old_p1;
-	
-	old_p1 <= btn_pause;
-	old_p2 <= old_p1;
-	
-	if(~old_p2 & old_p1) pause <= ~pause;
+reg [7:0] keys_d;
+reg b_w, diff_r, diff_l;
 
-	if(reset) pause <= 0;
+always @(posedge clk) begin
+    if(reset) begin
+        keys_d <= 8'h00;
+        btn_pause <= 1'b0;
+        b_w <= 1'b0;
+        diff_r <= 1'b0;
+        diff_l <= 1'b0;
+    end else begin
+        keys_d <= keys;
+        if(~keys_d[2] & keys[2]) b_w <= ~b_w;
+        if(~keys_d[3] & keys[3]) diff_l <= ~diff_l;
+        if(~keys_d[4] & keys[4]) diff_r <= ~diff_r;
+        if(~keys_d[5] & keys[5]) btn_pause <= ~btn_pause;
+    end
 end
+
+assign btn_b_w = p_color ? ~b_w : b_w;
+assign btn_diff_l = p_dif1 ? ~diff_l : diff_l;
+assign btn_diff_r = p_dif2 ? ~diff_r : diff_r;
 
 // process mouse events
 always @(posedge clk) begin

@@ -43,7 +43,6 @@ add_file src/a2600_top_tn9k.cst
 add_file src/a2600_top_tn9k.sdc
 add_file src/video_stabilize.sv
 add_file src/detect2600.sv
-add_file src/misc/vic20_keymap.v
 
 set_option -synthesis_tool gowinsynthesis
 set_option -output_base_name a2600nano_tn9k

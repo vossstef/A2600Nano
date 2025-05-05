@@ -280,7 +280,6 @@ signal btn_b_w          : std_logic;
 signal btn_diff_l       : std_logic;
 signal btn_diff_r       : std_logic;
 signal btn_pause        : std_logic;
-signal pause            : std_logic;
 
 component CLKDIV
     generic (
@@ -378,14 +377,6 @@ gamepad_p2: entity work.dualshock2
     debug1        => open,
     debug2        => open
     );
-
-led_ws2812: entity work.ws2812
-  port map
-  (
-   clk    => clk,
-   color  => ws2812_color,
-   data   => ws2812
-  );
 
 sdc_iack <= int_ack(3);
 
@@ -879,7 +870,6 @@ hid_inst: entity work.hid
   btn_diff_l      => btn_diff_l,
   btn_diff_r      => btn_diff_r,
   btn_pause       => btn_pause,
-  pause           => pause,
   mouse_btns      => mouse_btns,
   mouse_x         => mouse_x,
   mouse_y         => mouse_y,
@@ -890,7 +880,11 @@ hid_inst: entity work.hid
   joystick1ay     => joystick1ay,
   joystick_strobe => joystick_strobe,
   extra_button0   => extra_button0,
-  extra_button1   => extra_button1
+  extra_button1   => extra_button1,
+  -- sysctrl inputs
+  p_dif1          => p_dif1,
+  p_dif2          => p_dif2,
+  p_color         => p_color
  );
 
 module_inst: entity work.sysctrl 
@@ -961,7 +955,7 @@ sd_wr(4 downto 0) <= "00000";
     loader_busy       => loader_busy,
     load_crt          => load_crt,
     sd_img_size       => sd_img_size,
-    leds(0)           => open,
+    leds              => open,
     img_select        => img_select,
     img_size_crt      => img_size_crt,
     
@@ -1038,7 +1032,7 @@ a2601_inst: entity work.A2601top
 
 		p_start   => p_start,
 		p_select  => p_select,
-		p_color   => p_color,
+		p_color   => btn_b_w,
 
 		sc        => sc, -- SuperChip enable
 		force_bs  => force_bs, -- forced bank switch type
@@ -1046,10 +1040,10 @@ a2601_inst: entity work.A2601top
 		rom_do    => rom_do, 
 		rom_size  => img_size_crt(16 downto 0),
 
-		pause     => pause,
+		pause     => btn_pause,
 
 		pal       => pal,
-		p_dif     => not (p_dif2 & p_dif1),  -- 0 = B, 1 = A
+		p_dif     => not (btn_diff_r & btn_diff_l),  -- 0 = B, 1 = A   0 left 1 right
 		decomb    => decomb
 	);
 

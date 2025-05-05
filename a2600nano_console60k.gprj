@@ -28,7 +28,6 @@
         <File path="src/misc/sd_rw.v" type="file.verilog" enable="1"/>
         <File path="src/misc/sdcmd_ctrl.v" type="file.verilog" enable="1"/>
         <File path="src/misc/sysctrl.v" type="file.verilog" enable="1"/>
-        <File path="src/misc/vic20_keymap.v" type="file.verilog" enable="1"/>
         <File path="src/misc/video_analyzer.v" type="file.verilog" enable="1"/>
         <File path="src/misc/video_tc.v" type="file.verilog" enable="1"/>
         <File path="src/video_stabilize.sv" type="file.verilog" enable="1"/>

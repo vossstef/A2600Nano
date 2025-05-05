@@ -31,6 +31,7 @@ Original A2600 core by [Retromaster](https://retromaster.wordpress.com/a2601/)
 All HID, SDcard and µC firmware by [Till Harbaum](http://www.harbaum.org/till/mist)<br>
 
 Features:
+
 * PAL 768x576p or NTSC 768x480p HDMI Video and Audio Output
 * TFT-LCD module 800x600 [SH500Q01Z](https://dl.sipeed.com/Accessories/LCD/500Q01Z-00%20spec.pdf) + Speaker support
 * Scanline length auto adjust
@@ -39,60 +40,69 @@ Features:
 * Superchip autodetct
 * [USB Keyboard](https://en.wikipedia.org/wiki/Computer_keyboard) USB Keyboard
 * [USB Joystick](https://en.wikipedia.org/wiki/Joystick)
-* [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick as paddle emulation<br>
+* [USB Gamepad](https://en.wikipedia.org/wiki/Gamepad) Stick as paddle emulation
 * [USB XBOX 360 Controller](https://en.wikipedia.org/wiki/Xbox_360_controller) as Joystick or Paddle
 * [USB Mouse](https://en.wikipedia.org/wiki/Computer_mouse) as paddle emulation
 * supports 2nd Trigger Button for modified Games
 * [legacy D9 Joystick](https://en.wikipedia.org/wiki/Atari_CX40_joystick) (Atari / Commodore digital type)
-* Joystick emulation on Keyboard [Numpad](https://en.wikipedia.org/wiki/Numeric_keypad)<br>
+* Joystick emulation on Keyboard [Numpad](https://en.wikipedia.org/wiki/Numeric_keypad)
 * [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) for [MiSTeryShield20k](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md) via spare [pinheader](/board/misteryshield20k_ds2_adapter/misteryshield20k_ds2_adapter_cable.md)
-* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Keys & Stick as Joystick<br>
-* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Sticks as paddle emulation (analog mode)<br>
+* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Keys & Stick as Joystick
+* [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) Sticks as paddle emulation (analog mode)
 * Cartridge ROM loader. [Boot default is homebrew 'Hunchy' Chris Walton](https://videogamehomebrew.fandom.com/wiki/Chris_Walton)  
 
-<br>
 <img src="./.assets/a2600nano.png" alt="image" width="80%" height="auto">
-<br>
 
 ## A2600Nano on Tang Nano 9K
+
 See [Tang Nano 9K](TANG_NANO_9K.md)
 
 ## A2600Nano on Tang Primer 20K (Dock ext board)
-See [Tang Primer 20K](TANG_PRIMER_20K.md)<br>
+
+See [Tang Primer 20K](TANG_PRIMER_20K.md)
 
 ## A2600Nano on Tang Primer 25K
+
 See [Tang Primer 25K](TANG_PRIMER_25K.md)
 
 ## A2600Nano on Tang Mega 60k NEO
+
 See [Tang Mega 60K NEO](TANG_MEGA_60K.md)
 
 ## A2600Nano on Tang Mega 138k Pro
+
 See [Tang Mega 138K Pro](TANG_MEGA_138Kpro.md)
 
 ## A2600Nano on Tang Console 60k NEO
+
 See [Tang Console 60K NEO](TANG_CONSOLE_60K.md)
 
 ## A2600Nano with LCD and Speaker
+
 See [Tang Nano LCD](TANG_LCD.md)
 
 ## Installation
 
 The installation of A2600Nano on the Tang Nano 20k board can be done using a Linux PC or a Windows PC
-[Instruction](INSTALLATION_WINDOWS.md).<br>
+[Instruction](INSTALLATION_WINDOWS.md).  
 
 ## Cartridge ROM Loader
-ROM can be loaded via OSD file selection.<br>
+
+ROM can be loaded via OSD file selection.  
 
 ### Supported mappers
-* Auto detected  (F8 F6 FE E0 3F F4 P2 FA CV 2K UA E7 F0 32)<br>
+
+* Auto detected  (F8 F6 FE E0 3F F4 P2 FA CV 2K UA E7 F0 32)  
   
-LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<br>
+LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected  
 
 ### single / dual Button Joystick
+
 * Button ```Trigger```
 * 2nd Button ```Trigger 2```
 
 ### Gamepad
+
 * Gamepad Button ```Trigger A (DS2 circle)``` 1st Trigger Button
 
 * Gamepad Button ```Trigger B (DS2 cross)``` 2nd Trigger Button
@@ -101,15 +111,16 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 
 * Gamepad Button ```Trigger Y (DS2 square)``` 2nd Paddle Trigger and enable
 
-* Gamepad Button ```START``` as core function **START**<br>
+* Gamepad Button ```START``` as core function **START**
 
-* Gamepad Button ```SELECT``` as core function **SELECT**<br>
+* Gamepad Button ```SELECT``` as core function **SELECT**
 
 > [!NOTE]
 > Gamepad button keymap optimized for legacy USB Logitech RumblePad 2 or Dual Action. Keymap might differ for other Gamepads.
 
 ### Paddle
-* DualShock 2 (left Stick), USB Gamepad or USB Mouse.<br>
+
+* DualShock 2 (left Stick), USB Gamepad or USB Mouse.  
 
 1st Paddle 1st Gamepad use ```Trigger X (DS2 #1 triangle)``` or ```left Mouse Button```
 
@@ -120,32 +131,37 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected<b
 4th Paddle 2nd Gamepad use ```Trigger Y (DS2 #2 square)```
 
 ### Keyboard
-* Key **F1** as core function ```SELECT```  
-* Key **F2** as core function ```START / RESET```  
-* Key **F6** as core function ```PAUSE```  (Note: Video is off or disturbed)  
-* Key **F12** OSD  
-  
-| Numpad          |         |Numpad|
+
+* Key **F1** as core function ```SELECT``` toggle
+* Key **F2** as core function ```START / RESET``` toggle
+* Key **F3** as core function ```B/W``` toggle
+* Key **F4** as core function ```Difficulty Left``` toggle
+* Key **F5** as core function ```Difficulty Right``` toggle
+* Key **F6** as core function ```PAUSE``` toggle (Note: Video is off or disturbed)
+* Key **F12** OSD
+
+| Numpad     |         |Numpad|
 | -          |-        |-         |
-|0<br>Trigger|8<br>Up  |.<br>Trigger 2|
-|4<br>Left   |-        |6<br>Right|
-|-           |2<br>Down|-         |
+|0  Trigger|8  Up  |.  Trigger 2|
+|4  Left   |-        |6  Right|
+|-           |2  Down|-         |
 
 ## Push Button utilization
 
-* S1 reserved  
-* S2 open OSD  
-
+* S1 reserved
+* S2 open OSD
 
 ## OSD
-invoke by F12 keypress<br>
-* Reset<br>
-* Cold Reset<br>
-* Audio Volume + / -<br>
-* Scanlines effect %<br>
-* Region switch Auto/NTSC/PAL<br>
-* HID device selection for Joystick Port<br>
-* Loader file selection<br>
+
+invoke by F12 keypress
+
+* Reset
+* Cold Reset
+* Audio Volume + / -
+* Scanlines effect %
+* Region switch Auto/NTSC/PAL
+* HID device selection for Joystick Port
+* Loader file selection
 * Difficulty A, B Core switch
 * Black & White Core video switch
 * Joystick port swap
@@ -157,15 +173,15 @@ invoke by F12 keypress<br>
 
 A 2nd Trigger Button (B) is supported for modified Games.
 
- ![controller](\.assets/controller-layout.png)<br>
+![controller](\.assets/controller-layout.png)  
 
-legacy single D9 Digital Joystick. OSD: **Retro D9**<br>
-or<br>
-USB Joystick(s) or Gamepad(s). OSD: **USB #1 Joy** or **USB #2 Joy** <br>
-Also [RII Mini Keyboard i8](http://www.riitek.com/product/220.html) left Multimedia Keys are active if **USB #1 Joy** selected.  <br>
-```Button A and B``` Buttons as Trigger:<br>
+legacy single D9 Digital Joystick. OSD: **Retro D9**  
+or  
+USB Joystick(s) or Gamepad(s). OSD: **USB #1 Joy** or **USB #2 Joy**  
+Also [RII Mini Keyboard i8](http://www.riitek.com/product/220.html) left Multimedia Keys are active if **USB #1 Joy** selected.  
+```Button A and B``` Buttons as Trigger:  
 
-or<br>
+or  
 Dualshock 2 Gamepad Stick or Dpad as Joystick. OSD: **DS #1 Joy** or **DS #2 Joy**<br>
 At the moment Dpad only for original Pad. Some clone devices support at the same time Dpad and left stick simultaniously.
 <br>```circle and cross``` Buttons as Trigger:<br>
@@ -179,17 +195,21 @@ At the moment Dpad only for original Pad. Some clone devices support at the same
 > TN20k: You have to select OSD "DS2 **#1** Joy" if you use the ``Sipeed Joy to DIP`` adapter.<br>
 Both DS interface ports can be active at the same time meaning twin Dualshock support if the MiSTeryShield20k MIDI interface is not populated (Resistor R9 and IC U3 removed).  
 
-or<br> Keyboard Numpad. OSD: **Numpad**<br>
+or  
+Keyboard Numpad. OSD: **Numpad**  
 
-or<br> Mouse. OSD: **Mouse**<br>
-```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.<br>
+or  
+Mouse. OSD: **Mouse**  
+```left Mouse Button``` and ```right Mouse Button``` as Trigger for Paddle 1 or 2.  
 
-or<br> USB Gamepad as Paddle. OSD: **USB #1 Padd** or **USB #2 Padd** <br>
+or  
+USB Gamepad as Paddle. OSD: **USB #1 Padd** or **USB #2 Padd**  
  ```Trigger X``` and ```Trigger Y``` 
 
-or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**<br>
+or  
+Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2 Paddle**  
 
- ```Trigger triangle``` and ```Trigger square``` 
+ ```Trigger triangle``` and ```Trigger square```
 
 ## LED UI
 
@@ -205,39 +225,50 @@ or<br> Dualshock2 Gamepad left stick as Paddle. OSD: **DS #1 Paddle** or **DS #2
 LED 1..5 are activated as hint in case an unsupported game (mapper) detected<br>
 
 **Multicolor RGB LED**
+
 * **<font color="green">green</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;all fine and ready to go<br>
 * **<font color="red">red</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;something wrong with SDcard / default boot image<br>
 * **<font color="blue">blue</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;µC firmware detected valid FPGA core<br>
 * **<font color="yellow">yellow</font>**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;FPGA core can't detect valid firmware<br>
 * **white**&ensp;&thinsp;&ensp;&thinsp;&ensp;&thinsp;-<br>
-## Powering
-Prototype circuit with Keyboard can be powered by Tang USB-C connector from PC or a Power Supply Adapter. 
-## Synthesis
-Source code can be synthesized, fitted and programmed with GOWIN IDE Windows or Linux.<br>
-Alternatively use the command line build script **gw_sh.exe** build_tn20k.tcl<br>
-## HW circuit considerations
-**Pinmap TN20k Interfaces** <br>
- Sipeed M0S Dock, digital Joystick D9 and DualShock Gamepad connection.<br>
- ![wiring](\.assets/wiring_spi.png)
 
-**Pinmap D-SUB 9 Joystick Interface** <br>
-- Joystick interface is 3.3V tolerant. Joystick 5V supply pin has to be left floating !<br>
+## Powering
+
+Prototype circuit with Keyboard can be powered by Tang USB-C connector from PC or a Power Supply Adapter.
+
+## Synthesis
+
+Source code can be synthesized, fitted and programmed with GOWIN IDE Windows or Linux.  
+Alternatively use the command line build script **gw_sh.exe** build_tn20k.tcl  
+
+## HW circuit considerations
+
+**Pinmap TN20k Interfaces**  
+
+ Sipeed M0S Dock, digital Joystick D9 and DualShock Gamepad connection.  
+![wiring](\.assets/wiring_spi.png)
+
+**Pinmap D-SUB 9 Joystick Interface**  
+
+Joystick interface is 3.3V tolerant. Joystick 5V supply pin has to be left floating !  
 ![pinmap](\.assets/vic20-Joystick.png)
 
-| Joystick pin |IO| Tang Nano pin | FPGA pin | Joystick Function |
-| ----------- |-----| ---   | --------  | ----- |
-| 1 |2| J6 10  | 25   | UP | 
-| 2 |1| J6 9  | 28 | DOWN |
-| 3 |4| J6 12 | 29 | LEFT |
-| 4 |3| J5 11 | 26 | RIGHT |
-| 5 |-| - | - | POT Y | - |
-| 6 |0| J5 8 | 27 | TRIGGER|
-| 7 |-| n.c | n.c | 5V | - |
-| 8 |-| J5 20 | - | GND | - |
-| 9 |-| - | - | POT X | - |
+| Joystick pin|IO    | Tang Nano pin | FPGA pin | Joystick Function |
+| ----------- |----- | ---           | -------- | -----             |
+| 1           |     2| J6 10         | 25       | UP        |
+| 2 |1| J6 9  | 28   | DOWN             |
+| 3 |4| J6 12 | 29   | LEFT |
+| 4 |3| J5 11 | 26   | RIGHT |
+| 5 |-| -     | -    | POT Y |
+| 6 |0| J5 8  | 27   | TRIGGER|
+| 7 |-| n.c   | n.c  | 5V |
+| 8 |-| J5 20 | -    | GND |
+| 9 |-| - | - | POT X|
 
-**Pinmap Dualshock 2 Controller Interface** <br>
+**Pinmap Dualshock 2 Controller Interface**  
+
 <img src="./.assets/controller-pinout.jpg" alt="image" width="30%" height="auto">
+
 | DS pin | Tang Nano pin | FPGA pin | DS Function |
 | ----------- | ---   | --------  | ----- |
 | 1 | J5 18 | 71 MISO | JOYDAT  |
@@ -249,7 +280,6 @@ Alternatively use the command line build script **gw_sh.exe** build_tn20k.tcl<br
 | 7 | J5 20 | 52 MCLK | JOYCLK |
 | 8 | n.c. | - | JOYIRQ |
 | 9 | n.c. | - | JOYACK |
-
 
 ## Getting started
 
@@ -273,10 +303,9 @@ and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0
 or [Tang Mega 138k Pro](https://wiki.sipeed.com/hardware/en/tang/tang-mega-138k/mega-138k-pro.html)<br>
 and [PMOD DS2x2](https://wiki.sipeed.com/hardware/en/tang/tang-PMOD/FPGA_PMOD.html#PMOD_DS2x2)<br>
 and [M0S PMOD adapter](https://github.com/harbaum/MiSTeryNano/tree/main/board/m0s_pmod/README.md)<br>
-microSD or microSDHC card FAT/exFAT formatted<br>
-TFT Monitor with HDMI Input and Speaker<br>
-<br>
-
+microSD or microSDHC card FAT/exFAT formatted
+TFT Monitor with HDMI Input and Speaker
+  
 | HID and Gamecontrol Hardware option | TN20k needs | alternative option |Primer 25K|Mega 60K|Mega 138K Pro|
 | -----------                         | ---         | ---                | ---      | -      | -       |
 | USB Keyboard | [USB-C to USB-A adapter](https://www.aliexpress.us/item/3256805563910755.html) | [4 port mini USB hub HS8836A](https://a.aliexpress.com/_EIidgjH)  |x|x|x|
@@ -286,4 +315,3 @@ TFT Monitor with HDMI Input and Speaker<br>
 | Commodore/[Atari](https://en.wikipedia.org/wiki/Atari_CX40_joystick) compatible retro D9 Joystick| [MiSTeryNano shield](https://github.com/harbaum/MiSTeryNano/tree/main/board/misteryshield20k/README.md)|D-SUB 9 M connector, breadboard to wire everything up, some jumper wires|-|adhoc SDRAM1 Joy D9|adhoc PMOD Joy D9|
 | [Dualshock 2 Controller Gamepad](https://en.wikipedia.org/wiki/DualShock) | Gamepad Adapter Board (Sipeed Joystick to DIP) respectively<br> PMOD DS2x2 | breadboard to wire everything up and some jumper wires |-|PMOD DS2x2|PMOD DS2x2|
 
-<br>
