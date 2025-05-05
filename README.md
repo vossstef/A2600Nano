@@ -132,12 +132,12 @@ LED 1 to 5 are activated as hint in case an unsupported game (mapper) detected
 
 ### Keyboard
 
-* Key **F1** as core function ```SELECT``` toggle
-* Key **F2** as core function ```START / RESET``` toggle
-* Key **F3** as core function ```B/W``` toggle
-* Key **F4** as core function ```Difficulty Left``` toggle
-* Key **F5** as core function ```Difficulty Right``` toggle
-* Key **F6** as core function ```PAUSE``` toggle (Note: Video is off or disturbed)
+* Key **F1** toggle ```SELECT```
+* Key **F2** toggle ```START / RESET```
+* Key **F3** toggle ```B/W```
+* Key **F4** toggle ```Difficulty Left```
+* Key **F5** toggle ```Difficulty Right```
+* Key **F6** toggle ```PAUSE``` (Note: Video is blank or disturbed)
 * Key **F12** OSD
 
 | Numpad     |         |Numpad|
