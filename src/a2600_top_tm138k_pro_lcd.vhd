@@ -801,7 +801,7 @@ process(clk, system_reset(0))
     mdy := resize(mouse_y, mdy'length);
     if mdy > 10 then 
       mdy2:= to_signed(10,mdy2'length);
-    elsif mouse_x < -10 then 
+    elsif mdy < -10 then 
       mdy2:= to_signed(-10,mdy2'length);
     else 
       mdy2 := mdy;
