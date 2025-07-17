@@ -3,7 +3,7 @@
 <Project>
     <Template>FPGA</Template>
     <Version>5</Version>
-    <Device name="GW5AT-60B" pn="GW5AT-LV60PG484AC1/I0">gw5at60b-002</Device>
+    <Device name="GW2AR-18C" pn="GW2AR-LV18QN88C8/I7">gw2ar18c-000</Device>
     <FileList>
         <File path="src/detect2600.sv" type="file.verilog" enable="1"/>
         <File path="src/dualshock2.v" type="file.verilog" enable="1"/>
@@ -28,8 +28,9 @@
         <File path="src/misc/sd_rw.v" type="file.verilog" enable="1"/>
         <File path="src/misc/sdcmd_ctrl.v" type="file.verilog" enable="1"/>
         <File path="src/misc/sysctrl.v" type="file.verilog" enable="1"/>
+        <File path="src/misc/video.v" type="file.verilog" enable="1"/>
         <File path="src/misc/video_analyzer.v" type="file.verilog" enable="1"/>
-        <File path="src/misc/video_tc.v" type="file.verilog" enable="1"/>
+        <File path="src/misc/ws2812.v" type="file.verilog" enable="1"/>
         <File path="src/video_stabilize.sv" type="file.verilog" enable="1"/>
         <File path="src/A2601Core.vhd" type="file.vhdl" enable="1"/>
         <File path="src/A2601top.vhd" type="file.vhdl" enable="1"/>
@@ -40,14 +41,13 @@
         <File path="src/TIA/TIA.vhd" type="file.vhdl" enable="1"/>
         <File path="src/TIA/VGAColorTable.vhd" type="file.vhdl" enable="1"/>
         <File path="src/TIA/audio_argh2600.vhd" type="file.vhdl" enable="1"/>
-        <File path="src/gowin_pll/gowin_pll_ntsc_60k.vhd" type="file.vhdl" enable="1"/>
-        <File path="src/gowin_sdpb/gowin_sdpb_gw5a.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/gowin_sdpb/gowin_sdpb.vhd" type="file.vhdl" enable="1"/>
         <File path="src/t65/T65.vhd" type="file.vhdl" enable="1"/>
         <File path="src/t65/T65_ALU.vhd" type="file.vhdl" enable="1"/>
         <File path="src/t65/T65_MCode.vhd" type="file.vhdl" enable="1"/>
         <File path="src/t65/T65_Pack.vhd" type="file.vhdl" enable="1"/>
-        <File path="src/tang/console60k/a2600_top_tc60k.vhd" type="file.vhdl" enable="1"/>
-        <File path="src/tang/console60k/a2600_top_tc60k.cst" type="file.cst" enable="1"/>
-        <File path="src/tang/console60k/a2600_top_tc60k.sdc" type="file.sdc" enable="1"/>
+        <File path="src/tang/nano20k_bl616/a2600_top_tn20k.vhd" type="file.vhdl" enable="1"/>
+        <File path="src/tang/nano20k_bl616/a2600_top_tn20k.cst" type="file.cst" enable="1"/>
+        <File path="src/tang/nano20k_bl616/a2600_top_tn20k.sdc" type="file.sdc" enable="1"/>
     </FileList>
 </Project>
