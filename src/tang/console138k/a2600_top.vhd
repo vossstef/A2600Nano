@@ -1,6 +1,6 @@
 -------------------------------------------------------------------------
 -------------------------------------------------------------------------
---  A2600 Top level for Tang Console 60k
+--  A2600 Top level for Tang Console 138k
 --  2025 Stefan Voss
 --  based on the work of many others
 --
@@ -510,7 +510,7 @@ port map(
 -- core    28800000
 -- pixel    3600000
 
-mainclock: entity work.Gowin_PLL_ntsc_60k
+mainclock: entity work.Gowin_PLL_ntsc_138k
     port map (
       lock    => pll_locked,
       clkout0 => clk_pixel_x5,
