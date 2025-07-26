@@ -16,5 +16,6 @@ grc --config=gw_sh.grc gw_sh ./build_tm138k_pro_lcd.tcl
 grc --config=gw_sh.grc gw_sh ./build_tc60k.tcl
 grc --config=gw_sh.grc gw_sh ./build_tc60k_bl616.tcl
 grc --config=gw_sh.grc gw_sh ./build_tn20k_bl616.tcl
+grc --config=gw_sh.grc gw_sh ./build_tc138k.tcl
 
 ls -l impl/pnr/*.fs
