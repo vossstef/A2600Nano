@@ -8,8 +8,8 @@ This has been tested on Windows 11. It should work on older versions too.
 
 Software needed:
 
-  - [Gowin V1.9.11.02](https://www.gowinsemi.com/en/support/home/) **to synthesize the core**
-  - [Gowin V1.9.11.02](https://www.gowinsemi.com/en/support/home/) **to program the flash of the TANG FPGA**
+  - [Gowin V1.9.11.03](https://www.gowinsemi.com/en/support/home/) **to synthesize the core**
+  - [Gowin V1.9.11.03](https://www.gowinsemi.com/en/support/home/) **to program the flash of the TANG FPGA**
   - [BouffaloLabDevCube](https://dev.bouffalolab.com/download) **to flash the BL616**
   - [Latest release](https://github.com/vossstef/A2600nano/releases/latest) of A2600Nano **FPGA** bitstream
   - [Latest release](http://github.com/harbaum/FPGA-Companion/releases/latest) of FPGA companion firmware **µC firmware** (if not otherwise stated in the release note.)
@@ -62,7 +62,7 @@ should see following screen:**
 **At a glance the memory layout of the SPI Flash:**
 |                           | |          |          |         | | |
 |-                          |-         |-         |-         |-        |-|-|
-| Type                      | TN20k    | TP20k    |TP25k     | TM138k  |TM60k | |
+| Type                      | TN20k    | TP20k    |TP25k     | TM138k/TC138k  |TM60k/TC60k | |
 | FPGA bitstream            | 0x000000 | 0x000000 | 0x000000 | 0x000000 |0x000000|ROM size |
 
 You might need to use an older version of the Gowin Programmer [SW](https://dl.sipeed.com/shareURL/TANG/programmer) for the GW1NR device.<br>
@@ -76,6 +76,8 @@ Windows shell and Gowin Programmer<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tp25k.fs --spiaddr 0x000000 --cable-index 1 --d GW5A-25A```<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tm60k.fs --spiaddr 0x000000 --cable-index 1 --d GW5AT-60B```<br>
 ```programmer_cli  -r 36 --fsFile a2600nano_tm138k_pro.fs --spiaddr 0x000000 --cable-index 1 --d GW5AST-138B```<br>
+```programmer_cli  -r 36 --fsFile a2600nano_tc60k.fs --spiaddr 0x000000 --cable-index 1 --d GW5AT-60B```<br>
+```programmer_cli  -r 36 --fsFile a2600nano_tc138k.fs --spiaddr 0x000000 --cable-index 1 --d GW5AST-138B```<br>
 
 **That´s it for the Tang Nano 20k**
 
